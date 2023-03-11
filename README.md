@@ -1,2 +1,3 @@
-# repo-template
-This is a repo template for new repositories
+# Auth Service
+
+This is authentication service repository for Nairalink project
