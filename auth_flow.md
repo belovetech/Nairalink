@@ -2,6 +2,7 @@
 
 ## AUTHENTICATION ROUTES
 
+```
 POST /api/v1/customers/signup - Register customer
 POST /api/v1/customers/login - Login customer
 GET /api/v1/customers/logout - Logout customer
@@ -9,12 +10,15 @@ GET /api/v1/customers/logout - Logout customer
 POST /api/v1/customers/forgetPassword - customer forget password
 PATCH /api/v1/customers/resetPassword/:token - reset customer password
 PATCH /api/v1/customers/updatePassword - Update customer password
+```
 
 ## CUSTOMER ROUTES
 
+```
 GET /api/v1/customers/getMe - Get customer details
 PATCH /api/v1/customers/updateMe - Update some customers details except password and other sensitive ones
 DELETE /api/v1/customers/deleteMe - Deactivate customer account
+```
 
 ## AUTHENTICATION FLOW
 
@@ -66,7 +70,7 @@ Utilities Function: **generateToken and sendToken**
 
 - generateToken utility function
 
-  - Generate unique JWT token for the resgistered user
+  - Generate unique JWT token for the registered user
   - Takes customer ID and email as parameter
   - Use jwt.sign method to generate token
   - It accepts payload, jwt secret (any secret phrase) and options {expriesIn: duration}
