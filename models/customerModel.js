@@ -34,7 +34,7 @@ const customerSchema = new mongoose.Schema({
     min: [8, 'Minimum length should be 8'],
     select: false,
   },
-  passwordConfirm: {
+  passwordConfirmation: {
     type: String,
     required: [true, 'Kindly re-enter your password'],
     validate: {
