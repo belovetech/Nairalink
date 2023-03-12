@@ -1,12 +1,17 @@
-const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = require('../database/connection');
+import { DataTypes } from 'sequelize';
+import sequelize from '../database/connection';
 
-module.exports = sequelize.define('Account', {
+export default sequelize.define('acccount', {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
     allowNull: false,
     unique: true
+  },
+  accountType: {
+    type: DataTypes.ENUM(['basic', 'standard']),
+    allowNull: false,
+    defaultValue: 'basic'
   },
   accountNumber: {
     type: DataTypes.BIGINT(10),
@@ -77,4 +82,4 @@ module.exports = sequelize.define('Account', {
 }, {
   freezeTableName: true,
   timestamps: true
-})
+});
