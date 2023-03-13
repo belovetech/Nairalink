@@ -186,14 +186,14 @@ footer
 ### The Type
 The type is contained within the title and can be one of these types:
 
-`[feat]`: A new feature
-`[improvement]`: Improve a current implementation without adding a new feature or fixing a bug
-`[fix]`: A bug fix
-`[docs]`: Changes to documentation
-`[style]`: Formatting, missing semi colons, etc; no code change
-`[refactor]`: Refactoring production code
-`[test]`: Adding tests, refactoring test; no production code change
-`[chore]`: Updating build tasks, package manager configs, etc; no production code change
+- `[feat]`: A new feature
+- `[update]`: Improve a current implementation without adding a new feature or fixing a bug
+- `[fix]`: A bug fix
+- `[docs]`: Changes to documentation
+- `[style]`: Formatting, missing semi colons, etc; no code change
+- `[refactor]`: Refactoring production code
+- `[test]`: Adding tests, refactoring test; no production code change
+- `[chore]`: Updating build tasks, package manager configs, etc; no production code change
 
 ### The Subject
 - Subjects should be no greater than 50 characters, should begin with a capital letter and do not end with a period.
