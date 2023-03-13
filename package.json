@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "./node_modules/.bin/eslint",
     "check-lint": "lint [0-9]*.js",
-    "start-server": "nodemon --exec babel-node --presets @babel/preset-env ./server.js",
+    "start-server": "NODE_ENV=production nodemon --exec babel-node --presets @babel/preset-env ./server.js",
     "dev": "nodemon --exec babel-node --presets @babel/preset-env",
     "test": "./node_modules/.bin/mocha --require @babel/register --exit"
   },
