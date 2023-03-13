@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """The Database module"""
 from os import getenv
+import random
 from datetime import datetime
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
@@ -40,20 +41,20 @@ class DB:
             self.__session = DBSession()
         return self.__session
 
-    def create_card(self, brand: str, currency: str, name: str, pin: int) -> Card:
+    def create_card(self, acct_id: int, brand: str, currency: str, name: str, pin: int) -> Card:
         """Add a new card to the database"""
-        #card_number = "1189091221500092"
-        #date_created = datetime.utcnow()
-        #date_updated = date_created
-        #status = "inactive"
-        #balance = "30000.00"
-        #cvv = 358
-        #expiry_date = datetime.utcnow()
-        card = Card(card_brand=brand, card_currency=currency,
-                    name_on_card=name, pin=pin)
-                    #date_created=date_created, date_updated=date_updated,
-                    #status=status, cvv=cvv, card_number=card_number, expiry_date=expiry_date,
-                    #balance=balance)
+        card_number = str(random.randint(1, 100000000000000000))
+        date_created = datetime.utcnow()
+        date_updated = date_created
+        status = "inactive"
+        balance = "30000.00"
+        cvv = random.randint(0, 3)
+        expiry_date = datetime.utcnow()
+        card = Card(account_id=acct_id, card_brand=brand, card_currency=currency,
+                    name_on_card=name, pin=pin,
+                    date_created=date_created, date_updated=date_updated,
+                    status=status, cvv=cvv, card_number=card_number, expiry_date=expiry_date,
+                    balance=balance)
         self._session.add(card)
         self._session.commit()
         return card
