@@ -1,7 +1,7 @@
 const Customer = require('../models/customerModel');
 
 class AuthController {
-  static async singup(req, res) {
+  static async signup(req, res) {
     const newCustomer = await Customer.create({
       firstName: req.body.firstName,
       lastName: req.body.lastName,

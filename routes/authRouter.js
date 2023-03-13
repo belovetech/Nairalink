@@ -5,11 +5,11 @@ const router = express.Router();
 
 // AUTHENTICATION
 router.post('/signup', AuthController.signup);
-router.post('/login', AuthController.login);
-router.get('/logout', AuthController.logout);
+// router.post('/login', AuthController.login);
+// router.get('/logout', AuthController.logout);
 
-router.post('/forgetPassword', AuthController.forgetPassword);
-router.post('/resetPassword/:token', AuthController.resetPassword);
-router.patch('/updatePassword', AuthController.updatePassword);
+// router.post('/forgetPassword', AuthController.forgetPassword);
+// router.post('/resetPassword/:token', AuthController.resetPassword);
+// router.patch('/updatePassword', AuthController.updatePassword);
 
 module.exports = router;
