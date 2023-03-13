@@ -2,19 +2,55 @@ const Customer = require('../models/customerModel');
 
 class AuthController {
   static async signup(req, res) {
-    const newCustomer = await Customer.create({
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      userName: req.body.userNamer,
-      email: req.body.email,
-      password: req.body.password,
-      passwordConfirmation: req.body.passwordConfirmation,
-    });
+    const {
+      firstName,
+      lastName,
+      userName,
+      email,
+      password,
+      passwordConfirmation,
+    } = req.body;
 
-    return res.status(201).json({
-      status: 'success',
-      newCustomer,
-    });
+    if (!firstName) {
+      return res.status(400).json({ Error: 'Missing firstname' });
+    }
+
+    if (!lastName) {
+      return res.status(400).json({ Error: 'Missing lastname' });
+    }
+
+    if (!userName) {
+      return res.status(400).json({ Error: 'Missing userName' });
+    }
+
+    if (!email) {
+      return res.status(400).json({ Error: 'Missing email' });
+    }
+
+    if (!password) {
+      return res.status(400).json({ Error: 'Missing password' });
+    }
+
+    if (!password) {
+      return res.status(400).json({ Error: 'Missing passwordConfirmation' });
+    }
+
+    try {
+      const newCustomer = await Customer.create({
+        firstName,
+        lastName,
+        userName,
+        email,
+        password,
+        passwordConfirmation,
+      });
+      return res.status(201).json({
+        status: 'success',
+        newCustomer,
+      });
+    } catch (err) {
+      return res.status(400).json({ Error: err });
+    }
   }
 }
 
