@@ -23,6 +23,8 @@ def create_card():
     """Create a new virtual card"""
     data = request.get_json()
     if type(data) is dict:
+        if "account_id" in data:
+            account_id = data['account_id']
         if "card_brand" in data:
             card_brand = data['card_brand']
         if "card_currency" in data:
@@ -35,7 +37,7 @@ def create_card():
             return jsonify({'error': 'Wrong parameters'}), 400
 
         try:
-            card = db.create_card(card_brand, card_currency, name_on_card, pin)
+            card = db.create_card(account_id, card_brand, card_currency, name_on_card, pin)
             return jsonify({'name': name_on_card, 'message': "Card created successfully"})
         except ValueError as err:
                 return jsonify({'error': "Unable to create card"}), 400
