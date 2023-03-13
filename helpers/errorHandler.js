@@ -8,6 +8,12 @@ const handleValidationErrorDB = (err) => {
   return new AppError(message, 400);
 };
 
+const handleDuplicateFieldsDB = (err) => {
+  const value = Object.keys(err.keyValue)[0];
+  const message = `Duplicate field value: ${value}. Please use another value!`;
+  return new AppError(message, 400);
+};
+
 const sendProError = (err, req, res) => {
   if (req.originalUrl.startsWith('/api')) {
     if (err.isOperational) {
@@ -46,6 +52,9 @@ module.exports = (err, req, res, next) => {
       err = handleValidationErrorDB(err);
     }
 
+    if (err.code === 11000) {
+      err = handleDuplicateFieldsDB(err);
+    }
     sendProError(err, req, res);
   }
 };

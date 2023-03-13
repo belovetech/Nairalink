@@ -18,15 +18,16 @@ const customerSchema = new mongoose.Schema({
   image: String,
   email: {
     type: String,
-    unique: true,
     lowercase: true,
     trim: true,
+    unique: true,
     required: [true, 'Kindly provide your email'],
     validate: [validator.isEmail, 'Pls, provide a valid email'],
   },
   phoneNumber: {
-    type: Number,
+    type: String,
     unique: true,
+    parse: true,
   },
   password: {
     type: String,
@@ -68,6 +69,9 @@ customerSchema.pre('save', async function (next) {
   this.passwordConfirmation = undefined;
   next();
 });
+
+// index
+customerSchema.index({ email: 1 }, { unique: true });
 
 const Customer = mongoose.model('Customer', customerSchema);
 module.exports = Customer;

@@ -6,7 +6,6 @@ const jwt = require('jsonwebtoken');
 const Customer = require('../models/customerModel');
 const AppError = require('../helpers/AppError');
 const redisClient = require('../db/redis');
-const catchAsync = require('../helpers/catchAsync');
 
 class AuthController {
   static async signup(req, res, next) {
@@ -19,11 +18,10 @@ class AuthController {
         password: req.body.password,
         passwordConfirmation: req.body.passwordConfirmation,
       });
-
       // Send token
       AuthController.sendGenerateToken(newCustomer, 201, req, res);
     } catch (err) {
-      return next(new AppError(err.message, 400));
+      return next(err);
     }
   }
 
@@ -40,6 +38,7 @@ class AuthController {
     // Set cookies
     res.cookie('jwt', token, {
       expires: new Date(
+        // eslint-disable-next-line comma-dangle
         Date.now(process.env.JWT_COOKIES_EXPIRES_IN * 24 * 60 * 60 * 1000)
       ),
       httponly: true,
@@ -49,7 +48,7 @@ class AuthController {
     const key = `auth_${token}`;
     await redisClient.set(key, customer._id.toString(), 24 * 60 * 60);
 
-    // Remove user password
+    // Remove customer password
     customer.password = undefined;
 
     return res.status(statusCode).json({
@@ -61,18 +60,3 @@ class AuthController {
 }
 
 module.exports = AuthController;
-
-// exports.signup = catchAsync(async (req, res, next) => {
-//   const newCustomer = await Customer.create({
-//     firstName: req.body.firstName,
-//     lastName: req.body.lastName,
-//     userName: req.body.userName,
-//     email: req.body.email,
-//     password: req.body.password,
-//     passwordConfirmation: req.body.passwordConfirmation,
-//   });
-//   return res.status(201).json({
-//     status: 'success',
-//     data: newCustomer,
-//   });
-// });
