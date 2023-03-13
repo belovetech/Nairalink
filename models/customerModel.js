@@ -59,15 +59,15 @@ const customerSchema = new mongoose.Schema({
   isVerified: Boolean,
 });
 
-const Customer = mongoose.model('Customer', customerSchema);
-
-customerSchema.pre('save', async function hashPassword(next) {
+// eslint-disable-next-line func-names, consistent-return
+customerSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
 
   this.password = sha1(this.password);
 
-  this.passwordConfirm = undefined;
-  return next();
+  this.passwordConfirmation = undefined;
+  next();
 });
 
+const Customer = mongoose.model('Customer', customerSchema);
 module.exports = Customer;
