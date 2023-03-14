@@ -161,6 +161,14 @@ If you have an idea for a new feature, please submit a feature request that incl
 - Any relevant use cases.
 - Any potential downsides or drawbacks.
 
+### Creating a Feature
+Before creating a feature, open an issue for the feature, and tag appropriately. On commit, tag the issue ID on the commit message. Example: `feat #5: create login api`
+
+- A detailed description of the feature.
+- Why the feature is needed.
+- Any relevant use cases.
+- Any potential downsides or drawbacks.
+
 ### Coding Standards
 Please adhere to our coding standards, which include:
 
