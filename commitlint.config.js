@@ -11,25 +11,25 @@ module.exports = {
 			'never',
 			['sentence-case', 'start-case', 'pascal-case', 'upper-case'],
 		],
-		// 'subject-empty': [2, 'never'],
+		'subject-empty': [2, 'never'],
 		'subject-full-stop': [2, 'never', '.'],
 		'type-case': [2, 'always', 'lower-case'],
-		// 'type-empty': [2, 'never'],
+		'type-empty': [2, 'never'],
 		'type-enum': [
 			2,
 			'always',
 			[
-				'[build]',
-				'[chore]',
-				'[ci]',
-				'[docs]',
-				'[feat]',
-				'[fix]',
-				'[perf]',
-				'[refactor]',
-				'[revert]',
-				'[style]',
-				'[test]',
+				'build',
+				'chore',
+				'ci',
+				'docs',
+				'feat',
+				'fix',
+				'perf',
+				'refactor',
+				'revert',
+				'style',
+				'test',
 			],
 		],
 	},
@@ -38,61 +38,61 @@ module.exports = {
 			type: {
 				description: "Select the type of change that you're committing",
 				enum: {
-					'[feat]': {
+					feat: {
 						description: 'A new feature',
 						title: 'Features',
 						emoji: '✨',
 					},
-					'[fix]': {
+					fix: {
 						description: 'A bug fix',
 						title: 'Bug Fixes',
 						emoji: '🐛',
 					},
-					'[docs]': {
+					docs: {
 						description: 'Documentation only changes',
 						title: 'Documentation',
 						emoji: '📚',
 					},
-					'[style]': {
+					style: {
 						description:
 							'Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)',
 						title: 'Styles',
 						emoji: '💎',
 					},
-					'[refactor]': {
+					refactor: {
 						description:
 							'A code change that neither fixes a bug nor adds a feature',
 						title: 'Code Refactoring',
 						emoji: '📦',
 					},
-					'[perf]': {
+					perf: {
 						description: 'A code change that improves performance',
 						title: 'Performance Improvements',
 						emoji: '🚀',
 					},
-					'[test]': {
+					test: {
 						description: 'Adding missing tests or correcting existing tests',
 						title: 'Tests',
 						emoji: '🚨',
 					},
-					'[build]': {
+					build: {
 						description:
 							'Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)',
 						title: 'Builds',
 						emoji: '🛠',
 					},
-					'[ci]': {
+					ci: {
 						description:
 							'Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)',
 						title: 'Continuous Integrations',
 						emoji: '⚙️',
 					},
-					'[chore]': {
+					chore: {
 						description: "Other changes that don't modify src or test files",
 						title: 'Chores',
 						emoji: '♻️',
 					},
-					'[revert]': {
+					revert: {
 						description: 'Reverts a previous commit',
 						title: 'Reverts',
 						emoji: '🗑',
