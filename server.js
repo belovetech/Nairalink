@@ -3,7 +3,6 @@ process.on('uncaughtException', (err) => {
   console.log('UNCAUGHT EXCEPTION SHUTTING DOWN...');
   process.exit(1);
 });
-
 const dotenv = require('dotenv');
 
 dotenv.config({ path: './.config.env' });

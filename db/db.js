@@ -4,12 +4,20 @@ const DB = process.env.URL.replace('<PASSWORD>', process.env.PASSWORD);
 
 class DbClient {
   constructor() {
-    mongoose.connect(DB, { useNewUrlParser: true });
-    mongoose.connection.on('error', (err) => {
-      console.log(`ERROR: ${err}`);
+    mongoose.connect(DB, {
+      useNewUrlParser: true,
+      family: 4,
+      connectTimeoutMS: 1000,
     });
-    mongoose.connection.once('open', () => {
-      this.db = true;
+
+    this.db = mongoose.connection;
+
+    this.db.on('error', (err) => {
+      console.log(`Failed to connect to the database: ${err}`);
+      process.exit(1);
+    });
+
+    this.db.once('open', () => {
       console.log('DB connection succssfully!');
     });
   }
