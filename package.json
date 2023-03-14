@@ -1,6 +1,6 @@
 {
   "name": "authentication_service",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -8,20 +8,26 @@
     "check-lint": "lint [0-9]*.js",
     "start-server": "NODE_ENV=production nodemon --exec babel-node --presets @babel/preset-env ./server.js",
     "dev": "nodemon --exec babel-node --presets @babel/preset-env",
-    "test": "./node_modules/.bin/mocha --require @babel/register --exit"
+    "test": "./node_modules/.bin/mocha --require @babel/register --exit",
+    "release": "release-it"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@commitlint/cli": "^17.4.4",
+    "@commitlint/config-conventional": "^17.4.4",
+    "@release-it/conventional-changelog": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "chai-http": "^4.3.0",
     "dotenv": "^16.0.3",
     "express": "^4.17.1",
+    "husky": "^8.0.3",
     "jsonwebtoken": "^9.0.0",
     "mongodb": "^3.5.9",
     "mongoose": "^7.0.1",
     "morgan": "^1.10.0",
     "redis": "^2.8.0",
+    "release-it": "^15.8.0",
     "sha1": "^1.1.1",
     "validator": "^13.9.0"
   },
@@ -41,5 +47,35 @@
     "nodemon": "^2.0.2",
     "request": "^2.88.0",
     "sinon": "^7.5.0"
+  },
+  "release-it": {
+    "git": {
+      "commitMessage": "[chore]: release v${version}"
+    },
+    "github": {
+      "release": true
+    },
+    "npm": {
+      "publish": false
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "infile": "CHANGELOG.md",
+        "preset": {
+          "name": "conventionalcommits",
+          "types": [
+            {
+              "type": "feat",
+              "section": "Features"
+            },
+            {
+              "type": "fix",
+              "section": "Bug Fixes"
+            },
+            {}
+          ]
+        }
+      }
+    }
   }
 }
