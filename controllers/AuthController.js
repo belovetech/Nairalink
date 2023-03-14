@@ -9,6 +9,8 @@ const formatErrorMessage = require('../helpers/formatErrorMessage');
 
 class AuthController {
   static async signup(req, res, next) {
+    const errorObj = formatErrorMessage(req.body);
+
     try {
       const newCustomer = await Customer.create({
         firstName: req.body.firstName,
@@ -20,13 +22,14 @@ class AuthController {
       });
 
       const customer = formatResponse(newCustomer);
-
       return res.status(201).json({
         status: 'success',
         data: customer,
       });
     } catch (err) {
-      return next(err);
+      return res.status(400).json({
+        error: { status: 400, ...errorObj },
+      });
     }
   }
 }
