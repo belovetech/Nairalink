@@ -21,18 +21,20 @@ class AuthController {
         passwordConfirmation: req.body.passwordConfirmation,
       });
 
-      const customer = formatResponse(newCustomer);
       return res.status(201).json({
         status: 'success',
-        data: customer,
+        data: formatResponse(newCustomer),
       });
     } catch (err) {
       if (err.code === 11000) {
         return next(err);
       }
-      const error = err.errors.passwordConfirmation;
-      if (err.name === 'ValidationError' && error) {
-        errorObj.passwordConfirmation = error.message;
+      if (err.name === 'ValidationError') {
+        let error = err.errors.passwordConfirmation;
+        if (error) errorObj.passwordConfirmation = error.message;
+
+        error = err.errors.email;
+        if (error) errorObj.email = error.message;
       }
 
       return res.status(400).json({
