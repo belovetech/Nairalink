@@ -27,6 +27,10 @@ class AuthController {
         data: customer,
       });
     } catch (err) {
+      const error = err.errors.passwordConfirmation;
+      if (err.name === 'ValidationError' && error) {
+        errorObj.passwordConfirmation = error.message;
+      }
       return res.status(400).json({
         error: { status: 400, ...errorObj },
       });
