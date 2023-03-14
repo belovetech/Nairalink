@@ -186,21 +186,21 @@ footer
 ### The Type
 The type is contained within the title and can be one of these types:
 
-- `[feat]`: A new feature
-- `[update]`: Improve a current implementation without adding a new feature or fixing a bug
-- `[fix]`: A bug fix
-- `[docs]`: Changes to documentation
-- `[style]`: Formatting, missing semi colons, etc; no code change
-- `[refactor]`: Refactoring production code
-- `[test]`: Adding tests, refactoring test; no production code change
-- `[chore]`: Updating build tasks, package manager configs, etc; no production code change
+- `feat`: A new feature
+- `update`: Improve a current implementation without adding a new feature or fixing a bug
+- `fix`: A bug fix
+- `docs`: Changes to documentation
+- `style`: Formatting, missing semi colons, etc; no code change
+- `refactor`: Refactoring production code
+- `test`: Adding tests, refactoring test; no production code change
+- `chore`: Updating build tasks, package manager configs, etc; no production code change
 
 ### The Subject
 - Subjects should be no greater than 50 characters, should begin with a capital letter and do not end with a period.
 - Be specific: Provide enough detail in the commit message to describe the changes made and why they were necessary.
 - Use an imperative tone to describe what a commit does, rather than what it did. For example, use change; not changed or changes.
 - Use present tense: Write your commit message in present tense (e.g., "Add new feature" instead of "Added new feature").
-- Reference issue numbers: If your commit is related to a specific issue or bug report, reference it in the commit message (e.g., "[Feat #3]: issue with login page").
+- Reference issue numbers: If your commit is related to a specific issue or bug report, reference it in the commit message (e.g., "Feat #3: issue with login page").
 - Separate the subject from the body: Use a blank line to separate the summary line from the body of the commit message.
 - Use bullet points: If the commit message has multiple points to make, consider using bullet points in the message body to make it more readable.
 - Use consistent formatting: Try to use a consistent format for commit messages throughout the project to help with readability and understanding.
@@ -216,7 +216,7 @@ The footer is optional and is used to reference issue tracker IDs.
 
 ### Example Commit Message
 ```
-[feat #4]: Summarize changes in around 50 characters or less
+feat #4: Summarize changes in around 50 characters or less
 
 More detailed explanatory text, if necessary. Wrap it to about 72
 characters or so. In some contexts, the first line is treated as the
