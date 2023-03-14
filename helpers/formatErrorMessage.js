@@ -1,4 +1,4 @@
-const formatErrorMessage = (fields) => {
+const formatErrorMessage = (requestBody) => {
   const error = {};
   const fieldNames = [
     'firstName',
@@ -10,7 +10,7 @@ const formatErrorMessage = (fields) => {
   ];
 
   fieldNames.forEach((field) => {
-    if (!Object.keys(fields).includes(field)) {
+    if (!requestBody[field]) {
       error[field] = `Invalid ${field}`;
     }
   });
