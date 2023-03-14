@@ -12,7 +12,7 @@ from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.orm.exc import NoResultFound
 
 from typing import List
-
+from models.cardTransaction import CardTransaction
 from models.card import Base, Card
 
 class DB:
@@ -59,6 +59,16 @@ class DB:
         self._session.commit()
         return card
 
+    def fund_card(self, card_id: int, amount: str, transaction_type: str, narration: str, currency: str, status: str) -> CardTransaction:
+        """Attempts to fund a card from a wallet"""
+        datetime_of_transaction = datetime.utcnow()
+        cardTransaction = CardTransaction(card_id=card_id, transaction_type=transaction_type,
+                                          amount=amount, currency=currency, status=status,
+                                          description=narration, datetime=datetime_of_transaction)
+        self._session.add(cardTransaction)
+        self._session.commit()
+        return cardTransaction
+
     def find_card_by(self, **kwargs) -> Card:
         """Find card from DB by key-value pairs argument"""
         if not kwargs or not self.valid_query_args(**kwargs):
@@ -93,6 +103,18 @@ class DB:
                 del obj['_sa_instance_state']
             objs.append(obj)
         return objs
+
+    def all_cardTransactions(self) -> List[CardTransaction]:
+        """Returns all cards"""
+        objs = []
+        cards = self._session.query(CardTransaction).all()
+        for card in cards:
+            obj = card.__dict__.copy()
+            if obj['_sa_instance_state']:
+                del obj['_sa_instance_state']
+            objs.append(obj)
+        return objs
+
 
     def valid_query_args(self, **kwargs):
         """Get table columns or keys"""
