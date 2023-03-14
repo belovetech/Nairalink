@@ -1,10 +1,14 @@
 /* eslint-disable no-param-reassign */
 const AppError = require('./AppError');
+const formatErrorMessage = require('./formatErrorMessage');
 
 const handleValidationErrorDB = (err) => {
-  const errors = Object.values(err.errors).map((el) => el.message);
+  const errors = {};
+  Object.values(err.errors).forEach((el) => {
+    errors[el.path] = el.message;
+  });
 
-  const message = `Invalid input data. ${errors.join('. ')}`;
+  const message = formatErrorMessage(errors);
   return new AppError(message, 400);
 };
 

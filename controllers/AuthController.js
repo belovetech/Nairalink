@@ -5,6 +5,7 @@ const Customer = require('../models/customerModel');
 const AppError = require('../helpers/AppError');
 const sendGeneratedToken = require('../helpers/sendGeneratedToken');
 const formatResponse = require('../helpers/formatResponse');
+const formatErrorMessage = require('../helpers/formatErrorMessage');
 
 class AuthController {
   static async signup(req, res, next) {
