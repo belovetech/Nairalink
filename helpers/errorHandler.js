@@ -1,20 +1,15 @@
 /* eslint-disable no-param-reassign */
 const AppError = require('./AppError');
-const formatErrorMessage = require('./formatErrorMessage');
 
 const handleValidationErrorDB = (err) => {
-  const errors = {};
-  Object.values(err.errors).forEach((el) => {
-    errors[el.path] = el.message;
-  });
-
-  const message = formatErrorMessage(errors);
-  return new AppError(message, 400);
+  const errors = Object.values(err.errors).map((el) => el.message);
+  const msg = `Invalid input data: ${errors.join('. ')}`;
+  return new AppError(msg, 400);
 };
 
 const handleDuplicateFieldsDB = (err) => {
   const value = Object.keys(err.keyValue)[0];
-  const message = `Duplicate field value: ${value}. Please use another value!`;
+  const message = `Customer with this ${value} already exist. Kindly login!`;
   return new AppError(message, 400);
 };
 
@@ -22,8 +17,10 @@ const sendProError = (err, req, res) => {
   if (req.originalUrl.startsWith('/api')) {
     if (err.isOperational) {
       return res.status(err.statusCode).json({
-        status: err.status,
-        message: err.message,
+        error: {
+          status: err.status,
+          message: err.message,
+        },
       });
     }
 

@@ -27,6 +27,9 @@ class AuthController {
         data: customer,
       });
     } catch (err) {
+      if (err.code === 11000) {
+        return next(err);
+      }
       const error = err.errors.passwordConfirmation;
       if (err.name === 'ValidationError' && error) {
         errorObj.passwordConfirmation = error.message;
