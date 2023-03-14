@@ -9,6 +9,7 @@
 `npm install release-it @release-it/conventional-changelog @commitlint/config-conventional @commitlint/cli --include=dev`
 
 - Install husky - Git hooks
+
 ```bash
 $ ./node_modules/husky/lib/bin.js install
 husky - Git hooks installed
