@@ -1,5 +1,6 @@
 const redisClient = require('../db/redis');
 const generateToken = require('./generateToken');
+const formatResponse = require('./formatResponse');
 
 async function sendGeneratedToken(customer, statusCode, req, res) {
   const token = generateToken(customer._id);
@@ -18,7 +19,7 @@ async function sendGeneratedToken(customer, statusCode, req, res) {
   await redisClient.set(key, customer._id.toString(), 24 * 60 * 60);
 
   // eslint-disable-next-line no-param-reassign
-  customer.password = undefined;
+  customer = formatResponse(customer);
 
   return res.status(statusCode).json({
     status: 'success',
