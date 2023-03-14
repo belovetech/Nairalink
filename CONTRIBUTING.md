@@ -176,7 +176,7 @@ Please adhere to our coding standards, which include:
 A commit messages consists of three distinct parts separated by a blank line: the title, an optional body and an optional footer. The layout looks like this:
 
 ```
-[type]: Subject
+type: Subject
 
 body
 
