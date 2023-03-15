@@ -1,42 +1,26 @@
-const nodemailer = require("nodemailer");
-const MailSlurp = require('mailslurp-client').default;
-const apiKey = process.env.API_KEY
-const mailslurp = new MailSlurp({ apiKey });
+// eslint-disable-next-line import/no-extraneous-dependenciesconst handlebars = require('handlebars')
+const handlebars = require('handlebars')
+const fs = require('fs')
+const path = require('path')
+const { Queue } = require('bullmq')
 
-const sendEmail = async (email, subject, text) => {
-    const inbox = await mailslurp.createInboxWithOptions({
-        inboxType: "SMTP_INBOX"
-      });
-    const server = await mailslurp.inboxController.getImapSmtpAccess({
-        inboxId: inbox.id,
-      });
+const queue = new Queue('mailer', {
+  connection: { host: 'localhost', port: 6379 },
+});
 
-    try {
-        // Create auth plain transport
-        const transport = nodemailer.createTransport({
-            host: server.smtpServerHost,
-            port: server.smtpServerPort,
-            secure: false,
-            auth: {
-                user: server.smtpUsername,
-                pass: server.smtpPassword,
-                type: 'PLAIN',
-            },
-        });
-        // Send email
-        const sent = await transport.sendMail({
-            from: inbox.emailAddress,
-            to: `${inbox.emailAddres},${email}`,
-            subject: subject,
-            text: text,
-            html: '<b>Hello world</b>',
-        });
+const sendEmail = async (email, subject, payload, template) => {
+  const source = fs.readFileSync(path.join(__dirname, template), 'utf8')
+  const compiledTemplate = handlebars.compile(source)
+  const job = {
+    from: 'Nairalink <support@cloudmendy.tech>',
+    subject,
+    to: email,
+    html: compiledTemplate(payload),
+  };
 
-        console.log("sent details: ", sent);
-        console.log("email sent sucessfully");
-    } catch (error) {
-        console.log(error, "email not sent");
-    }
+
+  await queue.add('send-simple', job);
+  console.info(`Enqueued an email sending to ${job.to}`);
 };
 
 module.exports = sendEmail;
