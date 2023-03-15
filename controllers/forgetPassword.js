@@ -21,13 +21,17 @@ async function forgetPassword(req, res, next) {
     const resetToken = crypto.randomBytes(32).toString('hex')
 
     await redisClient.set(customer._id, resetToken, 3600)
-    token = await redisClient.get(customer._id)
 
-    const link = `${process.env.BASE_URL}/resetPassword?token=${token}&id=${customer._id}`
-    await sendEmail(customer.email, 'Password Reset Request', link)
+    const link = `${process.env.BASE_URL}/resetPassword?token=${resetToken}&id=${customer._id}`
+    await sendEmail(customer.email, 'Password Reset Request', {
+      name: customer.firstName,
+      link: link
+    }, "./template/requestResetPassword.handlebars")
 
-    res.send(`password reset link sent to ${customer.email}`)
-    return link
+    return res.status(200).json({
+      status: "success",
+      message: `password reset link sent to ${customer.email}`
+    })
   } catch (err) {
     return next(err)
   }
