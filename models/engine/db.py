@@ -43,13 +43,13 @@ class DB:
 
     def create_card(self, acct_id: int, brand: str, currency: str, name: str, pin: int) -> Card:
         """Add a new card to the database"""
-        card_number = str(random.randint(1, 100000000000000000))
+        card_number = str(random.randint(1, 100000000000000000))#Build a better generator later
         date_created = datetime.utcnow()
         date_updated = date_created
-        status = "inactive"
-        balance = "30000.00"
-        cvv = random.randint(0, 3)
-        expiry_date = datetime.utcnow()
+        status = "inactive" #default value
+        balance = "30000.00" #subject to change
+        cvv = random.randint(0, 3) #Build a better generator later
+        expiry_date = datetime.utcnow() #Build a function to set expiry date based on date_created
         card = Card(account_id=acct_id, card_brand=brand, card_currency=currency,
                     name_on_card=name, pin=pin,
                     date_created=date_created, date_updated=date_updated,
@@ -61,10 +61,13 @@ class DB:
 
     def fund_card(self, card_id: int, amount: str, transaction_type: str, narration: str, currency: str, status: str) -> CardTransaction:
         """Attempts to fund a card from a wallet"""
-        datetime_of_transaction = datetime.utcnow()
+        datetime_created = datetime.utcnow()
+        datetime_updated = datetime.utcnow()
         cardTransaction = CardTransaction(card_id=card_id, transaction_type=transaction_type,
                                           amount=amount, currency=currency, status=status,
-                                          description=narration, datetime=datetime_of_transaction)
+                                          description=narration, 
+                                          datetime_created=datetime_created, 
+                                          datetime_updated=datetime_updated)
         self._session.add(cardTransaction)
         self._session.commit()
         return cardTransaction
