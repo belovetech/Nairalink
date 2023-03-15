@@ -2,8 +2,11 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-unused-vars */
-// const AppError = require('../helpers/AppError');
 // const sendGeneratedToken = require('../helpers/sendGeneratedToken');
+const sha1 = require('sha1');
+const jwt = require('jsonwebtoken');
+const { ObjectId } = require('mongodb');
+const AppError = require('../helpers/AppError');
 const Customer = require('../models/customerModel');
 const formatResponse = require('../helpers/formatResponse');
 const formatErrorMessage = require('../helpers/formatErrorMessage');
@@ -30,7 +33,7 @@ class AuthController {
       const verifyUrl = `${req.protocol}://${req.get('host')}${
         req.baseUrl
       }/verify/${token}`;
-      console.log(verifyUrl);
+
       // eslint-disable-next-line operator-linebreak
       const msg = `<h4>Congratulations! You have successfully created an account with Nairalink. <h4> Your Email verification token:</h4><b>${verifyUrl}</b><h4>The verification token will be valid for 5 minutes. Please do not share this link with anyone.</h4>Thank you.<h4>The Nairalink Team.</h4>`;
 
@@ -55,6 +58,7 @@ class AuthController {
         error = err.errors.password;
         if (error) errorObj.password = error.message;
       }
+
       return res.status(400).json({
         error: { status: 400, ...errorObj },
       });
@@ -67,7 +71,7 @@ class AuthController {
       if (!email || !password) return res.status(400).json({ error: 'Invalid login credentials' });
       let customer = await Customer.findOne({ email });
       if (!customer) res.status(404).json({ error: 'Customer not found' });
-      if (customer.isVerified === false) res.status(400).json({ error: 'Kindly verify your email, and come back to login' });
+      if (customer.isVerified === false) return res.status(400).json({ error: 'Kindly verify your email, and come back to login' });
       customer = await Customer.findOne({ email, password: sha1(password) });
       if (!customer) res.status(400).json({ error: 'Invalid login credentials' });
       const token = AuthController.generateToken(customer._id.toString());
@@ -100,6 +104,39 @@ class AuthController {
       if (error.message === 'jwt malformed') return res.status(500).json({ error: 'Server error...' });
       console.log(error.message);
       next(error);
+    }
+  }
+
+  static async verify(req, res, next) {
+    const { token } = req.params;
+    if (!token) return next(new AppError('Something went wrong!', 500));
+
+    const customerId = await redisClient.get(`Auth_${token}`);
+    if (!customerId) return next(new AppError('Token has expired', 404));
+
+    try {
+      const customer = await Customer.findOne({
+        _id: new ObjectId(customerId),
+      });
+      if (!customer) return next(new AppError('Forbidden', 403));
+
+      await Customer.findOneAndUpdate(
+        { email: customer.email },
+        { isVerified: true }
+      );
+      await customer.save({ validateBeforeSave: false });
+      await redisClient.del(`Auth_${token}`);
+
+      const loginUrl = `${req.protocol}://${req.get('host')}${
+        req.baseUrl
+      }/login`;
+      const msg = `<h4>Your Email has been verified. ${loginUrl} Thank you.<h4>The Nairalink Team.</h4>`;
+
+      await sendEmail('Email Confirmation', customer.email, msg);
+
+      return res.status(200).json({ message: 'Verification successful' });
+    } catch (err) {
+      next(err);
     }
   }
 }
