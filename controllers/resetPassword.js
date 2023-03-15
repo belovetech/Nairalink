@@ -9,7 +9,8 @@ const sha1 = require('sha1')
 
 async function resetPassword(req, res, next) {
   try {
-    const { id, token, newPassword } = req.body
+    const { id, newPassword } = req.body
+    const token = req.params.token
 
     if (!token || !id || !newPassword) {
       return res.status(400).json({
@@ -24,6 +25,8 @@ async function resetPassword(req, res, next) {
         error: 'Invalid or expired password reset token.',
       })
     }
+
+    console.log(sha1(newPassword))
 
     await Customer.updateOne(
       { _id: id },

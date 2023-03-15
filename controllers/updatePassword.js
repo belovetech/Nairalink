@@ -18,13 +18,16 @@ async function updatePassword(req, res, next) {
     }
 
     const customer = await Customer.findById(customerId)
+    console.log(customer)
 
     if (!customer)
       return res.status(400).json({
         error: "user doesn't exist",
       })
 
-    if (customer.password != currentPassword) {
+    console.log(`${customer.password} == ${sha1(currentPassword)}`)
+
+    if (customer.password != sha1(currentPassword)) {
       return res.status(400).json({
         error: 'Incorrect current password',
       })
