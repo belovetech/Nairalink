@@ -1,25 +1,38 @@
 const nodemailer = require("nodemailer");
+const MailSlurp = require('mailslurp-client').default;
+const apiKey = process.env.API_KEY
+const mailslurp = new MailSlurp({ apiKey });
 
 const sendEmail = async (email, subject, text) => {
+    const inbox = await mailslurp.createInboxWithOptions({
+        inboxType: "SMTP_INBOX"
+      });
+    const server = await mailslurp.inboxController.getImapSmtpAccess({
+        inboxId: inbox.id,
+      });
+
     try {
-        const transporter = nodemailer.createTransport({
-            host: process.env.HOST, // hostname/IP of the SMTP server used to send the email.
-            service: process.env.SERVICE, // alternative to specifying host and port manually. For example, you could set service: 'gmail' to use Gmail's SMTP server.
-            port: 587, // port number of the SMTP server. By default, this is set to 587 which is the standard port for secure SMTP (SMTPS)
-            secure: true, // determines whether to use a secure connection when sending email. If set to true, Nodemailer will use a secure connection (TLS or SSL) to communicate with the SMTP server. If set to false, it will use an unsecured connection.
+        // Create auth plain transport
+        const transport = nodemailer.createTransport({
+            host: server.smtpServerHost,
+            port: server.smtpServerPort,
+            secure: false,
             auth: {
-                user: process.env.USER, // username of the SMTP server
-                pass: process.env.PASS, // password of the SMTP server
+                user: server.smtpUsername,
+                pass: server.smtpPassword,
+                type: 'PLAIN',
             },
         });
-
-        await transporter.sendMail({
-            from: process.env.USER,
-            to: email,
+        // Send email
+        const sent = await transport.sendMail({
+            from: inbox.emailAddress,
+            to: `${inbox.emailAddres},${email}`,
             subject: subject,
             text: text,
+            html: '<b>Hello world</b>',
         });
 
+        console.log("sent details: ", sent);
         console.log("email sent sucessfully");
     } catch (error) {
         console.log(error, "email not sent");
