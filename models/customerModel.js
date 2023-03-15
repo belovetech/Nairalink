@@ -58,7 +58,10 @@ const customerSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
-  isVerified: Boolean,
+  isVerified: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 // eslint-disable-next-line func-names, consistent-return
