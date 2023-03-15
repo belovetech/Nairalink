@@ -28,12 +28,12 @@ const customerSchema = new mongoose.Schema({
   phoneNumber: {
     type: String,
     unique: true,
-    parse: true,
+    sparse: true,
   },
   password: {
     type: String,
     required: [true, 'Kindly provide a password'],
-    min: [8, 'Minimum length should be 8'],
+    minLength: [8, 'Minimum length should be 8'],
     select: false,
   },
   passwordConfirmation: {
@@ -58,7 +58,10 @@ const customerSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
-  isVerified: Boolean,
+  isVerified: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 // eslint-disable-next-line func-names, consistent-return
@@ -71,8 +74,13 @@ customerSchema.pre('save', async function (next) {
   next();
 });
 
-// index
+// create index on email and phoneNumber field
 customerSchema.index({ email: 1 }, { unique: true });
+customerSchema.index({ phoneNumber: 1 }, { sparse: true });
+
+customerSchema.on('index', (err) => {
+  console.log(err);
+});
 
 const Customer = mongoose.model('Customer', customerSchema);
 module.exports = Customer;
