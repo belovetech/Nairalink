@@ -13,6 +13,8 @@ const formatErrorMessage = require('../helpers/formatErrorMessage');
 const sendEmail = require('../helpers/sendEmail');
 const verificationToken = require('../helpers/verificationToken');
 const redisClient = require('../db/redis');
+const sendEmail = require('../helpers/sendEmail')
+const crypto = require('crypto')
 
 class AuthController {
   static async signup(req, res, next) {
@@ -137,6 +139,118 @@ class AuthController {
       return res.status(200).json({ message: 'Verification successful' });
     } catch (err) {
       next(err);
+    }
+  }
+
+  static async forgetPassword(req, res, next) {
+    try {
+      const { email } = req.body
+      const customer = await Customer.findOne({ email })
+
+      if (!customer) return res.status(400).json({ error: "user doesn't exist" })
+
+      let token = redisClient.get(customer._id)
+      if (token) await redisClient.del(customer._id)
+
+      const resetToken = crypto.randomBytes(32).toString('hex')
+
+      await redisClient.set(customer._id, resetToken, 3600)
+
+      const link = `${process.env.BASE_URL}/resetPassword?token=${resetToken}&id=${customer._id}`
+      await sendEmail(customer.email, 'Password Reset Request', {
+        name: customer.firstName,
+        link: link
+      }, "./template/requestResetPassword.handlebars")
+
+      return res.status(200).json({
+        status: "success",
+        message: `password reset link sent to ${customer.email}`
+      })
+    } catch (err) {
+      return next(err)
+    }
+  }
+
+  static async resetPassword(req, res, next) {
+    try {
+      const { id, newPassword } = req.body
+      const token = req.params.token
+
+      if (!token || !id || !newPassword) {
+        return res.status(400).json({
+          error:
+            'Invalid request. Please provide token, user ID, and new password.',
+        })
+      }
+
+      const storedToken = await redisClient.get(id)
+      if (!storedToken || storedToken !== token) {
+        return res.status(400).json({
+          error: 'Invalid or expired password reset token.',
+        })
+      }
+
+      await Customer.updateOne(
+        { _id: id },
+        { $set: { password: sha1(newPassword) } },
+        { new: true },
+      )
+
+      const customer = await Customer.findById({ _id: id })
+      await sendEmail(
+        customer.email,
+        'Password Reset Successfully',
+        { name: customer.firstName },
+        '../helpers/template/resetPassword.handlebars',
+      )
+      await redisClient.del(id)
+
+      return res.status(200).json({
+        status: 'success',
+        message: 'Password reset successfully.',
+      })
+    } catch (err) {
+      return next(err)
+    }
+  }
+
+  static async updatePassword(req, res, next) {
+    try {
+      const { customerId, currentPassword, newPassword } = req.body
+      // const customerId = req.customer._id Assuming the user ID is stored in
+      // the request object after successful authentication
+
+      if (!currentPassword || !newPassword) {
+        return res.status(400).json({
+          error: 'current and/or new password missing',
+        })
+      }
+
+      const customer = await Customer.findById(customerId).select('+password')
+
+      if (!customer)
+        return res.status(400).json({
+          error: "user doesn't exist",
+        })
+
+      if (customer.password != sha1(currentPassword)) {
+        return res.status(400).json({
+          error: 'Incorrect current password',
+        })
+      }
+
+      await Customer.updateOne(
+        { _id: customerId },
+        { $set: { password: sha1(newPassword) } },
+        { new: true },
+      )
+
+      return res.status(200).json({
+        status: 'success',
+        message: 'password update successful',
+      })
+    } catch (err) {
+      return next(err)
     }
   }
 }
