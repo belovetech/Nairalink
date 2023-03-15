@@ -16,5 +16,6 @@ class CardTransaction(Base):
     description = Column(String(60), nullable=True)
     currency = Column(String(10), nullable=False)
     amount = Column(String(15), nullable=False)
-    datetime = Column(DateTime, nullable=False, default=datetime.utcnow)
+    datetime_created = Column(DateTime, nullable=False, default=datetime.utcnow)
+    datetime_updated = Column(DateTime, nullable=False, default=datetime.utcnow)
     status = Column(String(10), nullable=False)
