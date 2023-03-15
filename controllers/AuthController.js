@@ -8,7 +8,7 @@ const Customer = require('../models/customerModel');
 const formatResponse = require('../helpers/formatResponse');
 const formatErrorMessage = require('../helpers/formatErrorMessage');
 const sendEmail = require('../helpers/sendEmail');
-const generateVerificationPin = require('../helpers/generateVerificationPin');
+const verificationToken = require('../helpers/verificationToken');
 const redisClient = require('../db/redis');
 
 class AuthController {
@@ -25,23 +25,23 @@ class AuthController {
         passwordConfirmation: req.body.passwordConfirmation,
       });
 
-      const pin = generateVerificationPin();
-      await redisClient.set(`Auth_${pin}`, newCustomer._id.toString(), 3600);
-
+      const token = verificationToken();
+      await redisClient.set(`Auth_${token}`, newCustomer._id.toString(), 300);
+      const verifyUrl = `${req.protocol}://${req.get('host')}${
+        req.baseUrl
+      }/verify/${token}`;
+      console.log(verifyUrl);
       // eslint-disable-next-line operator-linebreak
-      const msg = `<h4>Congratulations! You have successfully created an account with Nairalink. kindly, provide the 6 digit verification pin</h4></br><h1>${pin
-        .toString()
-        .split('')
-        .join(' ')}</h1>`;
+      const msg = `<h4>Congratulations! You have successfully created an account with Nairalink. <h4> Your Email verification token:</h4><b>${verifyUrl}</b><h4>The verification token will be valid for 5 minutes. Please do not share this link with anyone.</h4>Thank you.<h4>The Nairalink Team.</h4>`;
 
-      await sendEmail('Confirmation Email', newCustomer.email, msg);
+      await sendEmail('Nairalink Email Verification', newCustomer.email, msg);
 
       return res.status(201).json({
         status: 'success',
         data: formatResponse(newCustomer),
       });
     } catch (err) {
-      console.log(err.errors);
+      console.log(err);
       if (err.code === 11000) {
         return next(err);
       }
