@@ -8,7 +8,7 @@ const Customer = require('../models/customerModel');
 const formatResponse = require('../helpers/formatResponse');
 const formatErrorMessage = require('../helpers/formatErrorMessage');
 const sendEmail = require('../helpers/sendEmail');
-const generateUuidToken = require('../helpers/generateUuidToken');
+const generateVerificationPin = require('../helpers/generateVerificationPin');
 const redisClient = require('../db/redis');
 
 class AuthController {
@@ -25,19 +25,15 @@ class AuthController {
         passwordConfirmation: req.body.passwordConfirmation,
       });
 
-      const token = generateUuidToken(newCustomer._id);
+      const pin = generateVerificationPin();
       await redisClient.set(
-        `Auth_${token}`,
+        `Auth_${pin}`,
         newCustomer._id.toString(),
         5 * 60 * 60
       );
 
-      const verifyUrl = `${req.protocol}://${req.get(
-        'host'
-      )}/api/v1/users/verifyEmail/${token}`;
-
       // eslint-disable-next-line operator-linebreak
-      const msg = `<h3>Congratulations! You have successfully created an account with Nairalink. kindly click the below link to verify your email</h3> ${verifyUrl}`;
+      const msg = `<h4>Congratulations! You have successfully created an account with Nairalink. kindly, provide the 6 digit verification pin</h4></br><h1>${pin}</h1>`;
 
       await sendEmail('Confirmation Email', newCustomer.email, msg);
 
