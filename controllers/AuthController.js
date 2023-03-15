@@ -26,14 +26,13 @@ class AuthController {
       });
 
       const pin = generateVerificationPin();
-      await redisClient.set(
-        `Auth_${pin}`,
-        newCustomer._id.toString(),
-        5 * 60 * 60
-      );
+      await redisClient.set(`Auth_${pin}`, newCustomer._id.toString(), 3600);
 
       // eslint-disable-next-line operator-linebreak
-      const msg = `<h4>Congratulations! You have successfully created an account with Nairalink. kindly, provide the 6 digit verification pin</h4></br><h1>${pin}</h1>`;
+      const msg = `<h4>Congratulations! You have successfully created an account with Nairalink. kindly, provide the 6 digit verification pin</h4></br><h1>${pin
+        .toString()
+        .split('')
+        .join(' ')}</h1>`;
 
       await sendEmail('Confirmation Email', newCustomer.email, msg);
 
