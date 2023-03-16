@@ -21,9 +21,14 @@
     "bcryptjs": "^2.4.3",
     "bullmq": "^3.10.1",
     "chai-http": "^4.3.0",
+    "cookie-parser": "^1.4.6",
     "crypto": "^1.0.1",
     "dotenv": "^16.0.3",
     "express": "^4.17.1",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^6.7.0",
+    "helmet": "^6.0.1",
+    "hpp": "^0.2.3",
     "husky": "^8.0.3",
     "jsonwebtoken": "^9.0.0",
     "mailslurp-client": "^15.17.0",
@@ -35,7 +40,8 @@
     "release-it": "^15.8.0",
     "sha1": "^1.1.1",
     "uuid": "^9.0.0",
-    "validator": "^13.9.0"
+    "validator": "^13.9.0",
+    "xss-clean": "^0.1.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.0",
