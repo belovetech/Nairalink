@@ -1,20 +1,20 @@
 const Customer = require('../models/customerModel');
+const AppError = require('../helpers/AppError');
+const formatResponse = require('../helpers/formatResponse');
 
 class CustomerController {
-  static async postCustomer(req, res) {
-    const { email, password } = req.body;
+  static async getCustomer(req, res, next) {
+    const { id } = req.params || req.currentUser.id;
 
-    const newCustomer = await Customer.create({
-      email,
-      password,
-    });
+    try {
+      const customer = await Customer.findById({ _id: id });
+      if (!customer) return next(new AppError('Customer not found', 404));
 
-    const data = {
-      id: newCustomer._id,
-      email,
-    };
-
-    return res.status(200).json(data);
+      return res.status(200).json({ customer: formatResponse(customer) });
+    } catch (err) {
+      console.log(err);
+      return next(err);
+    }
   }
 }
 

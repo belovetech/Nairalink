@@ -8,6 +8,6 @@ router.get('/stats', AppController.getStats);
 router.get('/status', AppController.getStatus);
 
 // Customers
-router.route('/').post(CustomerController.postCustomer);
+router.get('/:id', CustomerController.getCustomer);
 
 module.exports = router;
