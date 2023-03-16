@@ -13,6 +13,7 @@ const handleValidationError = require('../helpers/handleValidationError');
 const sendEmail = require('../helpers/sendEmail');
 const verificationToken = require('../helpers/verificationToken');
 const redisClient = require('../db/redis');
+const generateToken = require('../helpers/generateToken');
 
 class AuthController {
   static async signup(req, res, next) {
@@ -73,7 +74,7 @@ class AuthController {
       if (!customer) {
         res.status(400).json({ error: 'Invalid login credentials' });
       }
-      const token = AuthController.generateToken(customer._id.toString());
+      const token = generateToken(customer._id.toString());
       await redisClient.set(`auth_${token}`, customer._id.toString(), 60 * 60);
       res.cookie('token', token, {
         maxAge: 60 * 60,
