@@ -207,9 +207,7 @@ class AuthController {
         return next(new AppError('Invalid request. Please provide token', 400));
       }
       if (!newPassword || newPassword.length < 8) {
-        return res
-          .status(400)
-          .json({ error: 'Kindly, provide a valid password' });
+        return next(new AppError('Kindly, provide a valid password', 400));
       }
       if (!passwordConfirmation) {
         return next(
@@ -219,9 +217,9 @@ class AuthController {
 
       const storedToken = await redisClient.get(id);
       if (!storedToken || storedToken !== token) {
-        return res.status(400).json({
-          error: 'Invalid or expired password reset token.',
-        });
+        return next(
+          new AppError('Invalid or expired password reset token.', 400)
+        );
       }
 
       if (newPassword !== passwordConfirmation) {
@@ -257,23 +255,22 @@ class AuthController {
       const { customerId, currentPassword, newPassword } = req.body;
       // const customerId = req.customer._id Assuming the user ID is stored in
       // the request object after successful authentication
+      const customer = await Customer.findById(new ObjectId(customerId)).select(
+        '+password'
+      );
+      if (!customer) return next(new AppError('Forbidden', 403));
 
       if (!currentPassword || !newPassword) {
-        return res.status(400).json({
-          error: 'current and/or new password missing',
-        });
+        return next(new AppError('current and/or new password missing', 400));
       }
-
-      const customer = await Customer.findById(customerId).select('+password');
-
-      if (!customer) {
-        return res.status(400).json({ error: "user doesn't exist" });
+      if (newPassword.length < 8) {
+        return next(
+          new AppError('Password should be minimum of 8 characters', 400)
+        );
       }
 
       if (customer.password !== sha1(currentPassword)) {
-        return res.status(400).json({
-          error: 'Incorrect current password',
-        });
+        return next(new AppError('Incorrect current password', 400));
       }
 
       await Customer.updateOne(
