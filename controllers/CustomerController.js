@@ -5,7 +5,7 @@ const formatResponse = require('../helpers/formatResponse');
 class CustomerController {
   static async getAllCustomers(req, res, next) {
     try {
-      const customers = await Customer.find({ active: { $ne: false } });
+      const customers = await Customer.find();
       const data = customers.map((customer) => formatResponse(customer));
 
       return res.status(200).json({
