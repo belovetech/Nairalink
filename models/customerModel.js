@@ -74,7 +74,7 @@ const customerSchema = new mongoose.Schema({
 
 // eslint-disable-next-line func-names, consistent-return
 customerSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next();
+  if (!this.isModified('password') || !this.isNew) return next();
 
   this.password = sha1(this.password);
 

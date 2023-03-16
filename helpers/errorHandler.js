@@ -17,10 +17,7 @@ const sendProError = (err, req, res) => {
   if (req.originalUrl.startsWith('/api')) {
     if (err.isOperational) {
       return res.status(err.statusCode).json({
-        error: {
-          status: err.status,
-          message: err.message,
-        },
+        error: err.message,
       });
     }
 

@@ -166,14 +166,14 @@ class AuthController {
         return res.status(400).json({ error: "user doesn't exist" });
       }
 
-      const token = redisClient.get(customer._id);
-      if (token) await redisClient.del(customer._id);
+      const token = redisClient.get(customer._id.toString());
+      if (token) await redisClient.del(customer._id.toString());
 
-      const resetToken = crypto.randomBytes(32).toString('hex');
+      const resetToken = verificationToken();
 
-      await redisClient.set(customer._id, resetToken, 600);
+      await redisClient.set(customer._id.toString(), resetToken, 3600);
 
-      const link = `${process.env.BASE_URL}/resetPassword?token=${resetToken}&id=${customer._id}`;
+      const link = `${process.env.BASE_URL}/resetPassword/${resetToken}?id=${customer._id}`;
       await sendEmail(
         customer.email,
         'Password Reset Request',
@@ -195,14 +195,26 @@ class AuthController {
 
   static async resetPassword(req, res, next) {
     try {
-      const { id, newPassword } = req.body;
-      const { token } = req.params;
+      const { newPassword, passwordConfirmation } = req.body;
+      const token = req.query.token || req.params.token;
+      const { id } = req.query;
 
-      if (!token || !id || !newPassword) {
-        return res.status(400).json({
-          error:
-            'Invalid request. Please provide token, user ID, and new password.',
-        });
+      console.log(id, token, newPassword);
+      if (!id) {
+        return next(new AppError('Something went wrong', 500));
+      }
+      if (!token) {
+        return next(new AppError('Invalid request. Please provide token', 400));
+      }
+      if (!newPassword || newPassword.length < 8) {
+        return res
+          .status(400)
+          .json({ error: 'Kindly, provide a valid password' });
+      }
+      if (!passwordConfirmation) {
+        return next(
+          new AppError('Kindly, provide a confirmation password', 400)
+        );
       }
 
       const storedToken = await redisClient.get(id);
@@ -212,13 +224,17 @@ class AuthController {
         });
       }
 
+      if (newPassword !== passwordConfirmation) {
+        return next(new AppError('Passwords are not the same!', 400));
+      }
+
       await Customer.updateOne(
         { _id: id },
         { $set: { password: sha1(newPassword) } },
         { new: true }
       );
 
-      const customer = await Customer.findById({ _id: id });
+      const customer = await Customer.findOne({ _id: new ObjectId(id) });
       await sendEmail(
         customer.email,
         'Password Reset Successfully',
