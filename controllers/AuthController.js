@@ -122,6 +122,7 @@ class AuthController {
 
   static async verify(req, res, next) {
     const { token } = req.params;
+    console.log(token);
     if (!token) return next(new AppError('Something went wrong!', 500));
 
     const customerId = await redisClient.get(`Auth_${token}`);
