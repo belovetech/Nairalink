@@ -13,6 +13,11 @@ const handleDuplicateFieldsDB = (err) => {
   return new AppError(message, 400);
 };
 
+const handleCastError = (err) => {
+  const message = `Cast to ${err.kind} failed for value >>> ${err.value._id}`;
+  return new AppError(message, 500);
+};
+
 const sendProError = (err, req, res) => {
   if (req.originalUrl.startsWith('/api')) {
     if (err.isOperational) {
@@ -49,10 +54,13 @@ module.exports = (err, req, res, next) => {
     if (err.name === 'ValidationError') {
       err = handleValidationErrorDB(err);
     }
-
     if (err.code === 11000) {
       err = handleDuplicateFieldsDB(err);
     }
+    if (err.name === 'CastError') {
+      err = handleCastError(err);
+    }
+
     sendProError(err, req, res);
   }
 };
