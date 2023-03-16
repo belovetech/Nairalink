@@ -3,14 +3,22 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const sha1 = require('sha1');
 
+function strictString(val) {
+  // eslint-disable-next-line no-restricted-globals
+  if (!isNaN(val)) throw new Error(`${val} should be a string`);
+  return val;
+}
+
 const customerSchema = new mongoose.Schema({
   firstName: {
     type: String,
     required: [true, 'Pls, provide your firstname'],
+    set: strictString,
   },
   lastName: {
     type: String,
     required: [true, 'Pls, provide your lastname'],
+    set: strictString,
   },
   userName: {
     type: String,
