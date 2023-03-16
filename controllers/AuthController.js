@@ -171,7 +171,7 @@ class AuthController {
 
       const resetToken = crypto.randomBytes(32).toString('hex');
 
-      await redisClient.set(customer._id, resetToken, 3600);
+      await redisClient.set(customer._id, resetToken, 600);
 
       const link = `${process.env.BASE_URL}/resetPassword?token=${resetToken}&id=${customer._id}`;
       await sendEmail(
