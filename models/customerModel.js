@@ -21,7 +21,6 @@ const customerSchema = new mongoose.Schema({
   lastName: {
     type: String,
     required: [true, 'Pls, provide your lastname'],
-    set: toStrictString,
   },
   userName: {
     type: String,
