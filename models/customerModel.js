@@ -1,12 +1,22 @@
+/* eslint-disable use-isnan */
 /* eslint-disable func-names */
 const mongoose = require('mongoose');
 const validator = require('validator');
 const sha1 = require('sha1');
 
+function toStrictString(value) {
+  // eslint-disable-next-line no-restricted-globals
+  if (!isNaN(value)) {
+    throw new Error(`${value} should be a string data type`);
+  }
+  return value;
+}
+
 const customerSchema = new mongoose.Schema({
   firstName: {
     type: String,
     required: [true, 'Pls, provide your firstname'],
+    set: toStrictString,
   },
   lastName: {
     type: String,
@@ -15,6 +25,7 @@ const customerSchema = new mongoose.Schema({
   userName: {
     type: String,
     required: [true, 'Pls, provide a username'],
+    set: toStrictString,
   },
   image: String,
   email: {
