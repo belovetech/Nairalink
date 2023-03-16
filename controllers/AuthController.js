@@ -2,7 +2,6 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-unused-vars */
-const crypto = require('crypto');
 const sha1 = require('sha1');
 const jwt = require('jsonwebtoken');
 const { ObjectId } = require('mongodb');
@@ -13,7 +12,7 @@ const handleValidationError = require('../helpers/handleValidationError');
 const sendEmail = require('../helpers/sendEmail');
 const verificationToken = require('../helpers/verificationToken');
 const redisClient = require('../db/redis');
-const generateToken = require('../helpers/generateToken');
+const generateJWToken = require('../helpers/generateJWToken');
 
 class AuthController {
   static async signup(req, res, next) {
@@ -73,7 +72,7 @@ class AuthController {
       if (!customer) {
         return next(new AppError('Invalid login credentials', 400));
       }
-      const token = generateToken(customer._id.toString());
+      const token = generateJWToken(customer._id.toString());
       await redisClient.set(`auth_${token}`, customer._id.toString(), 60 * 60);
       res.cookie('token', token, {
         maxAge: 60 * 60,
@@ -242,28 +241,23 @@ class AuthController {
   }
 
   static async updatePassword(req, res, next) {
+    const { customerId, currentPassword, newPassword } = req.body;
+    // const customerId = req.customer._id Assuming the user ID is stored in
+    // the request object after successful authentication
     try {
-      const { customerId, currentPassword, newPassword } = req.body;
-      // const customerId = req.customer._id Assuming the user ID is stored in
-      // the request object after successful authentication
       const customer = await Customer.findById(new ObjectId(customerId)).select(
         '+password'
       );
       if (!customer) return next(new AppError('Forbidden', 403));
-
       if (!currentPassword || !newPassword) {
         return next(new AppError('current and/or new password missing', 400));
       }
       if (newPassword.length < 8) {
-        return next(
-          new AppError('Password should be minimum of 8 characters', 400)
-        );
+        return next(new AppError('Kindly, provide a valid password', 400));
       }
-
       if (customer.password !== sha1(currentPassword)) {
         return next(new AppError('Incorrect current password', 400));
       }
-
       await Customer.updateOne(
         { _id: customerId },
         { $set: { password: sha1(newPassword) } },

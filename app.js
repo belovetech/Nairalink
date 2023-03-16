@@ -1,7 +1,6 @@
 const express = require('express');
 const CustomerRouter = require('./routes/customerRouter');
 const AuthRouter = require('./routes/authRouter');
-
 const GlobalErrorHandler = require('./helpers/errorHandler');
 const AppError = require('./helpers/AppError');
 
