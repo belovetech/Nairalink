@@ -121,8 +121,7 @@ class AuthController {
   }
 
   static async verify(req, res, next) {
-    const { token } = req.params;
-    console.log(token);
+    const { token } = req.query;
     if (!token) return next(new AppError('Something went wrong!', 500));
 
     const customerId = await redisClient.get(`Auth_${token}`);
@@ -141,13 +140,16 @@ class AuthController {
       await customer.save({ validateBeforeSave: false });
       await redisClient.del(`Auth_${token}`);
 
-      const loginUrl = `${req.protocol}://${req.get('host')}${
-        req.baseUrl
-      }/login`;
-      const msg = `<h4>Your Email has been verified. ${loginUrl} Thank you.<h4>The Nairalink Team.</h4>`;
-
-      await sendEmail('Email Confirmation', customer.email, msg);
-
+      const link = `${process.env.BASE_URL}/login`;
+      await sendEmail(
+        customer.email,
+        'Email Verification successfully',
+        {
+          name: customer.firstName,
+          link,
+        },
+        './template/verifiedEmail.handlebars'
+      );
       return res.status(200).json({ message: 'Verification successful' });
     } catch (err) {
       next(err);
