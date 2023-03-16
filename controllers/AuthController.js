@@ -2,24 +2,20 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-unused-vars */
-// const sendGeneratedToken = require('../helpers/sendGeneratedToken');
+const crypto = require('crypto');
 const sha1 = require('sha1');
 const jwt = require('jsonwebtoken');
 const { ObjectId } = require('mongodb');
 const AppError = require('../helpers/AppError');
 const Customer = require('../models/customerModel');
 const formatResponse = require('../helpers/formatResponse');
-const formatErrorMessage = require('../helpers/formatErrorMessage');
+const handleValidationError = require('../helpers/handleValidationError');
 const sendEmail = require('../helpers/sendEmail');
 const verificationToken = require('../helpers/verificationToken');
 const redisClient = require('../db/redis');
-const sendEmail = require('../helpers/sendEmail')
-const crypto = require('crypto')
 
 class AuthController {
   static async signup(req, res, next) {
-    const errorObj = formatErrorMessage(req.body);
-
     try {
       const newCustomer = await Customer.create({
         firstName: req.body.firstName,
@@ -32,37 +28,30 @@ class AuthController {
 
       const token = verificationToken();
       await redisClient.set(`Auth_${token}`, newCustomer._id.toString(), 300);
-      const verifyUrl = `${req.protocol}://${req.get('host')}${
-        req.baseUrl
-      }/verify/${token}`;
-
-      // eslint-disable-next-line operator-linebreak
-      const msg = `<h4>Congratulations! You have successfully created an account with Nairalink. <h4> Your Email verification token:</h4><b>${verifyUrl}</b><h4>The verification token will be valid for 5 minutes. Please do not share this link with anyone.</h4>Thank you.<h4>The Nairalink Team.</h4>`;
-
-      await sendEmail('Nairalink Email Verification', newCustomer.email, msg);
+      const link = `${process.env.BASE_URL}/verifyEmail?token=${token}&id=${newCustomer._id}`;
+      await sendEmail(
+        newCustomer.email,
+        'Email Verification',
+        {
+          name: newCustomer.firstName,
+          link,
+        },
+        './template/emailVerification.handlebars'
+      );
 
       return res.status(201).json({
         status: 'success',
         data: formatResponse(newCustomer),
       });
     } catch (err) {
-      console.log(err);
-      if (err.code === 11000) {
+      let errorObj;
+      if (err.name === 'ValidationError') {
+        errorObj = handleValidationError(err, req);
+      } else {
         return next(err);
       }
-      if (err.name === 'ValidationError') {
-        let error = err.errors.passwordConfirmation;
-        if (error) errorObj.passwordConfirmation = error.message;
-
-        error = err.errors.email;
-        if (error) errorObj.email = error.message;
-
-        error = err.errors.password;
-        if (error) errorObj.password = error.message;
-      }
-
       return res.status(400).json({
-        error: { status: 400, ...errorObj },
+        error: { ...errorObj },
       });
     }
   }
@@ -70,12 +59,20 @@ class AuthController {
   static async login(req, res, next) {
     const { email, password } = req.body;
     try {
-      if (!email || !password) return res.status(400).json({ error: 'Invalid login credentials' });
+      if (!email || !password) {
+        return res.status(400).json({ error: 'Invalid login credentials' });
+      }
       let customer = await Customer.findOne({ email });
       if (!customer) res.status(404).json({ error: 'Customer not found' });
-      if (customer.isVerified === false) return res.status(400).json({ error: 'Kindly verify your email, and come back to login' });
+      if (customer.isVerified === false) {
+        return res
+          .status(400)
+          .json({ error: 'Kindly verify your email, and come back to login' });
+      }
       customer = await Customer.findOne({ email, password: sha1(password) });
-      if (!customer) res.status(400).json({ error: 'Invalid login credentials' });
+      if (!customer) {
+        res.status(400).json({ error: 'Invalid login credentials' });
+      }
       const token = AuthController.generateToken(customer._id.toString());
       await redisClient.set(`auth_${token}`, customer._id.toString(), 60 * 60);
       res.cookie('token', token, {
@@ -83,7 +80,9 @@ class AuthController {
         httpOnly: true,
         sameSite: 'none',
       });
-      return res.status(200).send({ token, customer: formatResponse(customer) });
+      return res
+        .status(200)
+        .send({ token, customer: formatResponse(customer) });
     } catch (error) {
       next(error);
     }
@@ -92,18 +91,30 @@ class AuthController {
   static async logout(req, res, next) {
     try {
       const { authorization } = req.headers;
-      if (!authorization || !authorization.startsWith('Bearer ')) return res.status(401).json({ error: 'Unauthorised' });
+      if (!authorization || !authorization.startsWith('Bearer ')) {
+        return res.status(401).json({ error: 'Unauthorised' });
+      }
       const token = authorization.split(' ')[1];
-      if (token === undefined) return res.status(401).json({ error: 'Unauthorised' });
+      if (token === undefined) {
+        return res.status(401).json({ error: 'Unauthorised' });
+      }
       const valid = await redisClient.get(`auth_${token}`);
-      if (valid === null) return res.status(403).json({ error: 'Unauthorised' });
+      if (valid === null) {
+        return res.status(403).json({ error: 'Unauthorised' });
+      }
       const user = jwt.verify(token, process.env.JWT_SECRET);
-      if (valid !== user.customerId) return res.status(403).json({ error: 'Forbidden' });
+      if (valid !== user.customerId) {
+        return res.status(403).json({ error: 'Forbidden' });
+      }
       await redisClient.del(`auth_${token}`);
       res.status(200).end();
     } catch (error) {
-      if (error.message === 'invalid signature') return res.status(401).json({ error: 'Unathorised' });
-      if (error.message === 'jwt malformed') return res.status(500).json({ error: 'Server error...' });
+      if (error.message === 'invalid signature') {
+        return res.status(401).json({ error: 'Unathorised' });
+      }
+      if (error.message === 'jwt malformed') {
+        return res.status(500).json({ error: 'Server error...' });
+      }
       console.log(error.message);
       next(error);
     }
@@ -144,113 +155,119 @@ class AuthController {
 
   static async forgetPassword(req, res, next) {
     try {
-      const { email } = req.body
-      const customer = await Customer.findOne({ email })
+      const { email } = req.body;
+      const customer = await Customer.findOne({ email });
 
-      if (!customer) return res.status(400).json({ error: "user doesn't exist" })
+      if (!customer) {
+        return res.status(400).json({ error: "user doesn't exist" });
+      }
 
-      let token = redisClient.get(customer._id)
-      if (token) await redisClient.del(customer._id)
+      const token = redisClient.get(customer._id);
+      if (token) await redisClient.del(customer._id);
 
-      const resetToken = crypto.randomBytes(32).toString('hex')
+      const resetToken = crypto.randomBytes(32).toString('hex');
 
-      await redisClient.set(customer._id, resetToken, 3600)
+      await redisClient.set(customer._id, resetToken, 3600);
 
-      const link = `${process.env.BASE_URL}/resetPassword?token=${resetToken}&id=${customer._id}`
-      await sendEmail(customer.email, 'Password Reset Request', {
-        name: customer.firstName,
-        link: link
-      }, "./template/requestResetPassword.handlebars")
+      const link = `${process.env.BASE_URL}/resetPassword?token=${resetToken}&id=${customer._id}`;
+      await sendEmail(
+        customer.email,
+        'Password Reset Request',
+        {
+          name: customer.firstName,
+          link,
+        },
+        './template/requestResetPassword.handlebars'
+      );
 
       return res.status(200).json({
-        status: "success",
-        message: `password reset link sent to ${customer.email}`
-      })
+        status: 'success',
+        message: `password reset link sent to ${customer.email}`,
+      });
     } catch (err) {
-      return next(err)
+      return next(err);
     }
   }
 
   static async resetPassword(req, res, next) {
     try {
-      const { id, newPassword } = req.body
-      const token = req.params.token
+      const { id, newPassword } = req.body;
+      const { token } = req.params;
 
       if (!token || !id || !newPassword) {
         return res.status(400).json({
           error:
             'Invalid request. Please provide token, user ID, and new password.',
-        })
+        });
       }
 
-      const storedToken = await redisClient.get(id)
+      const storedToken = await redisClient.get(id);
       if (!storedToken || storedToken !== token) {
         return res.status(400).json({
           error: 'Invalid or expired password reset token.',
-        })
+        });
       }
 
       await Customer.updateOne(
         { _id: id },
         { $set: { password: sha1(newPassword) } },
-        { new: true },
-      )
+        { new: true }
+      );
 
-      const customer = await Customer.findById({ _id: id })
+      const customer = await Customer.findById({ _id: id });
       await sendEmail(
         customer.email,
         'Password Reset Successfully',
         { name: customer.firstName },
-        '../helpers/template/resetPassword.handlebars',
-      )
-      await redisClient.del(id)
+        '../helpers/template/resetPassword.handlebars'
+      );
+      await redisClient.del(id);
 
       return res.status(200).json({
         status: 'success',
         message: 'Password reset successfully.',
-      })
+      });
     } catch (err) {
-      return next(err)
+      return next(err);
     }
   }
 
   static async updatePassword(req, res, next) {
     try {
-      const { customerId, currentPassword, newPassword } = req.body
+      const { customerId, currentPassword, newPassword } = req.body;
       // const customerId = req.customer._id Assuming the user ID is stored in
       // the request object after successful authentication
 
       if (!currentPassword || !newPassword) {
         return res.status(400).json({
           error: 'current and/or new password missing',
-        })
+        });
       }
 
-      const customer = await Customer.findById(customerId).select('+password')
+      const customer = await Customer.findById(customerId).select('+password');
 
-      if (!customer)
-        return res.status(400).json({
-          error: "user doesn't exist",
-        })
+      if (!customer) {
+        return res.status(400).json({ error: "user doesn't exist" });
+      }
 
-      if (customer.password != sha1(currentPassword)) {
+      if (customer.password !== sha1(currentPassword)) {
         return res.status(400).json({
           error: 'Incorrect current password',
-        })
+        });
       }
 
       await Customer.updateOne(
         { _id: customerId },
         { $set: { password: sha1(newPassword) } },
-        { new: true },
-      )
+        { new: true }
+      );
 
       return res.status(200).json({
         status: 'success',
         message: 'password update successful',
-      })
+      });
     } catch (err) {
-      return next(err)
+      return next(err);
     }
   }
 }
