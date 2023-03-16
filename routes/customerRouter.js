@@ -11,6 +11,7 @@ router.get('/status', AppController.getStatus);
 router
   .route('/:id')
   .get(CustomerController.getCustomer)
+  .patch(CustomerController.updateCustomer)
   .delete(CustomerController.deleteCustomer);
 
 router.route('/').get(CustomerController.getAllCustomers);

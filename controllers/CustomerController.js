@@ -1,3 +1,5 @@
+/* eslint-disable object-curly-newline */
+/* eslint-disable comma-dangle */
 const Customer = require('../models/customerModel');
 const AppError = require('../helpers/AppError');
 const formatResponse = require('../helpers/formatResponse');
@@ -31,6 +33,50 @@ class CustomerController {
       return next(err);
     }
   }
+  // updateCustomer;
+
+  static async updateCustomer(req, res, next) {
+    const { id } = req.params || req.currentUser.id;
+    const { firstName, lastName, userName, password, email } = req.body;
+
+    const customer = Customer.findById({ _id: id });
+    if (!customer) return next(new AppError('Forbidden', 403));
+
+    if (password && password !== null) {
+      return next(
+        new AppError(
+          'Want to update your password? Kindly, use update password route',
+          400
+        )
+      );
+    }
+
+    if (email && email !== null) {
+      return next(
+        new AppError(
+          'Want to update your email? Contact our support center',
+          400
+        )
+      );
+    }
+
+    try {
+      const customer = await Customer.findByIdAndUpdate(
+        { _id: id },
+        {
+          firstName,
+          lastName,
+          userName,
+        }
+      );
+      await customer.save({ validateBeforeSave: false });
+
+      return res.status(200).json({ customer: formatResponse(customer) });
+    } catch (err) {
+      console.log(err);
+      return next(err);
+    }
+  }
 
   static async deleteCustomer(req, res, next) {
     const { id } = req.params || req.currentUser.id;
@@ -48,6 +94,17 @@ class CustomerController {
       console.log(err);
       return next(err);
     }
+  }
+
+  static filterFields(req, res, next) {
+    const allowedFields = ['firstName', 'lastName', 'userName'];
+    // eslint-disable-next-line consistent-return
+    Object.keys(req.body).forEach((el) => {
+      if (!allowedFields.includes(el)) {
+        return next(new AppError(`Invalid fields: ${el}`, 400));
+      }
+    });
+    next();
   }
 }
 
