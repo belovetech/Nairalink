@@ -82,6 +82,11 @@ customerSchema.pre('save', async function (next) {
   next();
 });
 
+customerSchema.pre(/^find/, function (next) {
+  this.find({ active: { $ne: false } });
+  next();
+});
+
 // create index on email and phoneNumber field
 customerSchema.index({ email: 1 }, { unique: true });
 customerSchema.index({ phoneNumber: 1 }, { sparse: true });
