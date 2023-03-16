@@ -45,15 +45,14 @@ class AuthController {
         data: formatResponse(newCustomer),
       });
     } catch (err) {
-      let errorObj;
+      let errors;
       if (err.name === 'ValidationError') {
-        errorObj = handleValidationError(err, req);
-      } else {
-        return next(err);
+        errors = handleValidationError(err, req);
+        return res.status(400).json({
+          error: { ...errors },
+        });
       }
-      return res.status(400).json({
-        error: { ...errorObj },
-      });
+      return next(err);
     }
   }
 
@@ -61,18 +60,18 @@ class AuthController {
     const { email, password } = req.body;
     try {
       if (!email || !password) {
-        return res.status(400).json({ error: 'Invalid login credentials' });
+        return next(new AppError('Invalid login credentials', 400));
       }
       let customer = await Customer.findOne({ email });
-      if (!customer) res.status(404).json({ error: 'Customer not found' });
+      if (!customer) return next(new AppError('Customer not found', 404));
       if (customer.isVerified === false) {
-        return res
-          .status(400)
-          .json({ error: 'Kindly verify your email, and come back to login' });
+        return next(
+          new AppError('Kindly verify your email, and come back to login', 404)
+        );
       }
       customer = await Customer.findOne({ email, password: sha1(password) });
       if (!customer) {
-        res.status(400).json({ error: 'Invalid login credentials' });
+        return next(new AppError('Invalid login credentials', 400));
       }
       const token = generateToken(customer._id.toString());
       await redisClient.set(`auth_${token}`, customer._id.toString(), 60 * 60);
@@ -93,31 +92,30 @@ class AuthController {
     try {
       const { authorization } = req.headers;
       if (!authorization || !authorization.startsWith('Bearer ')) {
-        return res.status(401).json({ error: 'Unauthorised' });
+        return next(new AppError('Unauthorised', 401));
       }
       const token = authorization.split(' ')[1];
       if (token === undefined) {
-        return res.status(401).json({ error: 'Unauthorised' });
+        return next(new AppError('Unauthorised', 401));
       }
       const valid = await redisClient.get(`auth_${token}`);
       if (valid === null) {
-        return res.status(403).json({ error: 'Unauthorised' });
+        return next(new AppError('Forbidden', 403));
       }
       const user = jwt.verify(token, process.env.JWT_SECRET);
       if (valid !== user.customerId) {
-        return res.status(403).json({ error: 'Forbidden' });
+        return next(new AppError('Forbidden', 403));
       }
       await redisClient.del(`auth_${token}`);
       res.status(200).end();
     } catch (error) {
       if (error.message === 'invalid signature') {
-        return res.status(401).json({ error: 'Unathorised' });
+        return next(new AppError('Unauthorised', 401));
       }
       if (error.message === 'jwt malformed') {
-        return res.status(500).json({ error: 'Server error...' });
+        return next(new AppError('Server error...', 500));
       }
-      console.log(error.message);
-      next(error);
+      return next(error);
     }
   }
 
@@ -151,26 +149,24 @@ class AuthController {
         },
         './template/verifiedEmail.handlebars'
       );
-      return res.status(200).json({ message: 'Verification successful' });
+      return res.status(200).json({
+        message: 'Verification successful',
+      });
     } catch (err) {
       next(err);
     }
   }
 
   static async forgetPassword(req, res, next) {
+    const { email } = req.body;
     try {
-      const { email } = req.body;
       const customer = await Customer.findOne({ email });
-
       if (!customer) {
-        return res.status(400).json({ error: "user doesn't exist" });
+        return next(new AppError('Forbidden', 403));
       }
-
       const token = redisClient.get(customer._id.toString());
       if (token) await redisClient.del(customer._id.toString());
-
       const resetToken = verificationToken();
-
       await redisClient.set(customer._id.toString(), resetToken, 3600);
 
       const link = `${process.env.BASE_URL}/resetPassword/${resetToken}?id=${customer._id}`;
@@ -183,7 +179,6 @@ class AuthController {
         },
         './template/requestResetPassword.handlebars'
       );
-
       return res.status(200).json({
         status: 'success',
         message: `password reset link sent to ${customer.email}`,
@@ -214,24 +209,20 @@ class AuthController {
           new AppError('Kindly, provide a confirmation password', 400)
         );
       }
-
       const storedToken = await redisClient.get(id);
       if (!storedToken || storedToken !== token) {
         return next(
           new AppError('Invalid or expired password reset token.', 400)
         );
       }
-
       if (newPassword !== passwordConfirmation) {
         return next(new AppError('Passwords are not the same!', 400));
       }
-
       await Customer.updateOne(
         { _id: id },
         { $set: { password: sha1(newPassword) } },
         { new: true }
       );
-
       const customer = await Customer.findOne({ _id: new ObjectId(id) });
       await sendEmail(
         customer.email,
