@@ -11,12 +11,12 @@ router.get('/status', AppController.getStatus);
 router
   .route('/:id')
   .get(CustomerController.getCustomer)
-  .patch(CustomerController.updateCustomer)
-  .delete(CustomerController.deleteCustomer);
+  .patch(CustomerController.updateCustomer) // only admin
+  .delete(CustomerController.deleteCustomer); // only admin
 
-router.route('/').get(CustomerController.getAllCustomers);
-
-// router.get('/:id', CustomerController.getCustomer);
-// router.delete('/:id', CustomerController.getCustomer);
+router.get('/', CustomerController.getAllCustomers);
+router.get('/getMe', CustomerController.getMe);
+router.patch('/updateMe', CustomerController.updateCustomer);
+router.delete('/deleteMe', CustomerController.deleteCustomer);
 
 module.exports = router;

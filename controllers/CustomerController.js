@@ -1,10 +1,19 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable object-curly-newline */
 /* eslint-disable comma-dangle */
 const Customer = require('../models/customerModel');
 const AppError = require('../helpers/AppError');
 const formatResponse = require('../helpers/formatResponse');
+const filterFields = require('../helpers/filterFields');
 
 class CustomerController {
+  static async createCustomer(req, res, next) {
+    return res.status(500).json({
+      message:
+        'This route is  not defined. Kindly, use /signup to create account',
+    });
+  }
+
   static async getAllCustomers(req, res, next) {
     try {
       const customers = await Customer.find();
@@ -15,34 +24,64 @@ class CustomerController {
         customers: data,
       });
     } catch (err) {
-      console.log(err);
       return next(err);
     }
   }
 
   static async getCustomer(req, res, next) {
-    const { id } = req.params || req.currentUser.id;
-
     try {
-      const customer = await Customer.findById({ _id: id });
-      if (!customer) return next(new AppError('Customer not found', 404));
+      const customer = await Customer.findById(req.params.id);
+      if (!customer) {
+        return next(new AppError('Customer with this ID does not exist', 404));
+      }
 
       return res.status(200).json({ customer: formatResponse(customer) });
     } catch (err) {
-      console.log(err);
       return next(err);
     }
   }
-  // updateCustomer;
 
   static async updateCustomer(req, res, next) {
-    const { id } = req.params || req.currentUser.id;
-    const { firstName, lastName, userName, password, email } = req.body;
+    try {
+      const updatedCustomer = await Customer.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true, runValidators: true }
+      );
 
-    const customer = Customer.findById({ _id: id });
-    if (!customer) return next(new AppError('Forbidden', 403));
+      if (!updatedCustomer) {
+        return next(new AppError('Customer with this ID does not exist', 404));
+      }
 
-    if (password && password !== null) {
+      return res
+        .status(200)
+        .json({ customer: formatResponse(updatedCustomer) });
+    } catch (err) {
+      return next(err);
+    }
+  }
+
+  static async deleteCustomer(req, res, next) {
+    try {
+      const customer = await Customer.findByIdAndUpdate(req.params.id);
+
+      if (!customer) {
+        return next(new AppError('Customer with this ID does not exist', 404));
+      }
+
+      return res.status(204).end({ status: 'success' });
+    } catch (err) {
+      return next(err);
+    }
+  }
+
+  static async getMe(req, res, next) {
+    req.params.id = req.headers.customer.id || req.customer.id;
+    next();
+  }
+
+  static async updateMe(req, res, next) {
+    if (req.body.password || req.body.passwordConfirmation) {
       return next(
         new AppError(
           'Want to update your password? Kindly, use update password route',
@@ -51,7 +90,7 @@ class CustomerController {
       );
     }
 
-    if (email && email !== null) {
+    if (req.body.email) {
       return next(
         new AppError(
           'Want to update your email? Contact our support center',
@@ -61,50 +100,42 @@ class CustomerController {
     }
 
     try {
+      const filterredFields = filterFields(req.body, [
+        'firstName',
+        'lastName',
+        'userName',
+      ]);
+      const updatedCustomer = await Customer.findByIdAndUpdate(
+        req.headers.customer.id || req.customer.id,
+        filterredFields,
+        { new: true, runValidators: true }
+      );
+
+      return res
+        .status(200)
+        .json({ customer: formatResponse(updatedCustomer) });
+    } catch (err) {
+      return next(err);
+    }
+  }
+
+  static async deleteMe(req, res, next) {
+    try {
       const customer = await Customer.findByIdAndUpdate(
-        { _id: id },
+        req.headers.customer._id || req.customer._id,
         {
-          firstName,
-          lastName,
-          userName,
+          active: false,
         }
       );
-      await customer.save({ validateBeforeSave: false });
 
-      return res.status(200).json({ customer: formatResponse(customer) });
-    } catch (err) {
-      console.log(err);
-      return next(err);
-    }
-  }
-
-  static async deleteCustomer(req, res, next) {
-    const { id } = req.params || req.currentUser.id;
-
-    try {
-      if (!id) return next(new AppError('Unauthourized', 404));
-
-      const customer = await Customer.findById({ _id: id });
-      if (!customer) return next(new AppError('Customer not found', 404));
-
-      await Customer.findByIdAndUpdate({ _id: id }, { active: false });
-
-      return res.status(204).json();
-    } catch (err) {
-      console.log(err);
-      return next(err);
-    }
-  }
-
-  static filterFields(req, res, next) {
-    const allowedFields = ['firstName', 'lastName', 'userName'];
-    // eslint-disable-next-line consistent-return
-    Object.keys(req.body).forEach((el) => {
-      if (!allowedFields.includes(el)) {
-        return next(new AppError(`Invalid fields: ${el}`, 400));
+      if (!customer) {
+        return next(new AppError('Forbidden', 403));
       }
-    });
-    next();
+
+      return res.status(204).end({ status: 'success' });
+    } catch (err) {
+      return next(err);
+    }
   }
 }
 
