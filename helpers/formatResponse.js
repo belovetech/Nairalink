@@ -5,6 +5,7 @@ const formatResponse = (object) => {
     lastName: object.lastName,
     userName: object.userName,
     email: object.email,
+    phoneNumber: object.phoneNumber,
   };
   return customer;
 };

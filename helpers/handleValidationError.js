@@ -3,7 +3,7 @@ const formatErrorMessage = (requestBody) => {
   const fieldNames = [
     'firstName',
     'lastName',
-    'userName',
+    'phoneNumber',
     'email',
     'password',
     'passwordConfirmation',
@@ -24,6 +24,7 @@ const handleValidationError = (err, req) => {
   if (errors.firstName) errorObj.firstName = 'firstName should be string';
   if (errors.lastName) errorObj.lastName = 'lastName should be string';
   if (errors.email) errorObj.email = errors.email.message;
+  if (errors.phoneNumber) errorObj.phoneNumber = errors.phoneNumber.message;
   if (errors.password) errorObj.password = errors.password.message;
   if (errors.passwordConfirmation) {
     errorObj.passwordConfirmation = errors.passwordConfirmation.message;
