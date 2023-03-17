@@ -15,6 +15,8 @@ router
   .delete(CustomerController.deleteCustomer); // only admin
 
 router.get('/', CustomerController.getAllCustomers);
+router.post('/createCustomer', CustomerController.createCustomer);
+
 router.get('/getMe', CustomerController.getMe);
 router.patch('/updateMe', CustomerController.updateCustomer);
 router.delete('/deleteMe', CustomerController.deleteCustomer);
