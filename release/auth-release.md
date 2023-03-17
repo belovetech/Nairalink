@@ -1,4 +1,4 @@
-# How CHANGELOG is setup for this project
+# How CHANGELOG is setup for the auth project
 
 ## Installing dependencies
 
