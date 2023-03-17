@@ -17,7 +17,7 @@ router
 router.get('/', CustomerController.getAllCustomers);
 router.post('/createCustomer', CustomerController.createCustomer);
 
-router.get('/getMe', CustomerController.getMe);
+router.get('/getMe', CustomerController.getMe, CustomerController.getCustomer);
 router.patch('/updateMe', CustomerController.updateCustomer);
 router.delete('/deleteMe', CustomerController.deleteCustomer);
 
