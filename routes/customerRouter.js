@@ -14,8 +14,10 @@ router
   .patch(CustomerController.updateCustomer) // only admin
   .delete(CustomerController.deleteCustomer); // only admin
 
-router.get('/', CustomerController.getAllCustomers);
-router.post('/createCustomer', CustomerController.createCustomer);
+router
+  .route('/')
+  .post(CustomerController.createCustomer)
+  .get(CustomerController.getAllCustomers);
 
 router.get('/getMe', CustomerController.getMe, CustomerController.getCustomer);
 router.patch('/updateMe', CustomerController.updateCustomer);
