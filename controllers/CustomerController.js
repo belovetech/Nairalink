@@ -63,7 +63,7 @@ class CustomerController {
 
   static async deleteCustomer(req, res, next) {
     try {
-      const customer = await Customer.findByIdAndUpdate(req.params.id);
+      const customer = await Customer.findByIdAndDelete(req.params.id);
 
       if (!customer) {
         return next(new AppError('Customer with this ID does not exist', 404));
