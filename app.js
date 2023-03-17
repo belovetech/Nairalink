@@ -31,7 +31,7 @@ const limiter = rateLimit({
 app.use('/api', limiter);
 
 // ROUTER MIDDLEWARE
-app.use('/api/v1/customers', AuthRouter);
+app.use('/api/v1/auth', AuthRouter);
 app.use('/api/v1/customers', CustomerRouter);
 
 // GLOBAL ERROR HANDLER
