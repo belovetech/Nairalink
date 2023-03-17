@@ -7,10 +7,12 @@ const morgan = require('morgan');
 const mongoSanitizer = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
-const CustomerRouter = require('./routes/customerRouter');
-const AuthRouter = require('./routes/authRouter');
 const GlobalErrorHandler = require('./helpers/errorHandler');
 const AppError = require('./helpers/AppError');
+
+const CustomerRouter = require('./routes/customerRouter');
+const AuthRouter = require('./routes/authRouter');
+const verificationRouter = require('./routes/verificationRouter');
 
 const app = express();
 
@@ -32,6 +34,7 @@ app.use('/api', limiter);
 
 // ROUTER MIDDLEWARE
 app.use('/api/v1/auth', AuthRouter);
+app.use('/api/v1/verify', verificationRouter);
 app.use('/api/v1/customers', CustomerRouter);
 
 // GLOBAL ERROR HANDLER

@@ -10,9 +10,11 @@ const Customer = require('../models/customerModel');
 const formatResponse = require('../helpers/formatResponse');
 const handleValidationError = require('../helpers/handleValidationError');
 const sendEmail = require('../helpers/sendEmail');
-const verificationToken = require('../helpers/verificationToken');
 const redisClient = require('../db/redis');
 const generateJWToken = require('../helpers/generateJWToken');
+const sendPin = require('../helpers/sendPin');
+const verificationPin = require('../helpers/verificationPin');
+const verificationToken = require('../helpers/verificationToken');
 
 class AuthController {
   static async signup(req, res, next) {
@@ -20,23 +22,18 @@ class AuthController {
       const newCustomer = await Customer.create({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
-        userName: req.body.userName,
         email: req.body.email,
+        phoneNumber: req.body.phoneNumber,
         password: req.body.password,
         passwordConfirmation: req.body.passwordConfirmation,
       });
 
-      const token = verificationToken();
-      await redisClient.set(`Auth_${token}`, newCustomer._id.toString(), 300);
-      const link = `${process.env.BASE_URL}/verifyEmail?token=${token}&id=${newCustomer._id}`;
-      await sendEmail(
-        newCustomer.email,
-        'Email Verification',
-        {
-          name: newCustomer.firstName,
-          link,
-        },
-        './template/emailVerification.handlebars'
+      const pin = verificationPin();
+      sendPin(newCustomer.phoneNumber, pin).catch((err) => console.log(err));
+      await redisClient.set(
+        `VerifyPin_${pin}`,
+        newCustomer.phoneNumber.toString(),
+        300
       );
 
       return res.status(201).json({
@@ -115,44 +112,6 @@ class AuthController {
         return next(new AppError('Server error...', 500));
       }
       return next(error);
-    }
-  }
-
-  static async verify(req, res, next) {
-    const { token } = req.query;
-    if (!token) return next(new AppError('Something went wrong!', 500));
-
-    const customerId = await redisClient.get(`Auth_${token}`);
-    if (!customerId) return next(new AppError('Token has expired', 404));
-
-    try {
-      const customer = await Customer.findOne({
-        _id: new ObjectId(customerId),
-      });
-      if (!customer) return next(new AppError('Forbidden', 403));
-
-      await Customer.findOneAndUpdate(
-        { email: customer.email },
-        { isVerified: true }
-      );
-      await customer.save({ validateBeforeSave: false });
-      await redisClient.del(`Auth_${token}`);
-
-      const link = `${process.env.BASE_URL}/login`;
-      await sendEmail(
-        customer.email,
-        'Email Verification successfully',
-        {
-          name: customer.firstName,
-          link,
-        },
-        './template/verifiedEmail.handlebars'
-      );
-      return res.status(200).json({
-        message: 'Verification successful',
-      });
-    } catch (err) {
-      next(err);
     }
   }
 

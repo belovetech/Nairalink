@@ -20,10 +20,7 @@ const customerSchema = new mongoose.Schema({
     required: [true, 'Pls, provide your lastname'],
     set: strictString,
   },
-  userName: {
-    type: String,
-    required: [true, 'Pls, provide a username'],
-  },
+  userName: String,
   image: String,
   email: {
     type: String,
@@ -36,7 +33,15 @@ const customerSchema = new mongoose.Schema({
   phoneNumber: {
     type: String,
     unique: true,
-    sparse: true,
+    required: [true, 'Kindly provide your phone number'],
+    validate: {
+      validator(el) {
+        return (
+          Number(el) > 999999999 && Number(el) < 9999999999 && el[0] === '0'
+        );
+      },
+      message: 'Invalid phone number',
+    },
   },
   password: {
     type: String,
