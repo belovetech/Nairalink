@@ -84,12 +84,17 @@ class VerificationController {
           new AppError('Customer with that email does not exist', 404)
         );
       }
-      const verifiedCustomeer = await Customer.findOneAndUpdate(
+      const verifiedCustomer = await Customer.findOneAndUpdate(
         { phoneNumber: customerNumber },
         { phoneVerified: true, emailVerified: true, isVerified: true },
         { new: true, runValidators: true }
       );
-      await verifiedCustomeer.save({ validateBeforeSave: false });
+      if (!verifiedCustomer) {
+        return next(
+          new AppError('Customer with that email does not exist', 404)
+        );
+      }
+      await verifiedCustomer.save({ validateBeforeSave: false });
       await redisClient.del(`phoneNumber_${phoneToken}`);
       await redisClient.del(`Email_${emailToken}`);
 
