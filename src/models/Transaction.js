@@ -17,7 +17,7 @@ module.exports = sequelize.define('transactions', {
     allowNull: false,
     references: {
       model: 'accounts',
-      key: 'accountNumber'
+      key: 'accountNumber',
     },
     set(value) {
       if (this.transactionType === 'fund') {
@@ -25,14 +25,14 @@ module.exports = sequelize.define('transactions', {
       } else {
         this.setDataValue('fromAccount', value);
       }
-    }
+    },
   },
   toAccount: {
     type: DataTypes.BIGINT(10),
     allowNull: false,
     references: {
       model: 'accounts',
-      key: 'accountNumber'
+      key: 'accountNumber',
     },
     set(value) {
       if (this.transactionType === 'withdraw') {
@@ -40,30 +40,30 @@ module.exports = sequelize.define('transactions', {
       } else {
         this.setDataValue('fromAccount', value);
       }
-    }
+    },
   },
   amount: {
     type: DataTypes.DECIMAL(12, 2).UNSIGNED,
     allowNull: false,
     validate: (value) => {
-      if (parseInt(value) <= 0) {
-        throw('Amount should be more than 0.00');
+      if (parseInt(value, 10) <= 0) {
+        throw new Error('Amount should be more than 0.00');
       }
-    }
+    },
   },
   transactionDescription: {
     type: DataTypes.STRING(100),
   },
   transactionStatus: {
     type: DataTypes.ENUM(['successful', 'pending', 'failed']),
-    allowNull: false
+    allowNull: false,
   },
   createdAt: {
     type: DataTypes.DATE,
-    defaultValue: new Date()
+    defaultValue: new Date(),
   },
   updatedAt: {
     type: DataTypes.DATE,
-    defaultValue: new Date()
-  }
+    defaultValue: new Date(),
+  },
 });
