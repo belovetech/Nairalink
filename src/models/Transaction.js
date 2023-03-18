@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
 
-export default sequelize.define('transaction', {
+module.exports = sequelize.define('transactions', {
   transactionId: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
@@ -16,7 +16,7 @@ export default sequelize.define('transaction', {
     type: DataTypes.BIGINT(10),
     allowNull: false,
     references: {
-      model: 'Account',
+      model: 'accounts',
       key: 'accountNumber'
     },
     set(value) {
@@ -31,12 +31,12 @@ export default sequelize.define('transaction', {
     type: DataTypes.BIGINT(10),
     allowNull: false,
     references: {
-      model: 'Account',
+      model: 'accounts',
       key: 'accountNumber'
     },
     set(value) {
       if (this.transactionType === 'withdraw') {
-        this.setDataValue('fromAccount', 0000000000);
+        this.setDataValue('fromAccount', 7777777777);
       } else {
         this.setDataValue('fromAccount', value);
       }
@@ -57,8 +57,13 @@ export default sequelize.define('transaction', {
   transactionStatus: {
     type: DataTypes.ENUM(['successful', 'pending', 'failed']),
     allowNull: false
+  },
+  createdAt: {
+    type: DataTypes.DATE,
+    defaultValue: new Date()
+  },
+  updatedAt: {
+    type: DataTypes.DATE,
+    defaultValue: new Date()
   }
-}, {
-  freezeTableName: true,
-  timestamps: true
 });

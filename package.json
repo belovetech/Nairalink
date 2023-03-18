@@ -5,9 +5,12 @@
   "main": "index.js",
   "scripts": {
     "commit": "cz",
+    "lint": "./node_modules/.bin/eslint",
+    "check-lint": "lint [0-9]*.js",
+    "dev": "nodemon --exec babel-node --presets @babel/preset-env",
     "prepare": "husky install",
     "release": "standard-version",
-    "start-server": "nodemon ./server.js"
+    "start-server": "nodemon --exec babel-node --presets @babel/preset-env ./src/server.js"
   },
   "keywords": [],
   "author": "",
@@ -16,14 +19,25 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "mysql2": "^3.2.0",
-    "sequelize": "^6.29.1"
+    "sequelize": "^6.29.3",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.8.0",
+    "@babel/core": "^7.8.0",
+    "@babel/node": "^7.8.0",
+    "@babel/preset-env": "^7.8.2",
+    "@babel/register": "^7.8.0",
     "@commitlint/cli": "^17.4.4",
     "@commitlint/config-conventional": "^17.4.4",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^22.17.0",
     "husky": "^8.0.3",
+    "nodemon": "^2.0.21",
+    "sequelize-cli": "^6.6.0",
     "standard-version": "^9.5.0"
   },
   "config": {
