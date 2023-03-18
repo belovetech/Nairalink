@@ -44,11 +44,10 @@ class CustomerController {
   static async updateCustomer(req, res, next) {
     try {
       const updatedCustomer = await Customer.findByIdAndUpdate(
-        req.params.id,
+        { _id: req.params.id },
         req.body,
         { new: true, runValidators: true }
       );
-
       if (!updatedCustomer) {
         return next(new AppError('Customer with this ID does not exist', 404));
       }
@@ -76,7 +75,7 @@ class CustomerController {
   }
 
   static async getMe(req, res, next) {
-    req.params.id = req.headers.customer.id || req.customer.id;
+    req.params.id = req.user._id;
     next();
   }
 
@@ -106,7 +105,7 @@ class CustomerController {
         'userName',
       ]);
       const updatedCustomer = await Customer.findByIdAndUpdate(
-        req.headers.customer.id || req.customer.id,
+        req.headers.user._id || req.user._id,
         filterredFields,
         { new: true, runValidators: true }
       );
@@ -121,12 +120,9 @@ class CustomerController {
 
   static async deleteMe(req, res, next) {
     try {
-      const customer = await Customer.findByIdAndUpdate(
-        req.headers.customer._id || req.customer._id,
-        {
-          active: false,
-        }
-      );
+      const customer = await Customer.findByIdAndUpdate(req.user._id, {
+        active: false,
+      });
 
       if (!customer) {
         return next(new AppError('Forbidden', 403));

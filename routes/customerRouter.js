@@ -1,4 +1,5 @@
 const express = require('express');
+const AuthController = require('../controllers/AuthController');
 const CustomerController = require('../controllers/CustomerController');
 const AppController = require('../controllers/AppController');
 
@@ -19,8 +20,10 @@ router
   .patch(CustomerController.updateCustomer) // only admin
   .delete(CustomerController.deleteCustomer); // only admin
 
+// Protect all routes after this middleware
+router.use(AuthController.protect);
 router.get('/getMe', CustomerController.getMe, CustomerController.getCustomer);
-router.patch('/updateMe', CustomerController.updateCustomer);
-router.delete('/deleteMe', CustomerController.deleteCustomer);
+router.patch('/updateMe', CustomerController.updateMe);
+router.delete('/deleteMe', CustomerController.deleteMe);
 
 module.exports = router;
