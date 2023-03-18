@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 /* eslint-disable comma-dangle */
 /* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
@@ -29,7 +30,7 @@ class AuthController {
       });
 
       let token = verificationPin();
-      sendPin(newCustomer.phoneNumber, token).catch((err) => console.log(err));
+      sendPin(newCustomer.phoneNumber, token);
       await redisClient.set(
         `phoneNumber_${token}`,
         newCustomer.phoneNumber.toString(),
@@ -71,10 +72,15 @@ class AuthController {
         return next(new AppError('Invalid login credentials', 400));
       }
       let customer = await Customer.findOne({ email });
-      if (!customer) return next(new AppError('Customer not found', 404));
+      if (!customer) {
+        return next(new AppError('Customer not found', 404));
+      }
       if (customer.isVerified === false) {
         return next(
-          new AppError('Kindly verify your email, and come back to login', 404)
+          new AppError(
+            'Kindly verify your email, using /verify/token route',
+            404
+          )
         );
       }
       customer = await Customer.findOne({ email, password: sha1(password) });
@@ -127,19 +133,68 @@ class AuthController {
     }
   }
 
+  static async protect(req, res, next) {
+    let token;
+    const { authorization } = req.headers;
+    if (authorization || authorization.startsWith('Bearer ')) {
+      token = authorization.split(' ')[1];
+    } else if (req.cookies.jwt) {
+      token = req.cookies.jwt;
+    }
+    if (!token) {
+      return next(new AppError('Unauthorised', 401));
+    }
+    try {
+      const valid = await redisClient.get(`auth_${token}`);
+      if (valid === null) {
+        return next(new AppError('Forbidden', 403));
+      }
+
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const CurrentCustomer = await Customer.findOne({
+        _id: decoded.customerId,
+      });
+      if (!CurrentCustomer) {
+        return next(new AppError('Unauthorised', 401));
+      }
+      if (CurrentCustomer.passwordChangeAfter(decoded.iat)) {
+        return next(
+          new AppError('Password recently changed. Kindly login again!', 401)
+        );
+      }
+      req.user = CurrentCustomer;
+      req.headers.user = CurrentCustomer;
+      next();
+    } catch (error) {
+      if (error.message === 'invalid signature') {
+        return next(new AppError('Unauthorised', 401));
+      }
+      if (error.message === 'jwt malformed') {
+        return next(new AppError('Server error...', 500));
+      }
+      return next(error);
+    }
+  }
+
   static async forgetPassword(req, res, next) {
     const { email } = req.body;
     try {
       const customer = await Customer.findOne({ email });
       if (!customer) {
-        return next(new AppError('Forbidden', 403));
+        return next(
+          new AppError('Customer with that email does not exist', 404)
+        );
       }
-      const token = redisClient.get(customer._id.toString());
-      if (token) await redisClient.del(customer._id.toString());
+      const token = redisClient.get(`Reset_${customer._id.toString()}`);
+      if (token) await redisClient.del(`Reset_${customer._id.toString()}`);
       const resetToken = verificationToken();
-      await redisClient.set(customer._id.toString(), resetToken, 3600);
+      await redisClient.set(
+        `Reset_${customer._id.toString()}`,
+        resetToken,
+        3600
+      );
 
-      const link = `${process.env.BASE_URL}/resetPassword/${resetToken}?id=${customer._id}`;
+      const link = `${process.env.BASE_URL}/confirmResetPassword?token=${resetToken}&id=${customer._id}`;
       await sendEmail(
         customer.email,
         'Password Reset Request',
@@ -158,19 +213,30 @@ class AuthController {
     }
   }
 
-  static async resetPassword(req, res, next) {
+  static async ConfirmResetPasswordUrl(req, res, next) {
     try {
-      const { newPassword, passwordConfirmation } = req.body;
-      const token = req.query.token || req.params.token;
-      const { id } = req.query;
-
-      console.log(id, token, newPassword);
+      const { token, id } = req.query;
       if (!id) {
         return next(new AppError('Something went wrong', 500));
       }
       if (!token) {
         return next(new AppError('Invalid request. Please provide token', 400));
       }
+      return res.status(200).json({
+        status: 'success',
+        id,
+        token,
+        message: 'Redirect to /resetpassword/:token to provide new password',
+      });
+    } catch (err) {
+      return next(err);
+    }
+  }
+
+  static async resetPassword(req, res, next) {
+    try {
+      const { newPassword, passwordConfirmation } = req.body;
+
       if (!newPassword || newPassword.length < 8) {
         return next(new AppError('Kindly, provide a valid password', 400));
       }
@@ -179,8 +245,10 @@ class AuthController {
           new AppError('Kindly, provide a confirmation password', 400)
         );
       }
-      const storedToken = await redisClient.get(id);
-      if (!storedToken || storedToken !== token) {
+      const storedToken = await redisClient.get(
+        `Reset_${req.query.id.toString()}`
+      );
+      if (!storedToken) {
         return next(
           new AppError('Invalid or expired password reset token.', 400)
         );
@@ -189,18 +257,20 @@ class AuthController {
         return next(new AppError('Passwords are not the same!', 400));
       }
       await Customer.updateOne(
-        { _id: id },
+        { _id: req.query.id },
         { $set: { password: sha1(newPassword) } },
         { new: true }
       );
-      const customer = await Customer.findOne({ _id: new ObjectId(id) });
+      const customer = await Customer.findOne({
+        _id: new ObjectId(req.query.id),
+      });
       await sendEmail(
         customer.email,
         'Password Reset Successfully',
         { name: customer.firstName },
         '../helpers/template/resetPassword.handlebars'
       );
-      await redisClient.del(id);
+      await redisClient.del(req.query.id.toString());
 
       return res.status(200).json({
         status: 'success',
@@ -212,13 +282,12 @@ class AuthController {
   }
 
   static async updatePassword(req, res, next) {
-    const { customerId, currentPassword, newPassword } = req.body;
-    // const customerId = req.customer._id Assuming the user ID is stored in
-    // the request object after successful authentication
+    const { currentPassword, newPassword, newPasswordConfirmation } = req.body;
     try {
-      const customer = await Customer.findById(new ObjectId(customerId)).select(
-        '+password'
-      );
+      const customer = await Customer.findById(
+        new ObjectId(req.user._id)
+      ).select('+password');
+
       if (!customer) return next(new AppError('Forbidden', 403));
       if (!currentPassword || !newPassword) {
         return next(new AppError('current and/or new password missing', 400));
@@ -229,11 +298,10 @@ class AuthController {
       if (customer.password !== sha1(currentPassword)) {
         return next(new AppError('Incorrect current password', 400));
       }
-      await Customer.updateOne(
-        { _id: customerId },
-        { $set: { password: sha1(newPassword) } },
-        { new: true }
-      );
+
+      customer.password = newPassword;
+      customer.passwordConfirmation = newPasswordConfirmation;
+      await customer.save();
 
       return res.status(200).json({
         status: 'success',

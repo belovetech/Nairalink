@@ -84,10 +84,11 @@ const customerSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  passwordChangedAt: Date,
 });
 
 customerSchema.pre('save', async function (next) {
-  if (!this.isModified('password') || !this.isNew) return next();
+  if (!this.isModified('password')) return next();
 
   this.password = sha1(this.password);
 
@@ -95,10 +96,25 @@ customerSchema.pre('save', async function (next) {
   next();
 });
 
+customerSchema.pre('save', function (next) {
+  if (!this.isModified('password') || this.isNew) return next();
+  this.passwordChangedAt = Date.now() - 1000;
+  next();
+});
+
 customerSchema.pre(/^find/, function (next) {
   this.find({ active: { $ne: false } });
   next();
 });
+
+customerSchema.methods.passwordChangeAfter = function (JWTTimeStamp) {
+  let changeTimeStamp;
+  if (this.passwordChangedAt) {
+    // convert to milliseconds
+    changeTimeStamp = parseInt(this.passwordChangedAt.getTime() / 1000, 10);
+  }
+  return JWTTimeStamp < changeTimeStamp;
+};
 
 // create index on email and phoneNumber field
 customerSchema.index({ email: 1 }, { unique: true });
