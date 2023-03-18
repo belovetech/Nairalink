@@ -28,12 +28,24 @@ class AuthController {
         passwordConfirmation: req.body.passwordConfirmation,
       });
 
-      const pin = verificationPin();
-      sendPin(newCustomer.phoneNumber, pin).catch((err) => console.log(err));
+      let token = verificationPin();
+      sendPin(newCustomer.phoneNumber, token).catch((err) => console.log(err));
       await redisClient.set(
-        `VerifyPin_${pin}`,
+        `phoneNumber_${token}`,
         newCustomer.phoneNumber.toString(),
         300
+      );
+
+      token = verificationPin();
+      await redisClient.set(`Email_${token}`, newCustomer._id.toString(), 300);
+      await sendEmail(
+        newCustomer.email,
+        'Email Verification',
+        {
+          name: newCustomer.firstName,
+          token,
+        },
+        './template/pinVerification.handlebars'
       );
 
       return res.status(201).json({

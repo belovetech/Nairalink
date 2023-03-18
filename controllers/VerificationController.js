@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable comma-dangle */
-const sha1 = require('sha1');
 const { ObjectId } = require('mongodb');
 const AppError = require('../helpers/AppError');
 const Customer = require('../models/customerModel');
@@ -8,45 +7,102 @@ const sendEmail = require('../helpers/sendEmail');
 const redisClient = require('../db/redis');
 const sendPin = require('../helpers/sendPin');
 const verificationPin = require('../helpers/verificationPin');
-const verificationToken = require('../helpers/verificationToken');
+const isValidPhoneNumber = require('../helpers/isvalidPhoneNumber');
 
 class VerificationController {
-  static async getPhoneNumberVerificationToken(req, res, next) {
-    const { phoneNumber } = req.body;
+  static async sendverificationToken(req, res, next) {
+    try {
+      const { phoneNumber, email } = req.body;
 
-    const pin = verificationPin();
-    sendPin(phoneNumber, pin).catch((err) => console.log(err));
-    await redisClient.set(`phoneNumber_${pin}`, phoneNumber.toString(), 300);
+      if (!phoneNumber) {
+        return next(new AppError('Provide a valid phone number', 400));
+      }
+      if (!email) {
+        return next(new AppError('Provide a valid email', 400));
+      }
+      if (!isValidPhoneNumber(phoneNumber)) {
+        return next(new AppError('Invalid phone number', 400));
+      }
+      const customer = await Customer.findOne({ email });
+      if (!customer) {
+        return next(new AppError('Invalid email', 400));
+      }
 
-    return res.status(200).json({ message: 'Verification token sent' });
+      let token = verificationPin();
+      sendPin(phoneNumber, token).catch((err) => console.log(err));
+      await redisClient.set(
+        `phoneNumber_${token}`,
+        phoneNumber.toString(),
+        600
+      );
+
+      token = verificationPin();
+      await redisClient.set(`Email_${token}`, customer._id.toString(), 300);
+      await sendEmail(
+        customer.email,
+        'Email Verification',
+        {
+          name: customer.firstName,
+          token,
+        },
+        './template/pinVerification.handlebars'
+      );
+
+      return res.status(200).json({ message: 'Verification token sent' });
+    } catch (err) {
+      return next(err);
+    }
   }
 
-  static async verifyPhoneNumber(req, res, next) {
-    const pin = req.body.pin || req.body.verificationPin;
-
-    if (!pin) {
-      return next(
-        new AppError('Provide verification pin sent to your number', 400)
-      );
-    }
-
-    const customerNumber = await redisClient.get(`phoneNumber_${pin}`);
-    if (!customerNumber) {
-      return next(
-        new AppError(
-          'Verification has expired. Kindly request for another one',
-          400
-        )
-      );
-    }
+  static async verifyVerificationToken(req, res, next) {
+    const { phoneToken, emailToken } = req.body;
 
     try {
-      await Customer.findOneAndUpdate(
+      if (phoneToken.length !== 6) {
+        return next(
+          new AppError('Invalid phone number verification Token.', 400)
+        );
+      }
+
+      if (emailToken.length !== 6) {
+        return next(new AppError('Invalid email verification Token.', 400));
+      }
+
+      const customerNumber = await redisClient.get(`phoneNumber_${phoneToken}`);
+      const customerId = await redisClient.get(`Email_${emailToken}`);
+      if (!customerNumber || !customerId) {
+        return next(
+          new AppError('Verification token has expired or incorrect.', 400)
+        );
+      }
+
+      const customer = await Customer.findOne({
+        _id: new ObjectId(customerId),
+      });
+      if (!customer) {
+        return next(
+          new AppError('Customer with that email does not exist', 404)
+        );
+      }
+      const verifiedCustomeer = await Customer.findOneAndUpdate(
         { phoneNumber: customerNumber },
-        { isVerified: true },
-        { new: true }
+        { phoneVerified: true, emailVerified: true, isVerified: true },
+        { new: true, runValidators: true }
       );
-      await redisClient.del(`phoneNumber_${pin}`);
+      await verifiedCustomeer.save({ validateBeforeSave: false });
+      await redisClient.del(`phoneNumber_${phoneToken}`);
+      await redisClient.del(`Email_${emailToken}`);
+
+      const link = `${req.protocol}://${req.baseUrl}/login`;
+      await sendEmail(
+        customer.email,
+        'Verification successfully',
+        {
+          name: customer.firstName,
+          link,
+        },
+        './template/verifiedEmail.handlebars'
+      );
 
       return res.status(200).json({
         message: 'Verification successful',
@@ -56,35 +112,115 @@ class VerificationController {
     }
   }
 
-  static async getEmailVerificationToken(req, res, next) {
-    const token = verificationToken();
-    const currentCustomer = req.customer || req.headers.customer;
+  static async sendPhoneNumberVerificationToken(req, res, next) {
+    try {
+      const { phoneNumber } = req.body;
 
-    await redisClient.set(
-      `Email_${token}`,
-      currentCustomer._id.toString(),
-      300
-    );
-    const link = `${process.env.BASE_URL}/verifyEmail?token=${token}&id=${currentCustomer._id}`;
-    await sendEmail(
-      currentCustomer.email,
-      'Email Verification',
-      {
-        name: currentCustomer.firstName,
-        link,
-      },
-      './template/emailVerification.handlebars'
-    );
-    return res.status(200).json({ message: 'Email Verification token sent' });
+      if (!phoneNumber) {
+        return next(new AppError('Provide a valid phone number', 400));
+      }
+      if (!isValidPhoneNumber(phoneNumber)) {
+        return next(new AppError('Invalid phone number', 400));
+      }
+
+      const pin = verificationPin();
+      sendPin(phoneNumber, pin).catch((err) => console.log(err));
+      await redisClient.set(`phoneNumber_${pin}`, phoneNumber.toString(), 300);
+
+      return res.status(200).json({ message: 'Verification token sent' });
+    } catch (err) {
+      return next(err);
+    }
+  }
+
+  static async verifyPhoneNumber(req, res, next) {
+    const { phoneToken } = req.body;
+
+    if (!phoneToken) {
+      return next(
+        new AppError('Provide verification token sent to your number', 400)
+      );
+    }
+
+    if (phoneToken.length !== 6) {
+      return next(new AppError('Invalid PhoneNumber verification token.', 400));
+    }
+
+    const customerNumber = await redisClient.get(`phoneNumber_${phoneToken}`);
+    if (!customerNumber) {
+      return next(
+        new AppError('PhoneNumber Verification token has expired.', 400)
+      );
+    }
+
+    try {
+      const customer = await Customer.findOneAndUpdate(
+        { phoneNumber: customerNumber },
+        { phoneVerified: true },
+        { new: true }
+      );
+
+      if (customer.emailVerified === true) {
+        await Customer.findOneAndUpdate(
+          { phoneNumber: customerNumber },
+          { isVerified: true },
+          { new: true }
+        );
+      }
+      await redisClient.del(`phoneNumber_${phoneToken}`);
+
+      return res.status(200).json({
+        message: 'Verification successful',
+      });
+    } catch (err) {
+      return next(err);
+    }
+  }
+
+  static async sendEmailVerificationToken(req, res, next) {
+    try {
+      const { email } = req.body || req.customer;
+      if (!email) {
+        return next(new AppError('Provide a valid email', 400));
+      }
+
+      const customer = await Customer.findOne({ email });
+      if (!customer) {
+        return next(new AppError('Customer with that email not found', 404));
+      }
+
+      const token = verificationPin();
+      await redisClient.set(`Email_${token}`, customer._id.toString(), 300);
+      await sendEmail(
+        customer.email,
+        'Email Verification',
+        {
+          name: customer.firstName,
+          token,
+        },
+        './template/pinVerification.handlebars'
+      );
+      return res.status(200).json({ message: 'Email Verification token sent' });
+    } catch (err) {
+      return next(err);
+    }
   }
 
   static async verifyEmailToken(req, res, next) {
-    const { token } = req.query;
-    if (!token) return next(new AppError('Something went wrong!', 500));
+    const { emailToken } = req.body;
+    if (!emailToken) {
+      return next(
+        new AppError('Provide verification token sent to your email', 400)
+      );
+    }
 
-    const customerId = await redisClient.get(`Email_${token}`);
-    if (!customerId) return next(new AppError('Email Token has expired', 404));
-
+    if (emailToken.length !== 6) {
+      return next(new AppError('Invalid email verification Token.', 400));
+    }
+    const customerId = await redisClient.get(`Email_${emailToken}`);
+    if (!customerId) {
+      return next(new AppError('Email verification Token has expired', 404));
+    }
     try {
       const customer = await Customer.findOne({
         _id: new ObjectId(customerId),
@@ -93,10 +229,19 @@ class VerificationController {
 
       await Customer.findOneAndUpdate(
         { email: customer.email },
-        { isVerified: true }
+        { emailVerified: true }
       );
+
+      if (customer.phoneVerified === true) {
+        await Customer.findOneAndUpdate(
+          { email: customer.email },
+          { isVerified: true },
+          { new: true }
+        );
+      }
+
       await customer.save({ validateBeforeSave: false });
-      await redisClient.del(`Auth_${token}`);
+      await redisClient.del(`Email_${emailToken}`);
 
       const link = `${process.env.BASE_URL}/login`;
       await sendEmail(

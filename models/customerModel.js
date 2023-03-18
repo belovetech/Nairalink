@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable func-names */
 const mongoose = require('mongoose');
 const validator = require('validator');
@@ -71,19 +72,36 @@ const customerSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+  phoneVerified: {
+    type: Boolean,
+    default: false,
+  },
+  emailVerified: {
+    type: Boolean,
+    default: false,
+  },
   isVerified: {
     type: Boolean,
     default: false,
   },
 });
 
-// eslint-disable-next-line func-names, consistent-return
 customerSchema.pre('save', async function (next) {
   if (!this.isModified('password') || !this.isNew) return next();
 
   this.password = sha1(this.password);
 
   this.passwordConfirmation = undefined;
+  next();
+});
+
+customerSchema.pre('save', async function (next) {
+  if (!this.isModified('phoneVerified') || !this.isNew) return next();
+  if (!this.isModified('emailVerified') || !this.isNew) return next();
+
+  if (this.phoneVerified === true && this.emailVerified === true) {
+    this.isVerified = true;
+  }
   next();
 });
 
