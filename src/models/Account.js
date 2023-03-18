@@ -1,11 +1,11 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
 
-export default sequelize.define('acccount', {
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
+module.exports = sequelize.define('accounts', {
+  userId: {
+    type: DataTypes.STRING,
     allowNull: false,
+    primaryKey: true,
     unique: true
   },
   accountType: {
@@ -70,16 +70,24 @@ export default sequelize.define('acccount', {
   },
   balance: {
     type: DataTypes.DECIMAL(12, 2),
-    defaultValue: 0.00,
+    defaultValue: Number(0).toFixed(2),
     allowNull: false,
+    set(value) {
+      this.setDataValue('balance', value.toFixed(2))
+    },
     validate: {
       is: {
         args: /^[0-9]*\.[0-9]{2}$/i,
         msg: 'Balance should have a scale of 2'
       }
     }
+  },
+  createdAt: {
+    type: DataTypes.DATE,
+    defaultValue: new Date()
+  },
+  updatedAt: {
+    type: DataTypes.DATE,
+    defaultValue: new Date()
   }
-}, {
-  freezeTableName: true,
-  timestamps: true
 });

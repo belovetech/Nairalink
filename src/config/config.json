@@ -1,7 +1,7 @@
 {
   "development": {
-    "username": "nairalink",
-    "password": "Nairalink",
+    "username": "root",
+    "password": "",
     "database": "nairalink",
     "host": "127.0.0.1",
     "dialect": "mysql"

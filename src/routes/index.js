@@ -1,12 +1,13 @@
-const express = require('express');
-const TransactionController = require('../controllers/TransactionController');
+import { Router } from 'express';
+import createAccount from '../controllers/createAccount';
 
-const router = express.Router();
+const router = Router();
 
-router.post('/transactions', TransactionController.postTransaction);
-router.get('/transactions', TransactionController.getTransactions);
+router.post('/accounts', createAccount);
+// router.post('/transactions', TransactionController.postTransaction);
+// router.get('/transactions', TransactionController.getTransactions);
 
-router.post('/customers', TransactionController.postCustomer);
-router.get('/customers', TransactionController.getCustomers);
+// router.post('/customers', TransactionController.postCustomer);
+// router.get('/customers', TransactionController.getCustomers);
 
-module.exports = router;
+export default router;

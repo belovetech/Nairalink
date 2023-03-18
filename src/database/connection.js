@@ -1,16 +1,17 @@
-const Sequelize = require('sequelize');
+import path from 'path';
+import Sequelize from 'sequelize';
+import { config } from 'dotenv';
 
-const dotenv = require('dotenv');
-dotenv.config({ path: './config/.config.env' });
+config({ path: path.join(__dirname, '/../config/.config.env') });
 
 const sequelize = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,
   process.env.DB_PASS,
   {
-    host: process.env.HOST,
+    host: process.env.HOST || 'localhost',
     dialect: 'mysql',
   }
 );
-module.exports = sequelize;
-global.sequelize = sequelize;
+export default sequelize;
+// global.sequelize = sequelize;
