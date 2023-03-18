@@ -22,7 +22,7 @@ async function sendPin(phoneNumber, pin) {
     });
 
     await queue.add('send-phoneVerification', job);
-    console.info(`Enqueued an email sending to ${job.to}`);
+    console.info(`Enqueued a verification token sending to ${job.to}`);
     return job;
   } catch (err) {
     console.log(err);
