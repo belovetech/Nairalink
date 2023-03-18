@@ -123,6 +123,13 @@ class VerificationController {
         return next(new AppError('Invalid phone number', 400));
       }
 
+      const customer = await Customer.findOne({ phoneNumber });
+      if (!customer) {
+        return next(
+          new AppError('Customer with that phone number does not exist', 404)
+        );
+      }
+
       const pin = verificationPin();
       sendPin(phoneNumber, pin).catch((err) => console.log(err));
       await redisClient.set(`phoneNumber_${pin}`, phoneNumber.toString(), 300);
@@ -186,7 +193,9 @@ class VerificationController {
 
       const customer = await Customer.findOne({ email });
       if (!customer) {
-        return next(new AppError('Customer with that email not found', 404));
+        return next(
+          new AppError('Customer with that email does not exist', 404)
+        );
       }
 
       const token = verificationPin();
