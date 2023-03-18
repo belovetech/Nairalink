@@ -95,16 +95,6 @@ customerSchema.pre('save', async function (next) {
   next();
 });
 
-customerSchema.pre('save', async function (next) {
-  if (!this.isModified('phoneVerified') || !this.isNew) return next();
-  if (!this.isModified('emailVerified') || !this.isNew) return next();
-
-  if (this.phoneVerified === true && this.emailVerified === true) {
-    this.isVerified = true;
-  }
-  next();
-});
-
 customerSchema.pre(/^find/, function (next) {
   this.find({ active: { $ne: false } });
   next();
