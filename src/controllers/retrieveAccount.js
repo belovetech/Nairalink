@@ -1,5 +1,5 @@
 /**
- * Creates an account for a registered customer
+ * Retrieves an account for a registered customer
  */
 const Account = require('../models/Account')
 
