@@ -38,6 +38,11 @@ module.exports = async (req, res, next) => {
         message: 'Insufficient funds to make this transaction. Top up!',
       });
     }
+    if (debitAccount.accountNumber === creditAccountNumber) {
+      return res.status(403).json({
+        message: 'You cannot transfer fund to yourself',
+      });
+    }
     // Generate the transaction reference
     transact = await Transaction.create(
       {

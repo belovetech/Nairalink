@@ -7,12 +7,11 @@ import getTransaction from '../controllers/getTransaction';
 const router = Router();
 
 router.post('/accounts', createAccount);
-router.post('/transaction/transfer', transfer);
-router.delete('/accounts/:id', deleteAccount);
+router.post('/transactions/transfer', transfer);
 router.get('/transactions', getTransaction);
+router.delete('/accounts/:id', deleteAccount);
 
 // router.post('/transactions', TransactionController.postTransaction);
-
 // router.post('/customers', TransactionController.postCustomer);
 // router.get('/customers', TransactionController.getCustomers);
 
