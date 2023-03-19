@@ -1,14 +1,13 @@
 /**
  * Creates an account for a registered customer
  */
-import { v4 as uuidv4 } from 'uuid'
 const Account = require('../models/Account')
 
 module.exports = async (req, res, next) => {
   try {
-    const { id } = req.params
+    const { userId } = req.params
 
-    const account = await Account.findOne({ userId: id })
+    const account = await Account.findOne({ userId })
 
     if (!account) {
       return res.status(404).json({ message: 'Account not found' })
