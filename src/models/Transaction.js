@@ -1,3 +1,4 @@
+/* eslint-disable comma-dangle */
 import { DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
 
@@ -36,9 +37,9 @@ module.exports = sequelize.define('transactions', {
     },
     set(value) {
       if (this.transactionType === 'withdraw') {
-        this.setDataValue('fromAccount', 7777777777);
+        this.setDataValue('toAccount', 7777777777);
       } else {
-        this.setDataValue('fromAccount', value);
+        this.setDataValue('toAccount', value);
       }
     },
   },

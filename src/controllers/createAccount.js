@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+/* eslint-disable object-curly-newline */
 /**
  * Creates an account for a registered customer
  */
