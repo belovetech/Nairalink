@@ -1,0 +1,33 @@
+<html>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .status {
+        font-weight: bold;
+      }
+    </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Transaction Notification</h1>
+      <p>Hello {{firstName}},</p>
+      <p>Your recent transaction with reference {{reference}} has been processed.</p>
+      <p>The transaction status is: <span class="status">{{status}}</span></p>
+      <p>Transaction details:</p>
+    <ul>
+      <li>Amount: {{currency}} {{amount}}</li>
+      <li>Date: {{date}}</li>
+    </ul>
+      <p>If you have any questions or concerns, please contact our support team.</p>
+      <p>Thank you for using our services!</p>
+  </div>
+</body>
+</html>
