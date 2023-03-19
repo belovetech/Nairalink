@@ -21,9 +21,9 @@ module.exports = async (req, res, next) => {
   }
 
   // PAGINATION
-  const pageSize = parseInt(req.query.limit, 10) || 5;
-  const pageNumber = req.query.page || 1;
-  const skip = (pageNumber - 1) * pageSize;
+  const page = req.query.page * 1 || 1;
+  const limit = req.query.limit * 1 || 10;
+  const skip = (page - 1) * limit;
 
   try {
     const transactions = await Transaction.findAll({
@@ -31,7 +31,7 @@ module.exports = async (req, res, next) => {
       attributes: { exclude: ['updatedAt'] },
       order: [[sortBy, 'DESC']],
       offset: skip,
-      limit: pageSize,
+      limit,
     });
     return res.status(200).json({
       results: transactions.length,
