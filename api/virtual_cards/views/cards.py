@@ -47,7 +47,7 @@ def get_all_cards():
 def get_card_details(card_id):
     """Get a card registered to a user by card id"""
     try:
-        card = db.find_card_by(id=card_id)
+        card_details = db.find_card_by(id=card_id)
         return jsonify({'card_details': card_details})
     except ValueError as err:
         return jsonify({'error': 'Could not find card with id:{}'.format(card_id)})
