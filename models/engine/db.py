@@ -79,7 +79,11 @@ class DB:
 
         if not card:
             raise NoResultFound
-        return card
+        card_details = {}
+        for key, value in card.__dict__.items():
+            card_details[key] = str(value)
+            #Fix '_sa_instance_state' key later
+        return card_details
 
     def update_card(self, card_id: int, **kwargs) -> None:
         """Update card details based on card ID"""
