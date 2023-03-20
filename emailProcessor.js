@@ -10,9 +10,8 @@ const client = mailgun.client({ username: 'api', key: API_KEY });
 module.exports = async (job) => {
   try {
     const messageData = job.data;
-    return client.messages.create(DOMAIN, messageData);
-    // console.log(res);
-    // return res;
+    const res = await client.messages.create(DOMAIN, messageData);
+    return res;
   } catch (error) {
     console.log(`ERROR: ${error}`);
     return error;

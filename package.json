@@ -5,7 +5,8 @@
   "main": "service.js",
   "scripts": {
     "start": "node --trace-warnings service.js",
-    "test": "node job.js"
+    "test-email": "node emailJob.js",
+    "test-phone": "node phoneJob.js"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +14,7 @@
   "dependencies": {
     "bullmq": "^3.10.1",
     "dotenv": "^16.0.3",
-    "mailgun.js": "^8.2.1"
+    "mailgun.js": "^8.2.1",
+    "twilio": "^4.8.0"
   }
 }
