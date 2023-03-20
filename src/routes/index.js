@@ -1,18 +1,18 @@
 import { Router } from 'express';
-import createAccount from '../controllers/createAccount';
-import deleteAccount from '../controllers/deleteAccount';
 import transfer from '../controllers/Transfer';
 import getTransaction from '../controllers/getTransaction';
 
+import AccountController from '../controllers/AccountController';
+
 const router = Router();
 
-router.post('/accounts', createAccount);
+router.post('/accounts', AccountController.createAccount);
+router.get('/accounts', AccountController.getAccounts);
+router.get('/accounts/:userId', AccountController.getAccount);
+router.delete('/accounts/:userId', AccountController.deleteAccount);
+
 router.post('/transactions/transfer', transfer);
 router.get('/transactions', getTransaction);
-router.delete('/accounts/:id', deleteAccount);
+// router.delete('/accounts/:userId', deleteAccount);
 
-// router.post('/transactions', TransactionController.postTransaction);
-// router.post('/customers', TransactionController.postCustomer);
-// router.get('/customers', TransactionController.getCustomers);
-
-export default router;
+module.exports = router;
