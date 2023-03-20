@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """The Database module"""
 from os import getenv
-import random
+from helpers.cardDetails import generateCardNumber, generateCVV
+from helpers.cardDates import setExpiryDate
 from datetime import datetime
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
@@ -41,20 +42,17 @@ class DB:
             self.__session = DBSession()
         return self.__session
 
-    def create_card(self, acct_id: int, brand: str, currency: str, name: str, pin: int) -> Card:
+    def create_card(self, customer_id: int, brand: str, currency: str, name: str, pin: int) -> Card:
         """Add a new card to the database"""
-        card_number = str(random.randint(1, 100000000000000000))#Build a better generator later
+        card_number = generateCardNumber()
         date_created = datetime.utcnow()
         date_updated = date_created
-        status = "inactive" #default value
-        balance = "30000.00" #subject to change
-        cvv = random.randint(0, 3) #Build a better generator later
-        expiry_date = datetime.utcnow() #Build a function to set expiry date based on date_created
-        card = Card(account_id=acct_id, card_brand=brand, card_currency=currency,
+        cvv = generateCVV()
+        expiry_date = setExpiryDate()
+        card = Card(customer_id=cust_id, card_brand=brand, card_currency=currency,
                     name_on_card=name, pin=pin,
                     date_created=date_created, date_updated=date_updated,
-                    status=status, cvv=cvv, card_number=card_number, expiry_date=expiry_date,
-                    balance=balance)
+                    cvv=cvv, card_number=card_number, expiry_date=expiry_date)
         self._session.add(card)
         self._session.commit()
         return card
@@ -97,7 +95,7 @@ class DB:
 
 
     def all_cards(self) -> List[Card]:
-        """Returns all cards"""
+        """Returns all cards registered to a user"""
         objs = []
         cards = self._session.query(Card).all()
         for card in cards:
