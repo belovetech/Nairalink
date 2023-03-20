@@ -47,7 +47,7 @@ def get_all_cards():
 def get_card_details(card_id):
     """Get a card registered to a user by card id"""
     try:
-        card_details = db.find_card_by(id=card_id)
+        card_details = db.find_card_id(card_id)
         return jsonify({'card_details': card_details})
     except ValueError as err:
         return jsonify({'error': 'Could not find card with id:{}'.format(card_id)})
@@ -56,8 +56,6 @@ def get_card_details(card_id):
 def update_card_status(card_id, status=""):
     """Updates the status of a virtual card"""
     data = request.get_json()
-    if 'card_id' in data:
-        card_id = data['card_id']
     if 'status' in data:
         status = data['status']
     else:
