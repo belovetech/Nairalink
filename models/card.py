@@ -2,7 +2,7 @@
 """Model for Card
 """
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, DateTime, Integer, String, ForeignKey
+from sqlalchemy import Column, DateTime, Integer, String
 from datetime import datetime
 Base = declarative_base()
 
@@ -12,12 +12,12 @@ class Card(Base):
     """
     __tablename__ = "cards"
     id = Column(Integer, primary_key=True, autoincrement=True)
-    account_id = Column(Integer, nullable=False) #ForeignKey("accounts.id"))
+    customer_id = Column(Integer, nullable=False)
     name_on_card = Column(String(255), nullable=False)
     card_brand = Column(String(15), nullable=False, default="VISA")
     card_currency = Column(String(3), nullable=False, default="NGN")
-    pin = Column(Integer, nullable=False, default=0000)
-    balance = Column(String(13), nullable=True, default='00.00')
+    pin = Column(Integer, nullable=False)
+    balance = Column(Integer, nullable=True, default='00.00')
     date_created = Column(DateTime, default=datetime.utcnow)
     date_updated = Column(DateTime, default=datetime.utcnow)
     card_number = Column(String(255), nullable=True)
