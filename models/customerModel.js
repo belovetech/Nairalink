@@ -84,6 +84,14 @@ const customerSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  role: {
+    type: String,
+    enum: {
+      values: ['user', 'admin'],
+      message: 'A user type can either be: user or admin',
+    },
+    default: 'user',
+  },
   passwordChangedAt: Date,
 });
 

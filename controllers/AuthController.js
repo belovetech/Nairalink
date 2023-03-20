@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable comma-dangle */
 /* eslint-disable consistent-return */
@@ -162,8 +163,8 @@ class AuthController {
           new AppError('Password recently changed. Kindly login again!', 401)
         );
       }
-      req.user = CurrentCustomer;
-      req.headers.user = CurrentCustomer;
+      req.user = formatResponse(CurrentCustomer);
+      req.headers.user = formatResponse(CurrentCustomer);
       next();
     } catch (error) {
       if (error.message === 'invalid signature') {
@@ -285,7 +286,7 @@ class AuthController {
     const { currentPassword, newPassword, newPasswordConfirmation } = req.body;
     try {
       const customer = await Customer.findById(
-        new ObjectId(req.user._id)
+        new ObjectId(req.user.id)
       ).select('+password');
 
       if (!customer) return next(new AppError('Forbidden', 403));

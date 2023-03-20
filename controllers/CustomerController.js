@@ -75,7 +75,7 @@ class CustomerController {
   }
 
   static async getMe(req, res, next) {
-    req.params.id = req.user._id;
+    req.params.id = req.user.id;
     next();
   }
 
@@ -105,7 +105,7 @@ class CustomerController {
         'userName',
       ]);
       const updatedCustomer = await Customer.findByIdAndUpdate(
-        req.headers.user._id || req.user._id,
+        req.headers.user.id || req.user.id,
         filterredFields,
         { new: true, runValidators: true }
       );
@@ -120,7 +120,7 @@ class CustomerController {
 
   static async deleteMe(req, res, next) {
     try {
-      const customer = await Customer.findByIdAndUpdate(req.user._id, {
+      const customer = await Customer.findByIdAndUpdate(req.user.id, {
         active: false,
       });
 
