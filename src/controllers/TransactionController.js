@@ -40,7 +40,7 @@ class TransactionController {
         });
       }
       if (debitAccount.accountNumber === creditAccountNumber) {
-        return res.status(403).json({
+        return res.status(400).json({
           message: 'You cannot transfer fund to yourself',
         });
       }
