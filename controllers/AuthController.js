@@ -11,10 +11,10 @@ const AppError = require('../helpers/AppError');
 const Customer = require('../models/customerModel');
 const formatResponse = require('../helpers/formatResponse');
 const handleValidationError = require('../helpers/handleValidationError');
-const sendEmail = require('../helpers/sendEmail');
+const sendEmailRegistrationPin = require('../helpers/sendEmailRegistrationPin');
+const sendPhoneRegistrationPin = require('../helpers/sendPhoneRegistrationPin');
 const redisClient = require('../db/redis');
 const generateJWToken = require('../helpers/generateJWToken');
-const sendPin = require('../helpers/sendPin');
 const verificationPin = require('../helpers/verificationPin');
 const verificationToken = require('../helpers/verificationToken');
 
@@ -31,7 +31,7 @@ class AuthController {
       });
 
       let token = verificationPin();
-      sendPin(newCustomer.phoneNumber, token);
+      sendPhoneRegistrationPin(newCustomer.phoneNumber, token);
       await redisClient.set(
         `phoneNumber_${token}`,
         newCustomer.phoneNumber.toString(),
@@ -40,7 +40,7 @@ class AuthController {
 
       token = verificationPin();
       await redisClient.set(`Email_${token}`, newCustomer._id.toString(), 300);
-      await sendEmail(
+      await sendEmailRegistrationPin(
         newCustomer.email,
         'Email Verification',
         {
@@ -196,7 +196,7 @@ class AuthController {
       );
 
       const link = `${process.env.BASE_URL}/confirmResetPassword?token=${resetToken}&id=${customer._id}`;
-      await sendEmail(
+      await sendEmailRegistrationPin(
         customer.email,
         'Password Reset Request',
         {
@@ -265,7 +265,7 @@ class AuthController {
       const customer = await Customer.findOne({
         _id: new ObjectId(req.query.id),
       });
-      await sendEmail(
+      await sendEmailRegistrationPin(
         customer.email,
         'Password Reset Successfully',
         { name: customer.firstName },

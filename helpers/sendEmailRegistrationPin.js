@@ -2,13 +2,13 @@
 const handlebars = require('handlebars');
 const fs = require('fs');
 const path = require('path');
-const { Queue } = require('bullmq');
+const { NotificationClient } = require('./notification');
 
-const queue = new Queue('mailer', {
-  connection: { host: 'localhost', port: 6379 },
-});
+const sendEmailRegistrationPin = async (email, subject, payload, template) => {
+  const notification = new NotificationClient({
+    connection: { host: 'localhost', port: 6379 },
+  });
 
-const sendEmail = async (email, subject, payload, template) => {
   const source = fs.readFileSync(path.join(__dirname, template), 'utf8');
   const compiledTemplate = handlebars.compile(source);
   const job = {
@@ -18,8 +18,9 @@ const sendEmail = async (email, subject, payload, template) => {
     html: compiledTemplate(payload),
   };
 
-  await queue.add('send-simple', job);
+  await notification.enqueue('email-message', job);
   console.info(`Enqueued an email sending to ${job.to}`);
+  notification.close();
 };
 
-module.exports = sendEmail;
+module.exports = sendEmailRegistrationPin;
