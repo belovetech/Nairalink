@@ -1,87 +1,108 @@
-const Transaction = require('../models/Transaction');
-const Customer = require('../models/Customer');
-
-// module.exports = async () => {
-//   Customer.hasMany(Transaction, {
-//     as: 'Transactions',
-//     foreignKey: 'customerId',
-//   });
-//   Transaction.belongsTo(Customer, {
-//     as: 'Customer',
-//     foreignKey: 'customerId',
-//   });
-
-//   const errHandler = (err) => {
-//     console.log(`ERROR: ${err}`);
-//   };
-
-//   const customer = await Customer.create({ username: 'Beloved' }).catch(
-//     errHandler
-//   );
-
-//   const transaction = await Transaction.create({
-//     balance: 10000,
-//     customerId: customer.id,
-//   }).catch(errHandler);
-
-//   const customers = await Customer.findAll({
-//     where: { username: 'Beloved' },
-//     include: [{ model: Transaction, as: 'Transactions' }],
-//   });
-
-//   console.log('Customers: ', json.stringify(customers));
-// };
+/* eslint-disable no-unused-vars */
+/* eslint-disable object-curly-newline */
+/* eslint-disable comma-dangle */
+/**
+ * Transfers from one account to another in Nairalink
+ */
+import { v4 as uuidv4 } from 'uuid';
+import sequelize from '../database/connection';
+import Account from '../models/Account';
+import Transaction from '../models/Transaction';
+import ApiFeatures from '../utils/ApiFeatures';
 
 class TransactionController {
-  static async postTransaction(req, res) {
-    const { balance, customerId } = req.body;
-
-    if (!balance || !customerId) {
-      return res.status(400).json({ error: 'Bad request' });
+  static async transfer(req, res) {
+    // Get the request body
+    let transact;
+    const { userId, creditAccountNumber, amount, description } = req.body;
+    const t = await sequelize.transaction();
+    try {
+      const results = await Promise.all([
+        Account.findOne({ where: { userId }, lock: true, transaction: t }),
+        Account.findOne({ where: { accountNumber: creditAccountNumber } }),
+      ]);
+      if (results[0] === null) {
+        return res
+          .status(400)
+          .json({ message: 'User has no account with Nairalink' });
+      }
+      const debitAccount = results[0];
+      if (results[1] === null) {
+        return res.status(400).json({ message: 'Reciever account is invalid' });
+      }
+      if (debitAccount.balance < amount) {
+        return res.status(400).json({
+          message: 'Insufficient funds to make this transaction. Top up!',
+        });
+      }
+      if (debitAccount.accountNumber === creditAccountNumber) {
+        return res.status(403).json({
+          message: 'You cannot transfer fund to yourself',
+        });
+      }
+      // Generate the transaction reference
+      const debit = await Account.decrement(
+        { balance: amount },
+        { where: { accountNumber: debitAccount.accountNumber }, transaction: t }
+      );
+      if (debit[0][1] === 1) {
+        t.commit();
+        transact = await Transaction.create({
+          transactionId: uuidv4(),
+          transactionType: 'transfer',
+          fromAccount: debitAccount.accountNumber,
+          toAccount: creditAccountNumber,
+          amount,
+          transactionStatus: 'pending',
+          transactionDescription: description,
+        });
+        const credit = await Account.increment(
+          { balance: amount },
+          { where: { accountNumber: creditAccountNumber } }
+        );
+        if (credit[0][1] === 1) {
+          await transact.update({ transactionStatus: 'successful' });
+          return res
+            .status(201)
+            .json({ message: 'Transaction was successful' });
+        }
+        throw new Error(
+          `Error encountered while crediting receiver account ${creditAccountNumber}:`
+        );
+      }
+      throw new Error(
+        `Error encountered while debiting sender account ${debitAccount.accountNumber}:`
+      );
+    } catch (error) {
+      console.log(error);
+      t.rollback();
+      if (transact) {
+        await transact.update({ transactionStatus: 'failed' });
+      }
+      return res
+        .status(500)
+        .json({ message: 'Error while processing transaction...' });
     }
-
-    const transaction = await Transaction.create({ balance, customerId }).catch(
-      TransactionController.errHandler
-    );
-
-    return res.status(201).json({
-      id: transaction.id,
-      balance,
-    });
   }
 
-  static async getTransactions(req, res) {
-    const transactions = await Transaction.findAll();
-
-    return res.status(200).json({ data: transactions });
-  }
-
-  static async postCustomer(req, res) {
-    const { username } = req.body;
-    console.log(req.body);
-
-    if (!username) {
-      return res.status(400).json({ error: 'Bad request' });
+  static async getTransactions(req, res, next) {
+    try {
+      const query = new ApiFeatures(req.query);
+      const [skip, limit] = [...query.paginate()];
+      const transactions = await Transaction.findAll({
+        where: query.filter(),
+        attributes: query.fields(),
+        order: [[query.sort(), 'DESC']],
+        offset: skip,
+        limit,
+      });
+      return res.status(200).json({
+        results: transactions.length,
+        transactions,
+      });
+    } catch (err) {
+      return next(err);
     }
-
-    const customer = await Customer.create({ username: 'Beloved' }).catch(
-      TransactionController.errHandler
-    );
-
-    return res.status(201).json({
-      id: customer.id,
-      username,
-    });
-  }
-
-  static async getCustomers(req, res) {
-    const customers = await Customer.findAll();
-
-    return res.status(200).json({ data: customers });
-  }
-
-  static errHandler(err) {
-    console.log(`Error: ${err}`);
   }
 }
 
