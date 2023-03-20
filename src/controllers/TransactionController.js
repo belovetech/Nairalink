@@ -5,6 +5,7 @@
  * Transfers from one account to another in Nairalink
  */
 import { v4 as uuidv4 } from 'uuid';
+import { Op } from 'sequelize';
 import sequelize from '../database/connection';
 import Account from '../models/Account';
 import Transaction from '../models/Transaction';
@@ -102,6 +103,36 @@ class TransactionController {
       });
     } catch (err) {
       return next(err);
+    }
+  }
+
+  static async accountTransaction(req, res, next) {
+    try {
+      const { userId } = req.params;
+      const account = await Account.findByPk(userId);
+      if (!account) {
+        return res.status(404).json({ message: 'Account not found' });
+      }
+      const query = new ApiFeatures(req.query);
+      const [skip, limit] = [...query.paginate()];
+      const transactions = await Transaction.findAll({
+        where: {
+          [Op.or]: [
+            { fromAccount: account.accountNumber },
+            { toAccount: account.accountNumber },
+          ],
+        },
+        order: [[query.sort(), 'DESC']],
+        offset: skip,
+        limit,
+      });
+      return res.status(200).json({
+        results: transactions.length,
+        transactions,
+      });
+    } catch (error) {
+      console.log(error);
+      return next(error);
     }
   }
 }

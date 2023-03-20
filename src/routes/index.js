@@ -13,5 +13,6 @@ router.delete('/accounts/:userId', AccountController.deleteAccount);
 
 router.post('/transactions/transfer', TransacationController.transfer);
 router.get('/transactions', TransacationController.getTransactions);
+router.get('/transactions/:userId', TransacationController.accountTransaction);
 
 export default router;
