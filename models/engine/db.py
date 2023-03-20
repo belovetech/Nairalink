@@ -45,8 +45,8 @@ class DB:
     def create_card(self, customer_id: int, brand: str, currency: str, name: str, pin: int) -> Card:
         """Add a new card to the database"""
         card_number = generateCardNumber()
-        date_created = datetime.utcnow()
-        date_updated = date_created
+        date_created = datetime.now()
+        date_updated = datetime.now()
         cvv = generateCVV()
         expiry_date = setExpiryDate()
         card = Card(customer_id=customer_id, card_brand=brand, card_currency=currency,
@@ -59,8 +59,8 @@ class DB:
 
     def fund_card(self, card_id: int, amount: str, transaction_type: str, narration: str, currency: str, status: str) -> CardTransaction:
         """Attempts to fund a card from a wallet"""
-        datetime_created = datetime.utcnow()
-        datetime_updated = datetime.utcnow()
+        datetime_created = datetime.now()
+        datetime_updated = datetime.now()
         cardTransaction = CardTransaction(card_id=card_id, transaction_type=transaction_type,
                                           amount=amount, currency=currency, status=status,
                                           description=narration, 
@@ -79,6 +79,11 @@ class DB:
 
         if not card:
             raise NoResultFound
+        return card
+
+    def find_card_id(self, card_id: int) -> Card:
+        """Get card details by using card_id"""
+        card = self.find_card_by(id=card_id)
         card_details = {}
         for key, value in card.__dict__.items():
             card_details[key] = str(value)
@@ -94,6 +99,7 @@ class DB:
 
         for key, value in kwargs.items():
             setattr(card, key, value)
+        card.date_updated = datetime.now()
 
         self._session.commit()
 
