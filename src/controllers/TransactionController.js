@@ -10,6 +10,9 @@ import sequelize from '../database/connection';
 import Account from '../models/Account';
 import Transaction from '../models/Transaction';
 import ApiFeatures from '../utils/ApiFeatures';
+import updateTransactionStatus from '../utils/updateTransactionStatus';
+import updateAccountBalance from '../utils/updateAccountBalance';
+import sendEmail from '../utils/sendEmail';
 
 class TransactionController {
   static async transfer(req, res) {
@@ -135,6 +138,32 @@ class TransactionController {
       return next(error);
     }
   }
+
+  static async fundAccount(req, res, next) {
+    try {
+      const { status, message, data } = req.body;
+
+      if (status) {
+        await Promise.all([
+          updateTransactionStatus(data),
+          updateAccountBalance(data),
+          sendEmail(message, data),
+        ]);
+
+        return res.status(200).send({
+          status: 'success',
+          message: 'Transaction updated successfully',
+        });
+      }
+      return res.status(400).send({
+        status: 'failure',
+        message: 'Invalid key',
+      });
+    } catch (error) {
+      console.log(error);
+      return next(error);
+    }
+  }
 }
 
-module.exports = TransactionController;
+export default TransactionController;

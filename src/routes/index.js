@@ -1,6 +1,4 @@
 import { Router } from 'express';
-// import getTransaction from '../controllers/getTransaction';
-
 import AccountController from '../controllers/AccountController';
 import TransacationController from '../controllers/TransactionController';
 
