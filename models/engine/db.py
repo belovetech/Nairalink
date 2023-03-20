@@ -8,7 +8,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
-from flask import Flask
+from flask import Flask, jsonify
 from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -49,7 +49,7 @@ class DB:
         date_updated = date_created
         cvv = generateCVV()
         expiry_date = setExpiryDate()
-        card = Card(customer_id=cust_id, card_brand=brand, card_currency=currency,
+        card = Card(customer_id=customer_id, card_brand=brand, card_currency=currency,
                     name_on_card=name, pin=pin,
                     date_created=date_created, date_updated=date_updated,
                     cvv=cvv, card_number=card_number, expiry_date=expiry_date)
@@ -75,7 +75,7 @@ class DB:
         if not kwargs or not self.valid_query_args(**kwargs):
             raise InvalidRequestError
 
-        card = self._session.query(Card).filter_by(**kwargs)
+        card = self._session.query(Card).filter_by(**kwargs).one_or_none()
 
         if not card:
             raise NoResultFound
@@ -97,7 +97,7 @@ class DB:
     def all_cards(self) -> List[Card]:
         """Returns all cards registered to a user"""
         objs = []
-        cards = self._session.query(Card).all()
+        cards = self._session.query(Card).order_by(Card.customer_id)
         for card in cards:
             obj = card.__dict__.copy()
             if obj['_sa_instance_state']:
@@ -108,7 +108,7 @@ class DB:
     def all_cardTransactions(self) -> List[CardTransaction]:
         """Returns all cards"""
         objs = []
-        cards = self._session.query(CardTransaction).all()
+        cards = self._session.query(CardTransaction).all().order_by(card_id)
         for card in cards:
             obj = card.__dict__.copy()
             if obj['_sa_instance_state']:
