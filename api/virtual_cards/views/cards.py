@@ -48,7 +48,6 @@ def get_card_details(card_id):
     """Get a card registered to a user by card id"""
     try:
         card = db.find_card_by(id=card_id)
-        #Urgent fix later
         return jsonify({'card_details': card_details})
     except ValueError as err:
         return jsonify({'error': 'Could not find card with id:{}'.format(card_id)})
@@ -65,7 +64,7 @@ def update_card_status(card_id, status=""):
         return jsonfiy({'error': 'Wrong parameters'})
 
     try:
-        card_status = db.update_card(id=card_id, status=status)
+        card_status = db.update_card(card_id=card_id, status=status)
         if status == "inactive":
             return jsonify({'message': 'Virtual card with card id {} has been deactivated'.format(card_id)})
         elif status == "active":
