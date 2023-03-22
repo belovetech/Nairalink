@@ -13,7 +13,6 @@ import ApiFeatures from '../utils/ApiFeatures';
 import updateTransactionStatus from '../utils/updateTransactionStatus';
 import updateAccountBalance from '../utils/updateAccountBalance';
 import sendEmail from '../utils/sendEmail';
-import confirmPayment from '../utils/confirmPayment';
 
 class TransactionController {
   static async transfer(req, res) {
@@ -150,7 +149,7 @@ class TransactionController {
       if (!account) {
         return res.status(404).json({ message: 'Account not found' });
       }
-      // Create a PaymentIntent with the order amount and currency
+
       const paymentMethod = await stripe.paymentMethods.create({
         type: 'card',
         card: cardDetails,
@@ -158,7 +157,7 @@ class TransactionController {
 
       const transactionId = uuidv4();
 
-      let transaction = await Transaction.create({
+      await Transaction.create({
         transactionId,
         transactionType: 'fund',
         fromAccount: 1111111111,
@@ -177,14 +176,6 @@ class TransactionController {
         metadata: { transactionId },
         shipping
       });
-
-      console.log("payment status: ", paymentIntent.status);
-
-
-      console.log("transactionId from paymentIntent: ", paymentIntent.metadata.transactionId);
-      console.log("transactionId from DB: ", transaction.transactionId);
-
-      // await confirmPayment(paymentIntent.id);
 
       return res.status(200).json({
         clientSecret: paymentIntent.client_secret,
@@ -231,7 +222,7 @@ class TransactionController {
           await Promise.all([
                 updateTransactionStatus(metadata.transactionId, "successful"),
                 updateAccountBalance(metadata.transactionId, amount_received),
-                sendEmail(event.data.object),
+                sendEmail(paymentIntent),
               ]);
           return res.status(200).send({
                 status: 'success',
@@ -242,8 +233,8 @@ class TransactionController {
           const message = paymentIntent.last_payment_error && intent.last_payment_error.message;
           console.log('PaymentIntent was unsuccessful:', message);
           await Promise.all([
-            updateTransactionStatus(id, "failed"),
-            sendEmail(event.data.object),
+            updateTransactionStatus(metadata.transactionId, "failed"),
+            sendEmail(paymentIntent),
           ]);
           return res.status(200).send({
                 status: 'failure',
