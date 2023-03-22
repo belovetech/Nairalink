@@ -12,7 +12,6 @@ const options = {
 };
 
 module.exports = async (job) => {
-  console.log(job);
   const request = http.request(options, (res) => {
     const status = res.statusCode;
     if (status === 201) {

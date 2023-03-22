@@ -9,8 +9,7 @@ const sendEmailRegistrationPin = require('../helpers/sendEmailRegistrationPin');
 const sendPhoneRegistrationPin = require('../helpers/sendPhoneRegistrationPin');
 const verificationPin = require('../helpers/verificationPin');
 const isValidPhoneNumber = require('../helpers/isvalidPhoneNumber');
-// const createAccount = require('../worker/accountJob');
-import { Queue } from 'bullmq';
+const createAccount = require('../worker/accountJob');
 
 class VerificationController {
   static async sendverificationToken(req, res, next) {
@@ -112,24 +111,7 @@ class VerificationController {
         './template/verifiedEmail.handlebars'
       );
 
-      // await createAccount(verifiedCustomer);
-
-      const queue = new Queue('account', {
-        connection: {
-          host: process.env.REDIS_HOST,
-          port: process.env.REDIS_PORT,
-        },
-      });
-      const job = {
-        accountNumber: verifiedCustomer.phoneNumber.slice(1),
-        firstName: verifiedCustomer.firstName,
-        lastName: verifiedCustomer.lastName,
-        email: verifiedCustomer.email,
-      };
-      (async () => {
-        await queue.add('create-account', job);
-        console.info(`Enqueued create an account for ${job.firstName}`);
-      })();
+      await createAccount(verifiedCustomer);
 
       return res.status(200).json({
         message: 'Verification successful',
