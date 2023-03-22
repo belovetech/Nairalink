@@ -4,10 +4,12 @@
  */
 const Transaction = require('../models/Transaction');
 
-module.exports = async (data) => {
-  const { id, status } = data;
+module.exports = async (id, status) => {
   await Transaction.update(
-    { transactionStatus: status },
+    {
+      transactionStatus: status,
+      transactionDescription: `transaction ${status}`
+    },
     { where: { transactionId: id } }
   );
 };
