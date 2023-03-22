@@ -7,7 +7,7 @@ const queue = new Queue('mailer', {
   connection: { host: 'localhost', port: 6379 },
 });
 
-module.exports = async (message, data) => {
+module.exports = async (data) => {
   const options = {
     year: 'numeric',
     month: 'short',
@@ -18,12 +18,12 @@ module.exports = async (message, data) => {
   };
 
   const payload = {
-    firstName: data.customer.first_name,
-    reference: data.reference,
+    firstName: data.shipping.name.split(' ')[0],
+    reference: data.id,
     status: data.status,
     amount: data.amount,
     currency: data.currency,
-    date: new Date(data.transaction_date).toLocaleString('en-NG', options),
+    date: new Date(data.created).toLocaleString('en-NG', options),
   };
 
   const source = fs.readFileSync(
@@ -33,8 +33,8 @@ module.exports = async (message, data) => {
   const compiledTemplate = handlebars.compile(source);
   const job = {
     from: 'Nairalink <support@cloudmendy.tech>',
-    subject: message,
-    to: data.customer.email,
+    subject: `Payment transaction ${data.status}`,
+    to: data.receipt_email || "eladebayoor@gmail.com",
     html: compiledTemplate(payload),
   };
 
