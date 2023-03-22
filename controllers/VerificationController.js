@@ -1,13 +1,16 @@
+/* eslint-disable import/order */
 /* eslint-disable no-unused-vars */
 /* eslint-disable comma-dangle */
 const { ObjectId } = require('mongodb');
+const redisClient = require('../db/redis');
 const AppError = require('../helpers/AppError');
 const Customer = require('../models/customerModel');
-const sendEmail = require('../helpers/sendEmail');
-const redisClient = require('../db/redis');
-const sendPin = require('../helpers/sendPin');
+const sendEmailRegistrationPin = require('../helpers/sendEmailRegistrationPin');
+const sendPhoneRegistrationPin = require('../helpers/sendPhoneRegistrationPin');
 const verificationPin = require('../helpers/verificationPin');
 const isValidPhoneNumber = require('../helpers/isvalidPhoneNumber');
+// const createAccount = require('../worker/accountJob');
+import { Queue } from 'bullmq';
 
 class VerificationController {
   static async sendverificationToken(req, res, next) {
@@ -29,7 +32,7 @@ class VerificationController {
       }
 
       let token = verificationPin();
-      sendPin(phoneNumber, token).catch((err) => console.log(err));
+      sendPhoneRegistrationPin(phoneNumber, token);
       await redisClient.set(
         `phoneNumber_${token}`,
         phoneNumber.toString(),
@@ -38,7 +41,7 @@ class VerificationController {
 
       token = verificationPin();
       await redisClient.set(`Email_${token}`, customer._id.toString(), 300);
-      await sendEmail(
+      await sendEmailRegistrationPin(
         customer.email,
         'Email Verification',
         {
@@ -99,7 +102,7 @@ class VerificationController {
       await redisClient.del(`Email_${emailToken}`);
 
       const link = `${req.protocol}://${req.baseUrl}/login`;
-      await sendEmail(
+      await sendEmailRegistrationPin(
         customer.email,
         'Verification successfully',
         {
@@ -108,6 +111,25 @@ class VerificationController {
         },
         './template/verifiedEmail.handlebars'
       );
+
+      // await createAccount(verifiedCustomer);
+
+      const queue = new Queue('account', {
+        connection: {
+          host: process.env.REDIS_HOST,
+          port: process.env.REDIS_PORT,
+        },
+      });
+      const job = {
+        accountNumber: verifiedCustomer.phoneNumber.slice(1),
+        firstName: verifiedCustomer.firstName,
+        lastName: verifiedCustomer.lastName,
+        email: verifiedCustomer.email,
+      };
+      (async () => {
+        await queue.add('create-account', job);
+        console.info(`Enqueued create an account for ${job.firstName}`);
+      })();
 
       return res.status(200).json({
         message: 'Verification successful',
@@ -136,7 +158,7 @@ class VerificationController {
       }
 
       const pin = verificationPin();
-      sendPin(phoneNumber, pin).catch((err) => console.log(err));
+      sendPhoneRegistrationPin(phoneNumber, pin);
       await redisClient.set(`phoneNumber_${pin}`, phoneNumber.toString(), 300);
 
       return res.status(200).json({ message: 'Verification token sent' });
@@ -205,7 +227,7 @@ class VerificationController {
 
       const token = verificationPin();
       await redisClient.set(`Email_${token}`, customer._id.toString(), 300);
-      await sendEmail(
+      await sendEmailRegistrationPin(
         customer.email,
         'Email Verification',
         {
@@ -258,7 +280,7 @@ class VerificationController {
       await redisClient.del(`Email_${emailToken}`);
 
       const link = `${process.env.BASE_URL}/login`;
-      await sendEmail(
+      await sendEmailRegistrationPin(
         customer.email,
         'Email Verification successfully',
         {
