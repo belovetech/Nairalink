@@ -123,6 +123,7 @@ class AuthController {
       }
       await redisClient.del(`auth_${token}`);
       res.status(200).end();
+      res.cookie('token', 'loggedout', { maxAge: 10 });
     } catch (error) {
       if (error.message === 'invalid signature') {
         return next(new AppError('Unauthorised', 401));
