@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import express from 'express';
 import AccountController from '../controllers/AccountController';
 import TransacationController from '../controllers/TransactionController';
 
@@ -12,5 +13,7 @@ router.delete('/accounts/:userId', AccountController.deleteAccount);
 router.post('/transactions/transfer', TransacationController.transfer);
 router.get('/transactions', TransacationController.getTransactions);
 router.get('/transactions/:userId', TransacationController.accountTransaction);
+router.post('/transactions/webhook', TransacationController.fundAccount);
+router.post('/transactions/:userId/fund', TransacationController.prepareToFund);
 
 export default router;

@@ -73,7 +73,11 @@ module.exports = sequelize.define('accounts', {
     defaultValue: Number(0).toFixed(2),
     allowNull: false,
     set(value) {
-      this.setDataValue('balance', value.toFixed(2));
+      if (typeof value === 'number') {
+        this.setDataValue('balance', value.toFixed(2));
+      } else {
+        throw new TypeError('Value passed to balance setter must be a number.');
+      }
     },
     validate: {
       is: {
