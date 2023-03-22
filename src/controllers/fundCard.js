@@ -14,21 +14,21 @@ export default async (req, res) => {
   try {
     const customerAccount = await Account.findOne({
       where: { userId: customerId },
-      lock: true,
+      lock: t.LOCK.UPDATE,
       transaction: t,
     });
-    if (customerAccount === null) {
-      t.commit();
+    try {
+      if (customerAccount === null) {
+        throw new Error('Customer has no account with Nairalink!');
+      }
+      if (customerAccount.balance < amount) {
+        throw new Error('Insufficient funds to make this transaction');
+      }
+    } catch (error) {
+      t.rollback();
       return res.status(400).json({
         status: 'failure',
-        message: 'Customer does not have an account with Nairalink!',
-      });
-    }
-    if (customerAccount.balance < amount) {
-      t.commit();
-      return res.status(200).json({
-        status: 'failure',
-        message: 'Insufficient funds to make this transaction',
+        message: error.message,
       });
     }
     const debit = await Promise.all([
