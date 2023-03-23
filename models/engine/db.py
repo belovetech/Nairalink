@@ -63,8 +63,8 @@ class DB:
         datetime_updated = datetime.now()
         cardTransaction = CardTransaction(card_id=card_id, transaction_type=transaction_type,
                                           amount=amount, currency=currency, status=status,
-                                          description=narration, 
-                                          datetime_created=datetime_created, 
+                                          description=narration,
+                                          datetime_created=datetime_created,
                                           datetime_updated=datetime_updated)
         self._session.add(cardTransaction)
         self._session.commit()
@@ -125,6 +125,14 @@ class DB:
                 del obj['_sa_instance_state']
             objs.append(obj)
         return objs
+
+    def create_transaction(self, **kwargs):
+        """
+        """
+        transaction = CardTransaction(**kwargs)
+        self._session.add(transaction)
+        self._session.commit()
+        return transaction
 
 
     def valid_query_args(self, **kwargs):

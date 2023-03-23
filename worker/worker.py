@@ -1,15 +1,19 @@
 from rq import Queue, Worker
 from redis import Redis
-from utils import count_words_at_url
 import time
+from job import count_words_at_url, say_hello
+
+redis_conn = Redis()
+queue = Queue(connection=redis_conn)
 
 
-redis = Redis()
-queue = Queue(connection=redis)
+job = queue.enqueue(say_hello)
+print(job.get_status())
 
 
-job = queue.enqueue(count_words_at_url, 'http://heroku.com')
+while not job.is_finished:
+    print('Job not finished yet, wait for 1s')
+    time.sleep(1)
+
 print(job.return_value())
 
-time.sleep(2)
-print(job.return_value())

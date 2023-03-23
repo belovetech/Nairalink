@@ -8,8 +8,5 @@ def fund_card(customerId: str, amount: float=0) -> bool:
 
     url = 'http://0.0.0.0:3000/api/v1//transaction/fund-card'
     res = requests.post(url, json=payload)
-    resDict = json.loads(res.text)
+    return res
 
-    if res.status_code == 201 and resDict['status'] == 'success':
-        return True
-    return False
