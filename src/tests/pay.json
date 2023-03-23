@@ -1,0 +1,24 @@
+{
+  "amount": "100000",
+  "cardDetails": {
+    "number": "4242424242424242",
+    "exp_month": 12,
+    "exp_year": 2024,
+    "cvc": "123"
+  },
+  "email": "eladebayoor@gmail.com",
+  "shipping": {
+    "address": {
+      "city": "Lagos",
+      "country": "NG",
+      "line1": "510 Townsend St",
+      "line2": null,
+      "postal_code": "94103",
+      "state": "NG"
+    },
+    "carrier": null,
+    "name": "Jim Iyke",
+    "phone": null,
+    "tracking_number": null
+  }
+}
