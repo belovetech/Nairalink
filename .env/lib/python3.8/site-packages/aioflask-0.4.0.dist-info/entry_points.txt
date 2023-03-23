@@ -1,3 +1,0 @@
-[flask.commands]
-aiorun = aioflask.cli:run_command
-
