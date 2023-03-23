@@ -4,6 +4,7 @@
 from flask import Flask, jsonify, abort, request
 from models.engine.db import DB
 from api.virtual_cards.views import app_views
+from helpers.fundCard import fund_card
 
 app = Flask(__name__)
 db = DB()
@@ -30,6 +31,9 @@ def create_card():
 
         try:
             #customer_id = request.get(user.id)
+            if fund_card(customer_id, 1000) == False:
+                return jsonify({'error': 'You must have up to 1000 in your account to perform this action'})
+
             card = db.create_card(customer_id, card_brand, card_currency, name_on_card, pin)
             return jsonify({'name': name_on_card, 'message': "Card created successfully"})
         except ValueError as err:
