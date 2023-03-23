@@ -115,7 +115,7 @@ class DB:
             objs.append(obj)
         return objs
 
-    def all_cardTransactions(self) -> List[CardTransaction]:
+    def all_cardTransactions(self, card_id) -> List[CardTransaction]:
         """Returns all cards"""
         objs = []
         cards = self._session.query(CardTransaction).all().order_by(card_id)
@@ -129,11 +129,14 @@ class DB:
     def create_transaction(self, **kwargs):
         """
         """
-        transaction = CardTransaction(**kwargs)
-        self._session.add(transaction)
-        self._session.commit()
-        return transaction
-
+        try:
+            transaction = CardTransaction(**kwargs)
+            self._session.add(transaction)
+            self._session.commit()
+            return transaction
+        except Exception as err:
+            self._session.rollback()
+            return None
 
     def valid_query_args(self, **kwargs):
         """Get table columns or keys"""

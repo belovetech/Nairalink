@@ -4,11 +4,16 @@
 from flask import Flask, jsonify, abort, request
 from models.engine.db import DB
 from api.virtual_cards.views import app_views
+from api.worker.processor import send_transaction_status
 from helpers.fundCard import fund_card
 from datetime import datetime
 
-# import bullmq
-# queue = bullmq.Queue("fund-card")
+from rq import Queue
+from redis import Redis
+
+redis_conn = Redis()
+queue = Queue(connection=redis_conn)
+
 
 app = Flask(__name__)
 db = DB()
@@ -47,7 +52,6 @@ async def create_card():
                 return jsonify({'error': resDict['message']})
 
             card = db.create_card(customer_id, card_brand, card_currency, name_on_card, pin)
-
             transaction = db.create_transaction(
                 id=resDict['data']['transactionId'],
                 card_id=card.card_number,
@@ -58,12 +62,15 @@ async def create_card():
                 status='success'
             )
 
-            # job = {
-            #     "transactionId": transaction.id,
-            #     "status": 'successful'
-            # }
-            # await queue.add("complete", job)
-            # await queue.close()
+            job = {
+                "transactionId": resDict['data']['transactionId'],
+                "status": 'successful'
+            }
+            if not transaction:
+                job['status'] = 'failed'
+
+            job_info = queue.enqueue(send_transaction_status, job)
+            print('Transaction with ID {} has been sent for update'.format(job.get('transactionId')))
 
             expiry = datetime.strptime(str(card.expiry_date), '%Y-%m-%d %H:%M:%S')
             return jsonify({
@@ -75,6 +82,7 @@ async def create_card():
             }), 201
 
         except Exception as err:
+                print(err)
                 return jsonify({'error': "Unable to create card"}), 500
 
     return jsonify({'error': "Not a dictionary"}), 401
