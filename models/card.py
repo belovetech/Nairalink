@@ -12,11 +12,11 @@ class Card(Base):
     """
     __tablename__ = "cards"
     id = Column(Integer, primary_key=True, autoincrement=True)
-    customer_id = Column(Integer, nullable=False)
+    customer_id = Column(String(45), nullable=False, unique=True)
     name_on_card = Column(String(255), nullable=False)
     card_brand = Column(String(15), nullable=False, default="VISA")
     card_currency = Column(String(3), nullable=False, default="NGN")
-    pin = Column(Integer, nullable=False)
+    pin = Column(String(4), nullable=False)
     balance = Column(Integer, nullable=True, default='00.00')
     date_created = Column(DateTime, default=datetime.utcnow)
     date_updated = Column(DateTime, default=datetime.utcnow)

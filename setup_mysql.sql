@@ -1,4 +1,6 @@
 -- Script to set up the MySQL database
+
+DROP DATABASE IF EXISTS virtual_cards;
 CREATE DATABASE IF NOT EXISTS virtual_cards;
 CREATE USER IF NOT EXISTS 'card_dev'@'localhost' IDENTIFIED BY 'nairalink';
 GRANT ALL PRIVILEGES ON virtual_cards.* TO 'card_dev'@'localhost';

@@ -13,11 +13,3 @@ def fund_card(customerId: str, amount: float=0) -> bool:
     if res.status_code == 201 and resDict['status'] == 'success':
         return True
     return False
-
-
-
-# if __name__ == "__main__":
-#     customerId = '2a181c1e-341b-4ee2-9dd5-898c730aeebc'
-#     amount = 1000
-#     result = fund_card(customerId, amount)
-#     print(result)

@@ -15,6 +15,7 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 def create_card():
     """Create a new virtual card"""
     data = request.get_json()
+    accepted_card_brands = ['Visa', 'Master', 'Verve']
     if type(data) is dict:
         if "customer_id" in data:
             customer_id = data['customer_id']
@@ -31,12 +32,14 @@ def create_card():
 
         try:
             #customer_id = request.get(user.id)
+            if str(card_brand).capitalize() not in accepted_card_brands:
+                return jsonify({'error': 'Card brand can either be Visa, Verve, or Master'}), 400
             if fund_card(customer_id, 1000) == False:
-                return jsonify({'error': 'You must have up to 1000 in your account to perform this action'})
+                return jsonify({'error': 'You must have up to 1000 in your account to perform this action'}), 400
 
-            card = db.create_card(customer_id, card_brand, card_currency, name_on_card, pin)
+            db.create_card(customer_id, card_brand, card_currency, name_on_card, pin)
             return jsonify({'name': name_on_card, 'message': "Card created successfully"})
-        except ValueError as err:
+        except Exception as err:
                 return jsonify({'error': "Unable to create card"}), 400
 
     return jsonify({'error': "Not a dictionary"}), 401
