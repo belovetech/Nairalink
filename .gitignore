@@ -1,1 +1,6 @@
 node_modules/
+.config.env
+.env
+/src/migrations/*
+/**/config.js
+/**/config.json
