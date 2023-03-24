@@ -1,7 +1,10 @@
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable no-unused-vars */
+/* eslint-disable comma-dangle */
 import express from 'express';
+import bodyParser from 'body-parser';
 import cors from 'cors';
 import router from './routes/index';
-import bodyParser from 'body-parser';
 
 const app = express();
 
@@ -9,8 +12,8 @@ app.use(cors());
 
 app.use(
   bodyParser.json({
-    verify: function (req, res, buf) {
-      var url = req.originalUrl;
+    verify(req, res, buf) {
+      const url = req.originalUrl;
       if (url.startsWith('/api/v1/transactions/webhook')) {
         req.rawBody = buf.toString();
       }

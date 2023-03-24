@@ -1,3 +1,4 @@
+/* eslint-disable comma-dangle */
 const handlebars = require('handlebars');
 const fs = require('fs');
 const path = require('path');
@@ -34,7 +35,7 @@ module.exports = async (data) => {
   const job = {
     from: 'Nairalink <support@cloudmendy.tech>',
     subject: `Payment transaction ${data.status}`,
-    to: data.receipt_email || "eladebayoor@gmail.com",
+    to: data.receipt_email || 'eladebayoor@gmail.com',
     html: compiledTemplate(payload),
   };
 

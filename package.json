@@ -10,16 +10,19 @@
     "dev": "nodemon --exec babel-node --presets @babel/preset-env",
     "prepare": "husky install",
     "release": "standard-version",
-    "start-server": "nodemon --exec babel-node --presets @babel/preset-env ./src/server.js"
+    "start-server": "nodemon --exec babel-node --presets @babel/preset-env ./src/server.js",
+    "start-worker": "nodemon --exec babel-node --presets @babel/preset-env src/worker/service.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.20.2",
     "bullmq": "^3.10.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "handlebars": "^4.7.7",
     "mysql2": "^3.2.0",
     "sequelize": "^6.29.3",
     "stripe": "^11.15.0",

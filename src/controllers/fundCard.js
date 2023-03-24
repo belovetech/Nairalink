@@ -1,3 +1,4 @@
+/* eslint-disable comma-dangle */
 /**
  * Debits a customers account to fund their card
  * Request to this end point is internal, comes from the card service only
@@ -27,7 +28,7 @@ export default async (req, res) => {
     } catch (error) {
       t.rollback();
       return res.status(400).json({
-        status: 'failure',
+        status: 'failed',
         message: error.message,
       });
     }
@@ -35,17 +36,20 @@ export default async (req, res) => {
       // customerAccount.save({ transaction: t }),
       Account.decrement(
         { balance: amount },
-        { where: { userId: customerId }, transaction: t },
+        { where: { userId: customerId }, transaction: t }
       ),
-      Transaction.create({
-        transactionId: uuidv4(),
-        transactionType: 'withdraw',
-        fromAccount: customerAccount.accountNumber,
-        toAccount: customerAccount.accountNumber,
-        amount,
-        transactionStatus: 'pending',
-        transactionDescription: 'Card funding',
-      }, { transaction: t }),
+      Transaction.create(
+        {
+          transactionId: uuidv4(),
+          transactionType: 'withdraw',
+          fromAccount: customerAccount.accountNumber,
+          toAccount: customerAccount.accountNumber,
+          amount,
+          transactionStatus: 'pending',
+          transactionDescription: 'Card funding',
+        },
+        { transaction: t }
+      ),
     ]);
     if (debit instanceof Array) {
       const transact = debit[1];

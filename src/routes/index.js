@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import express from 'express';
 import AccountController from '../controllers/AccountController';
 import TransacationController from '../controllers/TransactionController';
 import FundCard from '../controllers/fundCard';
+import completeFundCard from '../controllers/completeFundCard';
 
 const router = Router();
 
@@ -17,5 +17,7 @@ router.get('/transactions/:userId', TransacationController.accountTransaction);
 router.post('/transaction/fund-card', FundCard);
 router.post('/transactions/webhook', TransacationController.fundAccount);
 router.post('/transactions/:userId/fund', TransacationController.prepareToFund);
+
+router.post('/transactions/fund-card/update', completeFundCard);
 
 export default router;

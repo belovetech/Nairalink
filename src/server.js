@@ -7,6 +7,7 @@ import app from './app';
 
 const port = process.env.PORT || 3000;
 
+// eslint-disable-next-line consistent-return
 app.listen(port, (err) => {
   if (err) return console.log(`Cannot listen on port ${port}`);
   console.log(`Listening on port ${port}`);
