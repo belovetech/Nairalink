@@ -24,7 +24,7 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 async def create_card():
     """Create a new virtual card"""
     data = request.get_json()
-    accepted_card_brands = ['Visa', 'Master', 'Verve']
+    accepted_card_brands = ['Visa', 'Mastercard', 'Verve']
 
     if type(data) is dict:
         if "customer_id" in data:
@@ -43,7 +43,7 @@ async def create_card():
         try:
             #customer_id = request.get(user.id)
             if str(card_brand).capitalize() not in accepted_card_brands:
-                return jsonify({'error': 'Card brand can either be Visa, Verve, or Master'}), 400
+                return jsonify({'error': 'Card brand can either be Visa, Verve, or Mastercard'}), 400
 
             res = fund_card(customer_id, 1000)
             resDict = res.json()
