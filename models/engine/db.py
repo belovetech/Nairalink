@@ -72,7 +72,7 @@ class DB:
 
     def find_card_by(self, **kwargs) -> Card:
         """Find card from DB by key-value pairs argument"""
-        if not kwargs or not self.valid_query_args(**kwargs):
+        if not kwargs or not self.valid_query_args_cards(**kwargs):
             raise InvalidRequestError
 
         card = self._session.query(Card).filter_by(**kwargs).one_or_none()
@@ -87,12 +87,13 @@ class DB:
         card_details = {}
         for key, value in card.__dict__.items():
             card_details[key] = str(value)
-            #Fix '_sa_instance_state' key later
+            if '_sa_instance_state' in card_details:
+                del card_details['_sa_instance_state']
         return card_details
 
     def update_card(self, card_id: int, **kwargs) -> None:
         """Update card details based on card ID"""
-        if not self.valid_query_args(**kwargs):
+        if not self.valid_query_args_cards(**kwargs):
             raise ValueError
 
         card = self.find_card_by(id=card_id)
@@ -103,6 +104,13 @@ class DB:
 
         self._session.commit()
 
+    def valid_query_args_cards(self, **kwargs):
+        """Get table columns or keys"""
+        columns = Card.__table__.columns.keys()
+        for key in kwargs.keys():
+            if key not in columns:
+                return False
+        return True
 
     def all_cards(self) -> List[Card]:
         """Returns all cards registered to a user"""
@@ -114,6 +122,8 @@ class DB:
                 del obj['_sa_instance_state']
             objs.append(obj)
         return objs
+    
+    ##Card Transaction Endpoint Methods
 
     def all_cardTransactions(self, card_id) -> List[CardTransaction]:
         """Returns all cards"""
@@ -127,7 +137,7 @@ class DB:
         return objs
 
     def create_transaction(self, **kwargs):
-        """
+        """Starts a transaction for virtual cards
         """
         try:
             transaction = CardTransaction(**kwargs)
@@ -138,9 +148,33 @@ class DB:
             self._session.rollback()
             return None
 
-    def valid_query_args(self, **kwargs):
+    def find_transaction_by(self, **kwargs) -> CardTransaction:
+        """Find card from DB by key-value pairs argument"""
+        if not kwargs or not self.valid_query_args_transactions(**kwargs):
+            raise InvalidRequestError
+
+        card_transaction = self._session.query(CardTransaction).filter_by(**kwargs).one_or_none()
+
+        if not card_transaction:
+            raise NoResultFound
+        return card_transaction
+
+    def update_card_transaction(self, transaction_id: str, **kwargs) -> None:
+        """Update card transaction details based on card ID"""
+        if not self.valid_query_args(**kwargs):
+            raise ValueError
+
+        card_transaction = self.find_transaction_by(id=transaction_id)
+
+        for key, value in kwargs.items():
+            setattr(card, key, value)
+        card_transaction.datetime_updated = datetime.now()
+
+        self._session.commit()
+
+    def valid_query_args_transaction(self, **kwargs):
         """Get table columns or keys"""
-        columns = Card.__table__.columns.keys()
+        columns = CardTransaction.__table__.columns.keys()
         for key in kwargs.keys():
             if key not in columns:
                 return False
