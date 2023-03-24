@@ -20,7 +20,7 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 
 @app_views.route('/cards/transactions', methods=['POST'], strict_slashes=False)
-def fund_card():
+async def fund_card():
     """Fund a  virtual card"""
     data = request.get_json()
     if type(data) is dict:
