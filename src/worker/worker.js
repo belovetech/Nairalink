@@ -1,15 +1,18 @@
 /* eslint-disable default-case */
 /* eslint-disable comma-dangle */
 const { Worker } = require('bullmq');
-
-const cardFundUpdate = require('./processor');
+const { DebitAlert, CreditAlert } = require('./processor');
 
 const worker = new Worker(
-  'fund-card',
+  'alert',
   async (job) => {
     switch (job.name) {
-      case 'complete': {
-        await cardFundUpdate(job);
+      case 'credit': {
+        await CreditAlert(job);
+        break;
+      }
+      case 'debit': {
+        await DebitAlert(job);
         break;
       }
     }
@@ -22,6 +25,6 @@ const worker = new Worker(
   }
 );
 
-console.info('Worker listening for update card fund transaction');
+console.info('Worker listening for credit and debit alert jobs');
 
 module.exports = worker;

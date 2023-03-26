@@ -11,7 +11,10 @@
     "prepare": "husky install",
     "release": "standard-version",
     "start-server": "nodemon --exec babel-node --presets @babel/preset-env ./src/server.js",
-    "start-worker": "nodemon --exec babel-node --presets @babel/preset-env src/worker/service.js"
+    "start-worker": "nodemon --exec babel-node --presets @babel/preset-env src/worker/service.js",
+    "worker": "npm run start-worker > log.txt 2>&1 &",
+    "server": "npm run start-server",
+    "start": "npm run worker && npm run server"
   },
   "keywords": [],
   "author": "",

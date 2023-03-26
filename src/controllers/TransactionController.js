@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 /* eslint-disable no-unused-vars */
 /* eslint-disable object-curly-newline */
 /* eslint-disable comma-dangle */
@@ -14,6 +15,7 @@ import updateTransactionStatus from '../utils/updateTransactionStatus';
 import updateAccountBalance from '../utils/updateAccountBalance';
 import sendEmail from '../utils/sendEmail';
 import { DebitAlert, CreditAlert } from '../utils/alert';
+import alertClient from '../utils/alert';
 
 class TransactionController {
   static async transfer(req, res) {
@@ -23,7 +25,11 @@ class TransactionController {
     const t = await sequelize.transaction();
     try {
       const results = await Promise.all([
-        Account.findOne({ where: { userId }, lock: t.LOCK.UPDATE, transaction: t }),
+        Account.findOne({
+          where: { userId },
+          lock: t.LOCK.UPDATE,
+          transaction: t,
+        }),
         Account.findOne({ where: { accountNumber: creditAccountNumber } }),
       ]);
       const debitAccount = results[0];
@@ -35,7 +41,9 @@ class TransactionController {
           throw new Error('Reciever account is invalid');
         }
         if (debitAccount.balance < amount) {
-          throw new Error('Insufficient funds to make this transaction. Top up!');
+          throw new Error(
+            'Insufficient funds to make this transaction. Top up!'
+          );
         }
         if (debitAccount.accountNumber === creditAccountNumber) {
           throw new Error('You cannot transfer fund to yourself');
@@ -43,7 +51,7 @@ class TransactionController {
       } catch (error) {
         t.rollback();
         return res.status(400).json({
-          message: error.message
+          message: error.message,
         });
       }
       // Generate the transaction reference
@@ -62,7 +70,7 @@ class TransactionController {
           transactionStatus: 'pending',
           transactionDescription: description,
         });
-        await DebitAlert(transact);
+        await alertClient.enqueue('debit', { transact });
         const credit = await Account.increment(
           { balance: amount },
           { where: { accountNumber: creditAccountNumber } }
@@ -70,12 +78,10 @@ class TransactionController {
         if (credit[0][1] === 1) {
           Promise.all([
             transact.update({ transactionStatus: 'successful' }),
-            CreditAlert(transact)
+            alertClient.enqueue('credit', { transact }),
           ]);
-          // await transact.update({ transactionStatus: 'successful' });
-          // await CreditAlert(transact);
           return res.status(201).json({
-            message: 'Transaction was successful'
+            message: 'Transaction was successful',
           });
         }
         throw new Error(
@@ -92,7 +98,7 @@ class TransactionController {
         await transact.update({ transactionStatus: 'failed' });
       }
       return res.status(500).json({
-        message: 'Error while processing transaction...'
+        message: 'Error while processing transaction...',
       });
     }
   }
@@ -149,7 +155,9 @@ class TransactionController {
 
   static async prepareToFund(req, res, next) {
     try {
-      const stripe = require("stripe")('sk_test_51Mo4KaEvDiZFauUw5ilvvPxDaXxOVZm6TZXu2y0h3zGAwHpAhPzkZYAbT8YQ4A13SAyj5fwkN72TXoWwz0YYyP1R00OFGPM0DV')
+      const stripe = require('stripe')(
+        'sk_test_51Mo4KaEvDiZFauUw5ilvvPxDaXxOVZm6TZXu2y0h3zGAwHpAhPzkZYAbT8YQ4A13SAyj5fwkN72TXoWwz0YYyP1R00OFGPM0DV'
+      );
       const { userId } = req.params;
       const { amount, cardDetails, shipping, email } = req.body;
 
@@ -177,12 +185,12 @@ class TransactionController {
 
       const paymentIntent = await stripe.paymentIntents.create({
         amount: amount * 1,
-        currency: "usd",
+        currency: 'usd',
         payment_method: paymentMethod.id,
         confirm: true,
         receipt_email: email,
         metadata: { transactionId },
-        shipping
+        shipping,
       });
 
       return res.status(200).json({
@@ -192,7 +200,6 @@ class TransactionController {
         email: paymentIntent.receipt_email,
         transactionId,
       });
-
     } catch (error) {
       console.log(error);
       return next(error);
@@ -201,8 +208,11 @@ class TransactionController {
 
   static async fundAccount(req, res, next) {
     try {
-      const stripe = require("stripe")('sk_test_51Mo4KaEvDiZFauUw5ilvvPxDaXxOVZm6TZXu2y0h3zGAwHpAhPzkZYAbT8YQ4A13SAyj5fwkN72TXoWwz0YYyP1R00OFGPM0DV')
-      const endpointSecret = "whsec_f66a92a327d78729af9d5194a10395069d775ae4e9f91e32728c856e1d8f239b";
+      const stripe = require('stripe')(
+        'sk_test_51Mo4KaEvDiZFauUw5ilvvPxDaXxOVZm6TZXu2y0h3zGAwHpAhPzkZYAbT8YQ4A13SAyj5fwkN72TXoWwz0YYyP1R00OFGPM0DV'
+      );
+      const endpointSecret =
+        'whsec_f66a92a327d78729af9d5194a10395069d775ae4e9f91e32728c856e1d8f239b';
 
       const signature = req.headers['stripe-signature'];
 
@@ -219,42 +229,136 @@ class TransactionController {
         return;
       }
 
-      const { metadata, amount_received } = event.data.object;
+      const { metadata, amountReceived } = event.data.object;
       let paymentIntent;
 
       switch (event.type) {
         case 'payment_intent.succeeded':
           paymentIntent = event.data.object;
-          console.log("transactionId to update: ", metadata.transactionId);
+          console.log('transactionId to update: ', metadata.transactionId);
           console.log('PaymentIntent was successful!:', paymentIntent);
           await Promise.all([
-                updateTransactionStatus(metadata.transactionId, "successful"),
-                updateAccountBalance(metadata.transactionId, amount_received),
-                sendEmail(paymentIntent),
-              ]);
-          return res.status(200).send({
-                status: 'success',
-                message: 'Transaction updated successfully',
-              });
+            updateTransactionStatus(metadata.transactionId, 'successful'),
+            updateAccountBalance(metadata.transactionId, amountReceived),
+            sendEmail(paymentIntent),
+            // alertClient.enqueue('credit', { transact }),
+          ]);
+          res.status(200).send({
+            status: 'success',
+            message: 'Transaction updated successfully',
+          });
+          break;
         case 'payment_intent.payment_failed':
           paymentIntent = event.data.object;
-          const message = paymentIntent.last_payment_error && intent.last_payment_error.message;
+          let message = false;
+          if (
+            paymentIntent.last_payment_error &&
+            paymentIntent.last_payment_error.message
+          ) {
+            message = true;
+          }
           console.log('PaymentIntent was unsuccessful:', message);
           await Promise.all([
-            updateTransactionStatus(metadata.transactionId, "failed"),
+            updateTransactionStatus(metadata.transactionId, 'failed'),
             sendEmail(paymentIntent),
           ]);
-          return res.status(200).send({
-                status: 'failure',
-                message,
-              });
+          res.status(200).send({
+            status: 'failure',
+            message,
+          });
+          break;
         default:
           console.log(`Unhandled event type ${event.type}`);
       }
     } catch (error) {
       console.log(error);
-      return next(error);
+      next(error);
     }
+  }
+  static async fundCard(req, res, next) {
+    const { customerId, amount, description } = req.body;
+    const t = await sequelize.transaction();
+    try {
+      const customerAccount = await Account.findOne({
+        where: { userId: customerId },
+        lock: t.LOCK.UPDATE,
+        transaction: t,
+      });
+      try {
+        if (customerAccount === null) {
+          throw new Error('Customer has no account with Nairalink!');
+        }
+        if (customerAccount.balance < amount) {
+          throw new Error('Insufficient funds to make this transaction');
+        }
+      } catch (error) {
+        t.rollback();
+        return res.status(400).json({
+          status: 'failed',
+          message: error.message,
+        });
+      }
+      const debit = await Promise.all([
+        // customerAccount.save({ transaction: t }),
+        Account.decrement(
+          { balance: amount },
+          { where: { userId: customerId }, transaction: t }
+        ),
+        Transaction.create(
+          {
+            transactionId: uuidv4(),
+            transactionType: 'withdraw',
+            fromAccount: customerAccount.accountNumber,
+            toAccount: customerAccount.accountNumber,
+            amount,
+            transactionStatus: 'pending',
+            transactionDescription: description || 'Card funding',
+          },
+          { transaction: t }
+        ),
+      ]);
+      if (debit instanceof Array) {
+        const transact = debit[1];
+        if (transact) {
+          await t.commit();
+          await alertClient.enqueue('debit', { transact });
+          return res.status(201).json({
+            status: 'success',
+            data: {
+              transactionId: transact.transactionId,
+            },
+          });
+        }
+      }
+      throw new Error(`Unable to fund card owned by ${customerId}:`, debit);
+    } catch (error) {
+      await t.rollback();
+      console.log(error);
+      return res.status(500).json({
+        status: 'failed',
+        message: 'Service could not complete this transaction...',
+      });
+    }
+  }
+  static async UpdateFundCardTransaction(req, res, next) {
+    const { transactionId, status } = req.body;
+
+    console.log(typeof status === typeof 'successful', status === 'successful');
+    const allowedStatus = ['successful', 'failed'];
+    if (!transactionId || !status || allowedStatus.indexOf(status) === -1) {
+      return res.status(400).json({ error: 'Bad request' });
+    }
+
+    const transaction = Transaction.update(
+      { transactionStatus: status },
+      { where: { transactionId } }
+    );
+
+    if (transaction === null) {
+      return res.status(404).json({});
+    }
+
+    return res.status(200).json({});
   }
 }
 

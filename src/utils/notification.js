@@ -2,8 +2,8 @@ import { Queue } from 'bullmq';
 
 /* eslint-disable import/prefer-default-export */
 export class NotificationClient {
-  constructor(opts) {
-    this.queue = new Queue('notification', opts);
+  constructor(type, opts) {
+    this.queue = new Queue(type, opts);
   }
 
   /* eslint-disable no-unused-vars */
@@ -16,3 +16,7 @@ export class NotificationClient {
     return this.queue.close();
   }
 }
+
+export const notificationClient = new NotificationClient('notification', {
+  connection: { host: 'localhost', port: 6379 },
+});

@@ -1,0 +1,28 @@
+
+> nairalink@1.0.2 start-worker
+> nodemon --exec babel-node --presets @babel/preset-env src/worker/service.js
+
+[33m[nodemon] 2.0.21[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching path(s): *.*[39m
+[33m[nodemon] watching extensions: js,mjs,json[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+Executing (default): SELECT `balance` FROM `accounts` AS `accounts` WHERE `accounts`.`accountNumber` = 8109211864;
+Enqueued an mobile alert to +2348109211864
+Completed job 100 successfully, transaction with b9191dbc-387a-47c5-96d3-3566d746a6a0
