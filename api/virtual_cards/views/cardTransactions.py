@@ -7,6 +7,7 @@ from models.engine.db import DB
 from api.worker.processor import send_transaction_status
 from helpers.fundCard import fund_card
 from api.virtual_cards.views import app_views
+from datetime import datetime
 
 from rq import Queue
 from redis import Redis
@@ -48,12 +49,12 @@ async def fund_card():
                     card_id=card_id,
                     transaction_type=transaction_type,
                     description=narration,
-                    datetime_created = datetime.now()
-                    datetime_updated = datetime.now()
+                    datetime_created = datetime.now(),
+                    datetime_updated = datetime.now(),
                     currency=currency,
                     amount=amount,
                     status=resDict['status']
-                    )
+                )
 
             job = {
                 "transactionId": resDict['data']['transactionId'],

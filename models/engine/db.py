@@ -83,7 +83,8 @@ class DB:
 
     def find_card_id(self, card_id: int) -> Card:
         """Get card details by using card_id"""
-        card = self.find_card_by(id=card_id)
+        card = self.find_card_by(card_number=card_id)
+        if not card: raise NoResultFound
         card_details = {}
         for key, value in card.__dict__.items():
             card_details[key] = str(value)
@@ -91,12 +92,13 @@ class DB:
                 del card_details['_sa_instance_state']
         return card_details
 
-    def update_card(self, card_id: int, **kwargs) -> None:
+    def update_card(self, card_number: int, **kwargs) -> None:
         """Update card details based on card ID"""
         if not self.valid_query_args_cards(**kwargs):
             raise ValueError
 
-        card = self.find_card_by(id=card_id)
+        card = self.find_card_by(card_number=card_number)
+        if not card: raise NoResultFound
 
         for key, value in kwargs.items():
             setattr(card, key, value)
@@ -122,7 +124,7 @@ class DB:
                 del obj['_sa_instance_state']
             objs.append(obj)
         return objs
-    
+
     ##Card Transaction Endpoint Methods
 
     def all_cardTransactions(self, card_id) -> List[CardTransaction]:

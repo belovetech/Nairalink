@@ -2,6 +2,7 @@
 """Module that handles all default RESTful API actions for card
 """
 from flask import Flask, jsonify, abort, request
+from sqlalchemy.orm.exc import NoResultFound
 from models.engine.db import DB
 from api.virtual_cards.views import app_views
 from api.worker.processor import send_transaction_status
@@ -46,6 +47,7 @@ async def create_card():
                 return jsonify({'error': 'Card brand can either be Visa, Verve, or Mastercard'}), 400
 
             res = fund_card(customer_id, 1000)
+            if not res: return jsonify({'error': "Unable to create card"}), 500
             resDict = res.json()
 
             if resDict['status'] == 'failed':
@@ -82,7 +84,6 @@ async def create_card():
             }), 201
 
         except Exception as err:
-                print(err)
                 return jsonify({'error': "Unable to create card"}), 500
 
     return jsonify({'error': "Not a dictionary"}), 401
@@ -93,17 +94,17 @@ def get_all_cards():
     cards = db.all_cards()
     return jsonify({"cards": cards})
 
-@app_views.route('/cards/<card_id>', methods=['GET'], strict_slashes=False)
-def get_card_details(card_id):
+@app_views.route('/cards/<card_number>', methods=['GET'], strict_slashes=False)
+def get_card_details(card_number):
     """Get a card registered to a user by card id"""
     try:
-        card_details = db.find_card_id(card_id)
+        card_details = db.find_card_id(card_number)
         return jsonify({'card_details': card_details})
-    except ValueError as err:
-        return jsonify({'error': 'Could not find card with id:{}'.format(card_id)})
+    except NoResultFound as err:
+        return jsonify({'error': 'Could not find card with id:{}'.format(card_number)})
 
-@app_views.route('/cards/<card_id>', methods=["PUT"], strict_slashes=False)
-def update_card_status(card_id, status=""):
+@app_views.route('/cards/<card_number>', methods=["PATCH"], strict_slashes=False)
+def update_card_status(card_number, status=""):
     """Updates the status of a virtual card"""
     data = request.get_json()
     if 'status' in data:
@@ -112,13 +113,17 @@ def update_card_status(card_id, status=""):
         return jsonify({'error': 'Wrong parameters'})
 
     try:
-        card_status = db.update_card(card_id=card_id, status=status)
+        try:
+            db.update_card(card_number=card_number, status=status)
+        except NoResultFound as err:
+            return jsonify({'error': 'Could not find card with id:{}'.format(card_number)})
+
         if status == "inactive":
-            return jsonify({'message': 'Virtual card with card id {} has been deactivated'.format(card_id)})
+            return jsonify({'message': 'Virtual card with card id {} has been deactivated'.format(card_number)})
         elif status == "active":
-            return jsonify({'message': 'Virtual card with card id {} has been activated'.format(card_id)})
+            return jsonify({'message': 'Virtual card with card id {} has been activated'.format(card_number)})
         elif status == "terminated":
-            return jsonify({'message': 'Virtual card with card id {} has been deleted'.format(card_id)})
+            return jsonify({'message': 'Virtual card with card id {} has been deleted'.format(card_number)})
         else:
             return jsonify({'error': 'Invalid status'})
     except ValueError as err:
