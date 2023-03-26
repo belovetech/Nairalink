@@ -1,20 +1,19 @@
 #!/usr/bin/env python3
 """The Database module"""
 from os import getenv
-from helpers.cardDetails import generateCardNumber, generateCVV
-from helpers.cardDates import setExpiryDate
-from datetime import datetime
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm.session import Session
-from flask import Flask, jsonify
-from sqlalchemy.exc import InvalidRequestError
-from sqlalchemy.orm.exc import NoResultFound
-
 from typing import List
+from datetime import datetime
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine
+from sqlalchemy.orm.session import Session
+from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.exc import InvalidRequestError
+from sqlalchemy.ext.declarative import declarative_base
+from helpers.cardDates import setExpiryDate
+from helpers.cardDetails import generateCardNumber, generateCVV
 from models.cardTransaction import CardTransaction
 from models.card import Base, Card
+
 
 class DB:
     """Database Connector class"""
@@ -42,33 +41,22 @@ class DB:
             self.__session = DBSession()
         return self.__session
 
-    def create_card(self, customer_id: int, brand: str, currency: str, name: str, pin: int) -> Card:
+    def create_card(self, customer_id: int, brand: str,
+                    currency: str, name: str, pin: int) -> Card:
         """Add a new card to the database"""
         card_number = generateCardNumber()
         date_created = datetime.now()
         date_updated = datetime.now()
         cvv = generateCVV()
         expiry_date = setExpiryDate()
-        card = Card(customer_id=customer_id, card_brand=brand, card_currency=currency,
+        card = Card(customer_id=customer_id, card_brand=brand,
+                    card_currency=currency,
                     name_on_card=name, pin=pin,
                     date_created=date_created, date_updated=date_updated,
                     cvv=cvv, card_number=card_number, expiry_date=expiry_date)
         self._session.add(card)
         self._session.commit()
         return card
-
-    def fund_card(self, card_id: int, amount: str, transaction_type: str, narration: str, currency: str, status: str) -> CardTransaction:
-        """Attempts to fund a card from a wallet"""
-        datetime_created = datetime.now()
-        datetime_updated = datetime.now()
-        cardTransaction = CardTransaction(card_id=card_id, transaction_type=transaction_type,
-                                          amount=amount, currency=currency, status=status,
-                                          description=narration,
-                                          datetime_created=datetime_created,
-                                          datetime_updated=datetime_updated)
-        self._session.add(cardTransaction)
-        self._session.commit()
-        return cardTransaction
 
     def find_card_by(self, **kwargs) -> Card:
         """Find card from DB by key-value pairs argument"""
@@ -84,7 +72,8 @@ class DB:
     def find_card_id(self, card_id: int) -> Card:
         """Get card details by using card_id"""
         card = self.find_card_by(card_number=card_id)
-        if not card: raise NoResultFound
+        if not card:
+            raise NoResultFound
         card_details = {}
         for key, value in card.__dict__.items():
             card_details[key] = str(value)
@@ -98,7 +87,8 @@ class DB:
             raise ValueError
 
         card = self.find_card_by(card_number=card_number)
-        if not card: raise NoResultFound
+        if not card:
+            raise NoResultFound
 
         for key, value in kwargs.items():
             setattr(card, key, value)
@@ -124,8 +114,6 @@ class DB:
                 del obj['_sa_instance_state']
             objs.append(obj)
         return objs
-
-    ##Card Transaction Endpoint Methods
 
     def all_cardTransactions(self, card_id) -> List[CardTransaction]:
         """Returns all cards"""
@@ -155,7 +143,8 @@ class DB:
         if not kwargs or not self.valid_query_args_transactions(**kwargs):
             raise InvalidRequestError
 
-        card_transaction = self._session.query(CardTransaction).filter_by(**kwargs).one_or_none()
+        card_transaction = self._session.query(
+            CardTransaction).filter_by(**kwargs).one_or_none()
 
         if not card_transaction:
             raise NoResultFound

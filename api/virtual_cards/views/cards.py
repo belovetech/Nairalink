@@ -5,7 +5,7 @@ from flask import Flask, jsonify, abort, request
 from sqlalchemy.orm.exc import NoResultFound
 from models.engine.db import DB
 from api.virtual_cards.views import app_views
-from api.worker.processor import send_transaction_status
+from worker.processor import send_transaction_status
 from helpers.fundCard import fund_card
 from datetime import datetime
 
@@ -47,7 +47,8 @@ async def create_card():
                 return jsonify({'error': 'Card brand can either be Visa, Verve, or Mastercard'}), 400
 
             res = fund_card(customer_id, 1000)
-            if not res: return jsonify({'error': "Unable to create card"}), 500
+            if not res:
+                return jsonify({'error': "Unable to create card"}), 500
             resDict = res.json()
 
             if resDict['status'] == 'failed':
@@ -101,7 +102,7 @@ def get_card_details(card_number):
         card_details = db.find_card_id(card_number)
         return jsonify({'card_details': card_details})
     except NoResultFound as err:
-        return jsonify({'error': 'Could not find card with id:{}'.format(card_number)})
+        return jsonify({'error': 'Card does not exist'})
 
 @app_views.route('/cards/<card_number>', methods=["PATCH"], strict_slashes=False)
 def update_card_status(card_number, status=""):
