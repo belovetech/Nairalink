@@ -4,7 +4,7 @@ from os import getenv
 from typing import List
 from datetime import datetime
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, desc
 from sqlalchemy.orm.session import Session
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import InvalidRequestError
@@ -44,19 +44,23 @@ class DB:
     def create_card(self, customer_id: int, brand: str,
                     currency: str, name: str, pin: int) -> Card:
         """Add a new card to the database"""
-        card_number = generateCardNumber()
-        date_created = datetime.now()
-        date_updated = datetime.now()
-        cvv = generateCVV()
-        expiry_date = setExpiryDate()
-        card = Card(customer_id=customer_id, card_brand=brand,
-                    card_currency=currency,
-                    name_on_card=name, pin=pin,
-                    date_created=date_created, date_updated=date_updated,
-                    cvv=cvv, card_number=card_number, expiry_date=expiry_date)
-        self._session.add(card)
-        self._session.commit()
-        return card
+        try:
+            card_number = generateCardNumber()
+            date_created = datetime.now()
+            date_updated = datetime.now()
+            cvv = generateCVV()
+            expiry_date = setExpiryDate()
+            card = Card(customer_id=customer_id, card_brand=brand,
+                        card_currency=currency,
+                        name_on_card=name, pin=pin,
+                        date_created=date_created, date_updated=date_updated,
+                        cvv=cvv, card_number=card_number, expiry_date=expiry_date)
+            self._session.add(card)
+            self._session.commit()
+            return card
+        except Exception as err:
+            print(err)
+        return None
 
     def find_card_by(self, **kwargs) -> Card:
         """Find card from DB by key-value pairs argument"""
@@ -69,9 +73,9 @@ class DB:
             raise NoResultFound
         return card
 
-    def find_card_id(self, card_id: int) -> Card:
-        """Get card details by using card_id"""
-        card = self.find_card_by(card_number=card_id)
+    def find_card_number(self, customer_id: int) -> Card:
+        """Get card details by using card_number"""
+        card = self.find_card_by(customer_id=customer_id)
         if not card:
             raise NoResultFound
         card_details = {}
@@ -83,18 +87,20 @@ class DB:
 
     def update_card(self, card_number: int, **kwargs) -> None:
         """Update card details based on card ID"""
-        if not self.valid_query_args_cards(**kwargs):
-            raise ValueError
-
-        card = self.find_card_by(card_number=card_number)
-        if not card:
-            raise NoResultFound
-
-        for key, value in kwargs.items():
-            setattr(card, key, value)
-        card.date_updated = datetime.now()
-
-        self._session.commit()
+        try:
+            if not self.valid_query_args_cards(**kwargs):
+                raise ValueError
+            card = self.find_card_by(card_number=card_number)
+            if not card:
+                raise NoResultFound
+            for key, value in kwargs.items():
+                setattr(card, key, value)
+            card.date_updated = datetime.now()
+            self._session.commit()
+        except Exception as err:
+            self._session.rollback()
+            return False
+        return True
 
     def valid_query_args_cards(self, **kwargs):
         """Get table columns or keys"""
@@ -115,10 +121,10 @@ class DB:
             objs.append(obj)
         return objs
 
-    def all_cardTransactions(self, card_id) -> List[CardTransaction]:
+    def all_cardTransactions(self) -> List[CardTransaction]:
         """Returns all cards"""
         objs = []
-        cards = self._session.query(CardTransaction).all().order_by(card_id)
+        cards = self._session.query(CardTransaction).order_by(desc(CardTransaction.datetime_updated)).all()
         for card in cards:
             obj = card.__dict__.copy()
             if obj['_sa_instance_state']:
@@ -135,12 +141,13 @@ class DB:
             self._session.commit()
             return transaction
         except Exception as err:
+            print(err)
             self._session.rollback()
             return None
 
     def find_transaction_by(self, **kwargs) -> CardTransaction:
         """Find card from DB by key-value pairs argument"""
-        if not kwargs or not self.valid_query_args_transactions(**kwargs):
+        if not kwargs or not self.valid_query_args_transaction(**kwargs):
             raise InvalidRequestError
 
         card_transaction = self._session.query(
@@ -152,16 +159,18 @@ class DB:
 
     def update_card_transaction(self, transaction_id: str, **kwargs) -> None:
         """Update card transaction details based on card ID"""
-        if not self.valid_query_args(**kwargs):
-            raise ValueError
-
-        card_transaction = self.find_transaction_by(id=transaction_id)
-
-        for key, value in kwargs.items():
-            setattr(card, key, value)
-        card_transaction.datetime_updated = datetime.now()
-
-        self._session.commit()
+        try:
+            if not self.valid_query_args_transaction(**kwargs):
+                raise ValueError
+            card_transaction = self.find_transaction_by(id=transaction_id)
+            for key, value in kwargs.items():
+                setattr(card_transaction, key, value)
+            card_transaction.datetime_updated = datetime.now()
+            self._session.commit()
+        except Exception as err:
+            print(err)
+            return False
+        return True
 
     def valid_query_args_transaction(self, **kwargs):
         """Get table columns or keys"""

@@ -11,8 +11,7 @@ class CardTransaction(Base):
     """
     __tablename__ = "cardTransactions"
     id = Column(String(55), primary_key=True)
-    card_id = Column(String(55), ForeignKey(
-        'cards.card_number'), nullable=False),
+    card_number = Column(String(55), ForeignKey('cards.card_number'), nullable=False),
     transaction_type = Column(String(20), nullable=False)
     description = Column(String(60), nullable=True)
     currency = Column(String(10), nullable=False)

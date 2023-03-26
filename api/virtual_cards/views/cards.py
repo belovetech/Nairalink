@@ -47,8 +47,8 @@ async def create_card():
                 return jsonify({'error': 'Card brand can either be Visa, Verve, or Mastercard'}), 400
 
             res = fund_card(customer_id, 1000)
-            if not res:
-                return jsonify({'error': "Unable to create card"}), 500
+            if res is None:
+                return jsonify({'error': "server error"}), 500
             resDict = res.json()
 
             if resDict['status'] == 'failed':
@@ -57,7 +57,7 @@ async def create_card():
             card = db.create_card(customer_id, card_brand, card_currency, name_on_card, pin)
             transaction = db.create_transaction(
                 id=resDict['data']['transactionId'],
-                card_id=card.card_number,
+                card_number=card.card_number,
                 transaction_type='card_creation',
                 description='Charge for card creation',
                 currency='NGN',
@@ -85,7 +85,7 @@ async def create_card():
             }), 201
 
         except Exception as err:
-                return jsonify({'error': "Unable to create card"}), 500
+                return jsonify({'error': "server Error. unable to create card"}), 500
 
     return jsonify({'error': "Not a dictionary"}), 401
 
@@ -99,7 +99,7 @@ def get_all_cards():
 def get_card_details(card_number):
     """Get a card registered to a user by card id"""
     try:
-        card_details = db.find_card_id(card_number)
+        card_details = db.find_card_number(card_number)
         return jsonify({'card_details': card_details})
     except NoResultFound as err:
         return jsonify({'error': 'Card does not exist'})
