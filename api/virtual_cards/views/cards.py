@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Module that handles all default RESTful API actions for card
 """
-from flask import Flask, jsonify, abort, request
+from flask import Flask, jsonify, request
 from sqlalchemy.orm.exc import NoResultFound
-from models.engine.db import DB
+from models.engine.card import Cards
+from models.engine.transaction import Transaction
 from api.virtual_cards.views import app_views
 from worker.processor import send_transaction_status
 from helpers.fundCard import fund_card
@@ -17,7 +18,9 @@ queue = Queue(connection=redis_conn)
 
 
 app = Flask(__name__)
-db = DB()
+# db = DB()
+cd = Cards()
+tr = Transaction()
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 
@@ -26,7 +29,6 @@ async def create_card():
     """Create a new virtual card"""
     data = request.get_json()
     accepted_card_brands = ['Visa', 'Mastercard', 'Verve']
-
     if type(data) is dict:
         if "customer_id" in data:
             customer_id = data['customer_id']
@@ -50,12 +52,11 @@ async def create_card():
             if res is None:
                 return jsonify({'error': "server error"}), 500
             resDict = res.json()
-
             if resDict['status'] == 'failed':
                 return jsonify({'error': resDict['message']})
 
-            card = db.create_card(customer_id, card_brand, card_currency, name_on_card, pin)
-            transaction = db.create_transaction(
+            card = cd.create_card(customer_id, card_brand, card_currency, name_on_card, pin)
+            transaction = tr.create_transaction(
                 id=resDict['data']['transactionId'],
                 card_number=card.card_number,
                 transaction_type='card_creation',
@@ -85,6 +86,7 @@ async def create_card():
             }), 201
 
         except Exception as err:
+                print(err)
                 return jsonify({'error': "server Error. unable to create card"}), 500
 
     return jsonify({'error': "Not a dictionary"}), 401
@@ -92,14 +94,14 @@ async def create_card():
 @app_views.route('/cards', methods=['GET'], strict_slashes=False)
 def get_all_cards():
     """Get all cards registered"""
-    cards = db.all_cards()
+    cards = cd.all_cards()
     return jsonify({"cards": cards})
 
 @app_views.route('/cards/<card_number>', methods=['GET'], strict_slashes=False)
 def get_card_details(card_number):
     """Get a card registered to a user by card id"""
     try:
-        card_details = db.find_card_number(card_number)
+        card_details = cd.find_card_number(card_number)
         return jsonify({'card_details': card_details})
     except NoResultFound as err:
         return jsonify({'error': 'Card does not exist'})
@@ -115,7 +117,7 @@ def update_card_status(card_number, status=""):
 
     try:
         try:
-            db.update_card(card_number=card_number, status=status)
+            cd.update_card(card_number=card_number, status=status)
         except NoResultFound as err:
             return jsonify({'error': 'Could not find card with id:{}'.format(card_number)})
 

@@ -3,7 +3,7 @@
 """
 from flask import Flask, jsonify, abort, request
 from sqlalchemy.orm.exc import NoResultFound
-from models.engine.db import DB
+from models.engine.transaction import Transaction
 from worker.processor import send_transaction_status
 from helpers.fundCard import fund_card
 from api.virtual_cards.views import app_views
@@ -16,7 +16,8 @@ redis_conn = Redis()
 queue = Queue(connection=redis_conn)
 
 app = Flask(__name__)
-db = DB()
+tr = Transaction()
+
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 
@@ -24,7 +25,6 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 async def fund_virtual_card():
     """Fund a  virtual card"""
     data = request.get_json()
-    print(type(data) is dict)
     if type(data) == dict:
         # get customer ID from req.user.userId
         if "customer_id" not in data or not data['customer_id']:
@@ -37,7 +37,7 @@ async def fund_virtual_card():
         amount = int(data['amount'])
         customer_id = data['customer_id']
         try:
-            customer_card = db.find_card_number(customer_id=customer_id)
+            customer_card = tr.find_card_number(customer_id=customer_id)
         except NoResultFound as err:
             return jsonify({'error': 'Customer does not exist'}), 404
         try:
@@ -47,7 +47,7 @@ async def fund_virtual_card():
             resDict = res.json()
             if resDict['status'] == 'failed':
                 return jsonify({'error': resDict['message']})
-            transaction = db.create_transaction(
+            transaction = tr.create_transaction(
                 id=resDict['data']['transactionId'],
                 card_number=customer_card['card_number'],
                 transaction_type='credit',
@@ -66,14 +66,14 @@ async def fund_virtual_card():
                 job_info = queue.enqueue(send_transaction_status, job)
                 print("Could not create a transaction for this request")
                 return jsonify({'error': "Unable to perform transaction"}), 500
-            updated = db.update_card(customer_card['card_number'],
+            updated = tr.update_card(customer_card['card_number'],
                                      balance=int(customer_card['balance']) + amount)
             if not updated:
-                db.update_card_transaction(transaction.id, status='failed')
+                tr.update_card_transaction(transaction.id, status='failed')
                 job_info = queue.enqueue(send_transaction_status, job)
                 print("Could not update customer's balance")
                 return jsonify({'error': "Unable to perform transaction"}), 500
-            db.update_card_transaction(transaction.id, status='success')
+            tr.update_card_transaction(transaction.id, status='success')
             job['status'] = 'successful'
             job_info = queue.enqueue(send_transaction_status, job)
             print('Transaction with ID {} has been sent for update'.format(job.get('transactionId')))
@@ -85,5 +85,6 @@ async def fund_virtual_card():
 
 @app_views.route('/cards/transactions', methods=['GET'], strict_slashes=False)
 def get_all_cardTransactions():
-    cardTransactions = db.all_cardTransactions()
+    cardTransactions = tr.all_cardTransactions()
+    print(cardTransactions)
     return jsonify({"cardTransactions": cardTransactions})
