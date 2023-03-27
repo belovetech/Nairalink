@@ -20,7 +20,6 @@ class DB:
 
         if "ENV" == "test":
             Base.metadata.drop_all(self.__engine)
-
         Base.metadata.create_all(self.__engine)
         self.__session = None
 

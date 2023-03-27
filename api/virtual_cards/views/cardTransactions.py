@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """Module that handles all default RESTful API actions for cardTransactions
 """
+from datetime import datetime
 from flask import Flask, jsonify, abort, request
 from sqlalchemy.orm.exc import NoResultFound
 from models.engine.transaction import Transaction
+from models.engine.card import Cards
 from worker.processor import send_transaction_status
 from helpers.fundCard import fund_card
+from worker.notificationProcessor import phone_notification
 from api.virtual_cards.views import app_views
-from datetime import datetime
 
 from rq import Queue
 from redis import Redis
@@ -17,6 +19,8 @@ queue = Queue(connection=redis_conn)
 
 app = Flask(__name__)
 tr = Transaction()
+cd = Cards()
+
 
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
@@ -37,11 +41,11 @@ async def fund_virtual_card():
         amount = int(data['amount'])
         customer_id = data['customer_id']
         try:
-            customer_card = tr.find_card_number(customer_id=customer_id)
+            customer_card = cd.find_card_number(customer_id=customer_id)
         except NoResultFound as err:
             return jsonify({'error': 'Customer does not exist'}), 404
         try:
-            res = fund_card(customer_id, amount, data['description'])
+            res = fund_card(customer_id, amount)
             if res is None:
                 return jsonify({'error': 'Server error'}), 500
             resDict = res.json()
@@ -66,7 +70,7 @@ async def fund_virtual_card():
                 job_info = queue.enqueue(send_transaction_status, job)
                 print("Could not create a transaction for this request")
                 return jsonify({'error': "Unable to perform transaction"}), 500
-            updated = tr.update_card(customer_card['card_number'],
+            updated = cd.update_card(customer_card['card_number'],
                                      balance=int(customer_card['balance']) + amount)
             if not updated:
                 tr.update_card_transaction(transaction.id, status='failed')
@@ -75,7 +79,11 @@ async def fund_virtual_card():
                 return jsonify({'error': "Unable to perform transaction"}), 500
             tr.update_card_transaction(transaction.id, status='success')
             job['status'] = 'successful'
+
+            phone_job = {"phone_number":customer_card['phone_number'], "amount":amount, "balance": customer_card['balance'] }
             job_info = queue.enqueue(send_transaction_status, job)
+            phoneJob_info = queue.enqueue(phone_notification, customer_card)
+            print('Card funding notification job sent to {}'.format(customer_card['phone_number']))
             print('Transaction with ID {} has been sent for update'.format(job.get('transactionId')))
             return jsonify({'message': 'card has been funded'}), 201
         except ValueError as err:

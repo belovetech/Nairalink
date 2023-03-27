@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 """Module that handles all default RESTful API actions for card
 """
+from datetime import datetime
 from flask import Flask, jsonify, request
 from sqlalchemy.orm.exc import NoResultFound
 from models.engine.card import Cards
 from models.engine.transaction import Transaction
 from api.virtual_cards.views import app_views
 from worker.processor import send_transaction_status
+from worker.notificationProcessor import email_notification
 from helpers.fundCard import fund_card
-from datetime import datetime
 
 from rq import Queue
 from redis import Redis
@@ -18,7 +19,6 @@ queue = Queue(connection=redis_conn)
 
 
 app = Flask(__name__)
-# db = DB()
 cd = Cards()
 tr = Transaction()
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
@@ -40,6 +40,10 @@ async def create_card():
             name_on_card = data['name_on_card']
         if "pin" in data:
             pin = data['pin']
+        if "email" in data:
+            email = data['email'],
+        if "phone_number" in data:
+            phone_number = data['phone_number']
         else:
             return jsonify({'error': 'Wrong parameters'}), 400
 
@@ -55,7 +59,7 @@ async def create_card():
             if resDict['status'] == 'failed':
                 return jsonify({'error': resDict['message']})
 
-            card = cd.create_card(customer_id, card_brand, card_currency, name_on_card, pin)
+            card = cd.create_card(customer_id, card_brand, card_currency, name_on_card, pin, email, phone_number)
             transaction = tr.create_transaction(
                 id=resDict['data']['transactionId'],
                 card_number=card.card_number,
@@ -75,8 +79,10 @@ async def create_card():
 
             job_info = queue.enqueue(send_transaction_status, job)
             print('Transaction with ID {} has been sent for update'.format(job.get('transactionId')))
-
             expiry = datetime.strptime(str(card.expiry_date), '%Y-%m-%d %H:%M:%S')
+
+            emailJob_info = queue.enqueue(email_notification, card)
+            print('Card creation notification job sent to {}'.format(card.email))
             return jsonify({
                 "card holder": card.name_on_card,
                 'card_number': card.card_number,

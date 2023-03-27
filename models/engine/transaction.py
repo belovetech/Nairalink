@@ -60,6 +60,7 @@ class Transaction(DB):
             card_transaction.datetime_updated = datetime.now()
             self._session.commit()
         except Exception as err:
+            self._session.rollback()
             print(err)
             return False
         return True

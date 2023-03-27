@@ -14,7 +14,7 @@ class Cards(DB):
         super().__init__()
 
     def create_card(self, customer_id: str, brand: str,
-                    currency: str, name: str, pin: str) -> Card:
+                    currency: str, name: str, pin: str, email: str, phone_number: str) -> Card:
         """Add a new card to the database"""
         try:
             card_number = generateCardNumber()
@@ -26,6 +26,7 @@ class Cards(DB):
                         card_brand=brand,
                         card_currency=currency,
                         name_on_card=name, pin=pin,
+                        email=email, phone_number=phone_number,
                         date_created=date_created,
                         date_updated=date_updated,
                         cvv=cvv, card_number=card_number,expiry_date=expiry_date)
@@ -33,6 +34,7 @@ class Cards(DB):
             self._session.commit()
             return card
         except Exception as err:
+            self._session.rollback()
             print(err)
         return None
 

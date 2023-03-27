@@ -14,6 +14,8 @@ class Card(Base):
     card_number = Column(String(255), nullable=True, primary_key=True)
     customer_id = Column(String(45), nullable=False, unique=True)
     name_on_card = Column(String(255), nullable=False)
+    email = Column(String(55), nullable=False)
+    phone_number = Column(String(55), nullable=False)
     card_brand = Column(String(15), nullable=False, default="VISA")
     card_currency = Column(String(3), nullable=False, default="NGN")
     pin = Column(String(4), nullable=False)
