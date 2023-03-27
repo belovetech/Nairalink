@@ -1,0 +1,4 @@
+Worker listening for mail jobs
+Completed job 2 successfully, sent message to belovetech@gmail.com
+Completed job 3 successfully, sent message to belovetech@gmail.com
+Completed job 4 successfully, sent message to belovetech@gmail.com

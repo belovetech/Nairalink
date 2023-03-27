@@ -4,7 +4,9 @@
   "description": "",
   "main": "service.js",
   "scripts": {
-    "start": "node --trace-warnings service.js",
+    "start-service": "node --trace-warnings service.js > log.txt &",
+    "start-app": "nodemon ./app.js",
+    "start": "npm run start-service && npm run start-app",
     "test-email": "node emailJob.js",
     "test-phone": "node phoneJob.js"
   },
@@ -14,6 +16,8 @@
   "dependencies": {
     "bullmq": "^3.10.1",
     "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "handlebars": "^4.7.7",
     "mailgun.js": "^8.2.1",
     "twilio": "^4.8.0"
   }

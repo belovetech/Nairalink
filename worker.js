@@ -5,7 +5,7 @@ const PhoneMail = require('./phoneProcessor');
 const worker = new Worker(
   'notification',
   async (job) => {
-    switch(job.name) {
+    switch (job.name) {
       case 'email-message': {
         await SendMail(job);
         break;
