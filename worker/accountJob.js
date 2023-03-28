@@ -16,7 +16,10 @@ const createAccount = async (customer) => {
     email: customer.email,
   };
   (async () => {
-    await queue.add('create-account', job);
+    await queue.add('create-account', job, {
+      attempts: 3,
+      backoff: { type: 'exponential', delay: 1000 },
+    });
     console.info(`Enqueued create an account for ${job.firstName}`);
   })();
 };
