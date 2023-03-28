@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "./node_modules/.bin/eslint",
     "check-lint": "lint [0-9]*.js",
-    "start-server": "NODE_ENV=production nodemon --exec babel-node --presets @babel/preset-env ./server.js",
+    "start-server": "NODE_ENV=production nodemon --exec babel-node --presets @babel/preset-env ./server.js > server.txt",
     "start-worker": "nodemon --exec babel-node --presets @babel/preset-env ./worker/service.js > log.txt &",
     "start": "npm run start-worker && npm run start-server",
     "dev": "nodemon --exec babel-node --presets @babel/preset-env",

@@ -6,7 +6,7 @@ const { NotificationClient } = require('./notification');
 
 const sendEmailRegistrationPin = async (email, subject, payload, template) => {
   const notification = new NotificationClient({
-    connection: { host: 'localhost', port: 6379 },
+    connection: { host: process.env.REDIS_HOST, port: process.env.REDIS_PORT },
   });
 
   const source = fs.readFileSync(path.join(__dirname, template), 'utf8');

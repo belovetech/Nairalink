@@ -2,7 +2,7 @@ const { NotificationClient } = require('./notification');
 
 async function sendPhoneRegistrationPin(phoneNumber, pin) {
   const notification = new NotificationClient({
-    connection: { host: 'localhost', port: 6379 },
+    connection: { host: process.env.REDIS_HOST, port: process.env.REDIS_PORT },
   });
   const job = {
     body: `Your Verification token ${pin}`,
