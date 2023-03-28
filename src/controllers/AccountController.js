@@ -6,9 +6,9 @@ import Account from '../models/Account';
 class AccountController {
   static async createAccount(req, res, next) {
     try {
-      const { accountNumber, firstName, lastName, email } = req.body;
+      const { userId, accountNumber, firstName, lastName, email } = req.body;
       const account = await Account.create({
-        userId: uuidv4(),
+        userId,
         accountNumber,
         firstName,
         lastName,

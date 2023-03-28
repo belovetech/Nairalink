@@ -4,3 +4,5 @@ node_modules/
 /src/migrations/*
 /**/config.js
 /**/config.json
+todo.md
+log.txt

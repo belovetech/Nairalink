@@ -14,6 +14,37 @@ It is highly recommended to use a minimum Redis version of 6.2.0
            Current: 6.0.16
 It is highly recommended to use a minimum Redis version of 6.2.0
            Current: 6.0.16
+Executing (default): SELECT `balance` FROM `accounts` AS `accounts` WHERE `accounts`.`accountNumber` = 7042095602;
+Executing (default): SELECT `balance` FROM `accounts` AS `accounts` WHERE `accounts`.`accountNumber` = 9038028588;
+Enqueued an mobile alert to +2347042095602
+Enqueued an mobile alert to +2349038028588
+Completed job 53 successfully, transaction with fb92f2bb-ccb0-46ed-b5c1-49db1e93a736
+Completed job 54 successfully, transaction with fb92f2bb-ccb0-46ed-b5c1-49db1e93a736
+Executing (default): SELECT `balance` FROM `accounts` AS `accounts` WHERE `accounts`.`accountNumber` = 7042095602;
+Enqueued an mobile alert to +2347042095602
+Completed job 55 successfully, transaction with c6f92b6a-aaea-452a-97ff-9612a641a13e
+Executing (default): SELECT `balance` FROM `accounts` AS `accounts` WHERE `accounts`.`accountNumber` = 9038028588;
+Enqueued an mobile alert to +2349038028588
+Completed job 56 successfully, transaction with c6f92b6a-aaea-452a-97ff-9612a641a13e
+Executing (default): SELECT `balance` FROM `accounts` AS `accounts` WHERE `accounts`.`accountNumber` = 7042095602;
+Enqueued an mobile alert to +2347042095602
+Completed job 57 successfully, transaction with 2e49efcf-3e67-42af-8fbd-f80e23ac9964
+Executing (default): SELECT `balance` FROM `accounts` AS `accounts` WHERE `accounts`.`accountNumber` = 9038028588;
+Enqueued an mobile alert to +2349038028588
+Completed job 58 successfully, transaction with 2e49efcf-3e67-42af-8fbd-f80e23ac9964
+Executing (default): SELECT `balance` FROM `accounts` AS `accounts` WHERE `accounts`.`accountNumber` = 7042095602;
+Enqueued an mobile alert to +2347042095602
+Completed job 59 successfully, transaction with 2eeb30bb-1714-4445-982b-5ed0bd542b6a
+Executing (default): SELECT `balance` FROM `accounts` AS `accounts` WHERE `accounts`.`accountNumber` = 9038028588;
+Enqueued an mobile alert to +2349038028588
+Completed job 60 successfully, transaction with 2eeb30bb-1714-4445-982b-5ed0bd542b6a
+Executing (default): SELECT `balance` FROM `accounts` AS `accounts` WHERE `accounts`.`accountNumber` = 7042095602;
+Enqueued an mobile alert to +2347042095602
+Completed job 61 successfully, transaction with 1517d4cc-624b-4a06-a2a6-3703d3123de7
+Executing (default): SELECT `balance` FROM `accounts` AS `accounts` WHERE `accounts`.`accountNumber` = 9038028588;
+Enqueued an mobile alert to +2349038028588
+Completed job 62 successfully, transaction with 1517d4cc-624b-4a06-a2a6-3703d3123de7
+[32m[nodemon] restarting due to changes...[39m
 [32m[nodemon] restarting due to changes...[39m
 [32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
 Worker listening for credit and debit alert jobs
@@ -23,6 +54,47 @@ It is highly recommended to use a minimum Redis version of 6.2.0
            Current: 6.0.16
 It is highly recommended to use a minimum Redis version of 6.2.0
            Current: 6.0.16
-Executing (default): SELECT `balance` FROM `accounts` AS `accounts` WHERE `accounts`.`accountNumber` = 8109211864;
-Enqueued an mobile alert to +2348109211864
-Completed job 100 successfully, transaction with b9191dbc-387a-47c5-96d3-3566d746a6a0
+Executing (default): SELECT `balance` FROM `accounts` AS `accounts` WHERE `accounts`.`accountNumber` = 7042095602;
+Executing (default): SELECT `balance` FROM `accounts` AS `accounts` WHERE `accounts`.`accountNumber` = 9038028588;
+Enqueued an mobile alert to +2347042095602
+Enqueued an mobile alert to +2349038028588
+Completed job 63 successfully, transaction with 1ea46cbb-b4cc-4e41-ad92-2c239b2be3cc
+Completed job 64 successfully, transaction with 1ea46cbb-b4cc-4e41-ad92-2c239b2be3cc
+Executing (default): SELECT `balance` FROM `accounts` AS `accounts` WHERE `accounts`.`accountNumber` = 7042095602;
+Enqueued an mobile alert to +2347042095602
+Completed job 65 successfully, transaction with 38d47c2f-9e1e-4bf9-a16c-c22c249aa8af
+Executing (default): SELECT `balance` FROM `accounts` AS `accounts` WHERE `accounts`.`accountNumber` = 7042095602;
+Enqueued an mobile alert to +2347042095602
+Completed job 66 successfully, transaction with 3a5740d9-ef53-439a-8c7e-8644efe7ef9b
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16

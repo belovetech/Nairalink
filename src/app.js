@@ -9,7 +9,6 @@ import router from './routes/index';
 const app = express();
 
 app.use(cors());
-
 app.use(
   bodyParser.json({
     verify(req, res, buf) {
@@ -20,7 +19,6 @@ app.use(
     },
   })
 );
-
 app.use('/api/v1', router);
 
 app.all('*', (req, res) => {

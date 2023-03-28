@@ -276,7 +276,7 @@ class TransactionController {
     }
   }
   static async fundCard(req, res, next) {
-    const { customerId, amount, description } = req.body;
+    const { customerId, amount } = req.body;
     const t = await sequelize.transaction();
     try {
       const customerAccount = await Account.findOne({
@@ -312,7 +312,7 @@ class TransactionController {
             toAccount: customerAccount.accountNumber,
             amount,
             transactionStatus: 'pending',
-            transactionDescription: description || 'Card funding',
+            transactionDescription: 'Card funding',
           },
           { transaction: t }
         ),
