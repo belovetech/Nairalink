@@ -7,6 +7,7 @@ const morgan = require('morgan');
 const mongoSanitizer = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
+const path = require('path');
 const GlobalErrorHandler = require('./helpers/errorHandler');
 const AppError = require('./helpers/AppError');
 
@@ -15,6 +16,7 @@ const AuthRouter = require('./routes/authRouter');
 const verificationRouter = require('./routes/verificationRouter');
 
 const app = express();
+app.use(express.static(path.join(__dirname, './public')));
 
 app.use(express.json());
 app.use(cookieParser());
@@ -31,6 +33,10 @@ const limiter = rateLimit({
   message: 'Too many request from this IP, Please try again in 15 mins.',
 });
 app.use('/api', limiter);
+
+app.get('/api/auth-docs', (req, res) => {
+  res.sendFile(path.join(__dirname, './public/index.html'));
+});
 
 // ROUTER MIDDLEWARE
 app.use('/api/v1/auth', AuthRouter);

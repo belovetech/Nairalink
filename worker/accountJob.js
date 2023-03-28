@@ -9,6 +9,7 @@ const queue = new Queue('account', {
 
 const createAccount = async (customer) => {
   const job = {
+    userId: customer._id,
     accountNumber: customer.phoneNumber.slice(1),
     firstName: customer.firstName,
     lastName: customer.lastName,
