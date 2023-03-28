@@ -1,7 +1,7 @@
 const http = require('http');
 
 const options = {
-  hostname: 'localhost',
+  hostname: process.env.ACCOUNTS_HOST,
   port: 3000,
   protocol: 'http:',
   method: 'POST',

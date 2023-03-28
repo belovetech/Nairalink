@@ -3,7 +3,7 @@
 /* eslint-disable comma-dangle */
 const dotenv = require('dotenv');
 
-dotenv.config({ path: './.config.env' });
+dotenv.config({ path: '../.config.env' });
 
 const worker = require('./worker');
 
