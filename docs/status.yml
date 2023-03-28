@@ -1,0 +1,18 @@
+Redirect to a Real URL
+
+---
+
+
+tags:
+  - Cards
+parameters:
+  - in: path
+    name:status
+    required: true
+
+Responses:
+  302:
+    description: Redirects permanently
+  404:
+    descirption: Resouces was not found
+

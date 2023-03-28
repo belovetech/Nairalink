@@ -95,4 +95,7 @@ async def fund_virtual_card():
 def get_all_cardTransactions():
     cardTransactions = tr.all_cardTransactions()
     print(cardTransactions)
-    return jsonify({"cardTransactions": cardTransactions})
+    return jsonify({
+        "results": len(cardTransactions),
+        "cardTransactions": cardTransactions
+    })

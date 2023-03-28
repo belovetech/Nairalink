@@ -5,6 +5,7 @@ from os import getenv
 from flask import Flask, jsonify, Blueprint
 from api.virtual_cards.views import app_views
 
+
 app = Flask(__name__)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 

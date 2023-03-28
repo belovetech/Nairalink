@@ -101,7 +101,7 @@ async def create_card():
 def get_all_cards():
     """Get all cards registered"""
     cards = cd.all_cards()
-    return jsonify({"cards": cards})
+    return jsonify({"results": len(cards), "cards": cards})
 
 @app_views.route('/cards/<card_number>', methods=['GET'], strict_slashes=False)
 def get_card_details(card_number):
