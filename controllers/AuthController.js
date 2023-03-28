@@ -106,7 +106,10 @@ class AuthController {
   static async logout(req, res, next) {
     try {
       const { authorization } = req.headers;
-      if (!authorization || !authorization.startsWith('Bearer ')) {
+      if (!authorization) {
+        return next(new AppError('Unauthorised', 401));
+      }
+      if (!authorization.startsWith('Bearer ')) {
         return next(new AppError('Unauthorised', 401));
       }
       const token = authorization.split(' ')[1];
@@ -138,7 +141,10 @@ class AuthController {
   static async protect(req, res, next) {
     let token;
     const { authorization } = req.headers;
-    if (authorization || authorization.startsWith('Bearer ')) {
+    if (!authorization) {
+      return next(new AppError('Unauthorised', 401));
+    }
+    if (uthorization.startsWith('Bearer ')) {
       token = authorization.split(' ')[1];
     } else if (req.cookies.jwt) {
       token = req.cookies.jwt;

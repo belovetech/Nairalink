@@ -128,7 +128,7 @@ class CustomerController {
         return next(new AppError('Forbidden', 403));
       }
 
-      return res.status(204).end({ status: 'success' });
+      return res.status(204).json({ status: 'success' });
     } catch (err) {
       return next(err);
     }
