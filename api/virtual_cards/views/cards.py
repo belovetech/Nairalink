@@ -107,8 +107,19 @@ def get_all_cards():
 def get_card_details(card_number):
     """Get a card registered to a user by card id"""
     try:
-        card_details = cd.find_card_number(card_number)
-        return jsonify({'card_details': card_details})
+        card = cd.find_card_number(card_number)
+        expiry = datetime.strptime(str(card['expiry_date']), '%Y-%m-%d %H:%M:%S')
+        return jsonify({'card_details': {
+            'customer_id': card['customer_id'],
+            "card holder": card['name_on_card'],
+            'card_number': card['card_number'],
+            'card_brand': card['card_brand'],
+            'CVV': card['cvv'],
+            'balance': card['balance'],
+            'pin': card['pin'],
+            'status': card['status'],
+            'expiry': f'{expiry.month}/{str(expiry.year)[2:]}'
+        }}), 200
     except NoResultFound as err:
         return jsonify({'error': 'Card does not exist'})
 
@@ -123,9 +134,12 @@ def update_card_status(card_number, status=""):
 
     try:
         try:
-            cd.update_card(card_number=card_number, status=status)
+            updated_card = cd.update_card(card_number=card_number,
+                                          status=status)
+            if not updated_card:
+                return jsonify({'error': 'Could not find card with id:{}'.format(card_number)})
         except NoResultFound as err:
-            return jsonify({'error': 'Could not find card with id:{}'.format(card_number)})
+            return jsonify({'error': 'Could not update card with id:{}'.format(card_number)})
 
         if status == "inactive":
             return jsonify({'message': 'Virtual card with card id {} has been deactivated'.format(card_number)})

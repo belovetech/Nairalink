@@ -55,7 +55,7 @@ async def fund_virtual_card():
                 id=resDict['data']['transactionId'],
                 card_number=customer_card['card_number'],
                 transaction_type='credit',
-                description=data['description'],
+                description=data.get('description', None),
                 datetime_created = datetime.now(),
                 datetime_updated = datetime.now(),
                 currency=customer_card['card_currency'],
