@@ -10,6 +10,8 @@ servers:
 paths:
   /notifications:
     post:
+      tags:
+        - Notification
       summary: Send sms notification.
       requestBody:
         required: true
@@ -42,6 +44,8 @@ paths:
 
   /notification:
     post:
+      tags:
+        - Notification
       summary: Send phone notification.
       requestBody:
         required: true

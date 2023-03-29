@@ -1,1 +1,5 @@
 Worker listening for mail jobs
+Completed job 110 successfully, sent message to +2347042095602
+Completed job 111 successfully, sent message to +2349038028588
+Completed job 112 successfully, sent message to +2349038028588
+Completed job 113 successfully, sent message to +2347042095602

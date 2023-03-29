@@ -12,7 +12,16 @@ const swaggerDocument = YAML.parse(file);
 app.use(express.json());
 app.use(router);
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+const options = {
+  explorer: true,
+  customSiteTitle: 'Notification',
+};
+
+app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument, options)
+);
 
 app.get('/status', (req, res) => {
   res.status(200).json({ msg: 'Everything is cool!' });
