@@ -1,7 +1,6 @@
 /* eslint-disable object-curly-newline */
-import { v4 as uuidv4 } from 'uuid';
-import ApiFeatures from '../utils/ApiFeatures';
-import Account from '../models/Account';
+const ApiFeatures = require('../utils/ApiFeatures');
+const Account = require('../models/Account');
 
 class AccountController {
   static async createAccount(req, res, next) {
@@ -16,6 +15,11 @@ class AccountController {
       });
       return res.status(201).json(account.toJSON());
     } catch (error) {
+      if (error.message === 'Validation error') {
+        return res
+          .status(400)
+          .json({ error: 'This user has already have Nairalink account' });
+      }
       console.log(error);
       return next(error);
     }
@@ -24,7 +28,6 @@ class AccountController {
   static async getAccount(req, res, next) {
     try {
       const { userId } = req.params;
-      console.log(userId);
       const account = await Account.findByPk(userId);
       if (!account) {
         return res.status(404).json({ message: 'Account not found' });

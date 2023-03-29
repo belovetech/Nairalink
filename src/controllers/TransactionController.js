@@ -362,4 +362,4 @@ class TransactionController {
   }
 }
 
-export default TransactionController;
+module.exports = TransactionController;

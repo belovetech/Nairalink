@@ -1,12 +1,28 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-unused-vars */
 /* eslint-disable comma-dangle */
-import express from 'express';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import router from './routes/index';
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const swaggerUI = require('swagger-ui-express');
+const fs = require('fs');
+const YAML = require('yaml');
+const router = require('./routes/index');
 
 const app = express();
+
+// Swagger Documentation config
+const file = fs.readFileSync('src/swagger.yaml', 'utf8');
+const swaggerDocument = YAML.parse(file);
+const options = {
+  explorer: true,
+  customSiteTitle: 'Nairalink',
+};
+app.use(
+  '/api-docs',
+  swaggerUI.serve,
+  swaggerUI.setup(swaggerDocument, options)
+);
 
 app.use(cors());
 app.use(

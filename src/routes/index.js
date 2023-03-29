@@ -1,24 +1,23 @@
-import { Router } from 'express';
-import AccountController from '../controllers/AccountController';
-import TransacationController from '../controllers/TransactionController';
+const express = require('express');
+const AccountController = require('../controllers/AccountController');
+const TransactionController = require('../controllers/TransactionController');
 
-const router = Router();
+const router = express.Router();
 
 router.post('/accounts', AccountController.createAccount);
 router.get('/accounts', AccountController.getAccounts);
 router.get('/accounts/:userId', AccountController.getAccount);
 router.delete('/accounts/:userId', AccountController.deleteAccount);
 
-router.post('/transactions/transfer', TransacationController.transfer);
-router.get('/transactions', TransacationController.getTransactions);
-router.get('/transactions/:userId', TransacationController.accountTransaction);
-router.post('/transaction/fund-card', TransacationController.fundCard);
-router.post('/transactions/webhook', TransacationController.fundAccount);
-router.post('/transactions/:userId/fund', TransacationController.prepareToFund);
-
+router.post('/transactions/transfer', TransactionController.transfer);
+router.get('/transactions', TransactionController.getTransactions);
+router.get('/transactions/:userId', TransactionController.accountTransaction);
+router.post('/transaction/fund-card', TransactionController.fundCard);
+router.post('/transactions/webhook', TransactionController.fundAccount);
+router.post('/transactions/fund-account', TransactionController.prepareToFund);
 router.post(
   '/transactions/fund-card/update',
-  TransacationController.UpdateFundCardTransaction
+  TransactionController.UpdateFundCardTransaction
 );
 
-export default router;
+module.exports = router;
