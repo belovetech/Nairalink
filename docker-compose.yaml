@@ -16,7 +16,23 @@ services:
       - nairalink-backend
       - nairalink-authentication
     ports:
-      - 5000:5000
+      - 5100:5000
+
+  notifications-api:
+    build:
+      context: ./notification-service
+      dockerfile: Dockerfile
+    image: notifications-api:dev
+    container_name: notifications-api
+    volumes:
+      - /hom/node/app/node_modules
+      - ./notification-service:/home/node/app
+    env_file:
+      - ./notification-service/.env
+    networks:
+      - nairalink-backend
+    ports:
+      - 5600:5500
 
   redis-db:
     build:
@@ -27,7 +43,7 @@ services:
     volumes:
       - /nairalink/db/redis:/data
     ports:
-      - 6380:6379
+      - 6479:6379
     networks:
       - nairalink-backend
 
@@ -45,7 +61,7 @@ services:
     volumes:
       - /nairalink/db/accounts:/var/lib/mysql
     ports:
-      - 3307:3306
+      - 3406:3306
     networks:
       - nairalink-accounts
 
@@ -63,7 +79,7 @@ services:
     volumes:
       - /nairalink/db/cards:/var/lib/mysql
     ports:
-      - 3308:3306
+      - 3506:3306
     networks:
       - nairalink-cards
 
