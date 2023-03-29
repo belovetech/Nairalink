@@ -1,6 +1,23 @@
 version: "3.8"
 
 services:
+  accounts-api:
+    build: 
+      context: ./accounts-service
+      dockerfile: Dockerfile
+    image: accounts-api:dev
+    container_name: accounts-api
+    volumes:
+      - /home/node/app/node_modules
+      - ./accounts-service:/home/node/app
+    env_file:
+      - ./accounts-service/.env
+    networks:
+      - nairalink-backend
+      - nairalink-accounts
+    ports:
+      - 3100:3000
+
   auth-api:
     build: 
       context: ./auth-service
