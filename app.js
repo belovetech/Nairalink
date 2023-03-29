@@ -1,26 +1,24 @@
 const express = require('express');
-const emailNotification = require('./helpers/emailNotification');
-const phoneNotification = require('./helpers/phoneNotification');
+const router = require('./index');
+const swaggerUi = require('swagger-ui-express');
+const fs = require('fs');
+const YAML = require('yaml');
 
 const app = express();
+
+const file = fs.readFileSync('./swagger.yaml', 'utf8');
+const swaggerDocument = YAML.parse(file);
+
 app.use(express.json());
+app.use(router);
 
-app.post('/api/v1/notifications', async (req, res) => {
-  const payload = { ...req.body };
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-  switch (payload.type) {
-    case 'sms': {
-      phoneNotification(payload);
-    }
-    case 'email': {
-      emailNotification(payload);
-    }
-  }
-  return res
-    .status(200)
-    .json({ message: `Received and processing  ${payload.type} notification` });
+app.get('/status', (req, res) => {
+  res.status(200).json({ msg: 'Everything is cool!' });
 });
 
-app.listen(6000, () => {
-  console.log('Notification listening on port 6000');
+const port = 3000;
+app.listen(port, () => {
+  console.log('Notification listening on port ', port);
 });
