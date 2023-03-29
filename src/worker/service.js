@@ -1,9 +1,14 @@
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable function-paren-newline */
 /* eslint-disable comma-dangle */
+const path = require('path');
 const dotenv = require('dotenv');
 
-dotenv.config({ path: './.config.env' });
+if (process.env.NODE_ENV === 'development') {
+  dotenv.config({ path: path.join(__dirname, '/../../.env') });
+} else {
+  dotenv.config({ path: path.join(__dirname, '/../../.config.env') });
+}
 
 const worker = require('./worker');
 

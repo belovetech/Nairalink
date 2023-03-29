@@ -155,9 +155,7 @@ class TransactionController {
 
   static async prepareToFund(req, res, next) {
     try {
-      const stripe = require('stripe')(
-        'sk_test_51Mo4KaEvDiZFauUw5ilvvPxDaXxOVZm6TZXu2y0h3zGAwHpAhPzkZYAbT8YQ4A13SAyj5fwkN72TXoWwz0YYyP1R00OFGPM0DV'
-      );
+      const stripe = require('stripe')(process.env.STRIPE_API_KEY);
       const { userId } = req.params;
       const { amount, cardDetails, shipping, email } = req.body;
 
@@ -208,16 +206,11 @@ class TransactionController {
 
   static async fundAccount(req, res, next) {
     try {
-      const stripe = require('stripe')(
-        'sk_test_51Mo4KaEvDiZFauUw5ilvvPxDaXxOVZm6TZXu2y0h3zGAwHpAhPzkZYAbT8YQ4A13SAyj5fwkN72TXoWwz0YYyP1R00OFGPM0DV'
-      );
-      const endpointSecret =
-        'whsec_f66a92a327d78729af9d5194a10395069d775ae4e9f91e32728c856e1d8f239b';
-
+      const stripe = require('stripe')(process.env.STRIPE_API_KEY);
+      const endpointSecret = process.env.STRIPE_CLI_ENDPOINT_SECRET;
       const signature = req.headers['stripe-signature'];
 
       let event;
-
       try {
         event = stripe.webhooks.constructEvent(
           req.rawBody,

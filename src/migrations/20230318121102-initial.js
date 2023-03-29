@@ -14,12 +14,11 @@ module.exports = {
     return queryInterface.sequelize.transaction((t) =>
       Promise.all([
         queryInterface.createTable(
-          'accounts',
-          {
+          'accounts', {
             userId: {
-              type: Sequelize.DataTypes.UUID,
-              defaultValue: Sequelize.DataTypes.UUIDV4,
+              type: Sequelize.DataTypes.STRING,
               allowNull: false,
+              primaryKey: true,
               unique: true,
             },
             accountType: {
@@ -84,8 +83,15 @@ module.exports = {
             },
             balance: {
               type: Sequelize.DataTypes.DECIMAL(12, 2),
-              defaultValue: 0.0,
+              defaultValue: Number(0).toFixed(2),
               allowNull: false,
+              set(value) {
+                if (typeof value === 'number') {
+                  this.setDataValue('balance', value.toFixed(2));
+                } else {
+                  throw new TypeError('Value passed to balance setter must be a number.');
+                }
+              },
               validate: {
                 is: {
                   args: /^[0-9]*\.[0-9]{2}$/i,
@@ -105,8 +111,7 @@ module.exports = {
           { transaction: t }
         ),
         queryInterface.createTable(
-          'transactions',
-          {
+          'transactions', {
             transactionId: {
               type: Sequelize.DataTypes.UUID,
               defaultValue: Sequelize.DataTypes.UUIDV4,
@@ -126,7 +131,7 @@ module.exports = {
               },
               set(value) {
                 if (this.transactionType === 'fund') {
-                  this.setDataValue('fromAccount', 1111111111);
+                  this.setDataValue('fromAccount', this.toAccount);
                 } else {
                   this.setDataValue('fromAccount', value);
                 }
@@ -141,7 +146,7 @@ module.exports = {
               },
               set(value) {
                 if (this.transactionType === 'withdraw') {
-                  this.setDataValue('toAccount', 7777777777);
+                  this.setDataValue('toAccount', this.fromAccount);
                 } else {
                   this.setDataValue('toAccount', value);
                 }
@@ -160,11 +165,7 @@ module.exports = {
               type: Sequelize.DataTypes.STRING(100),
             },
             transactionStatus: {
-              type: Sequelize.DataTypes.ENUM([
-                'successful',
-                'pending',
-                'failed',
-              ]),
+              type: Sequelize.DataTypes.ENUM(['successful', 'pending', 'failed']),
               allowNull: false,
             },
             createdAt: {
