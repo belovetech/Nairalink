@@ -18,7 +18,7 @@ app.get('/status', (req, res) => {
   res.status(200).json({ msg: 'Everything is cool!' });
 });
 
-const port = 3000;
+const port = 8080;
 app.listen(port, () => {
   console.log('Notification listening on port ', port);
 });
