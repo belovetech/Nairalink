@@ -35,16 +35,14 @@ const sendProError = (err, req, res) => {
 
   //   Render website
   if (err.isOperational) {
-    return res.status(err.statusCode).render('error', {
-      title: 'Something went wrong!',
-      msg: err.message,
+    return res.status(err.statusCode).json({
+      error: `Something went wrong! ${err.message}.`
     });
   }
 
   console.log('ERROR 🔥:', err);
-  return res.status(err.statusCode).render('error', {
-    title: 'Something went wrong!',
-    msg: 'Please try again later.',
+  return res.status(err.statusCode).json({
+    error: 'Something went wrong! Please try again later.'
   });
 };
 

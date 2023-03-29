@@ -1,0 +1,67 @@
+[33m[nodemon] 2.0.22[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching path(s): *.*[39m
+[33m[nodemon] watching extensions: js,mjs,json[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env ./server.js`[39m
+Server listening on port 5000
+DB connection succssfully!
+{
+  authorization: 'Bearer uyuyfuytfiytryitritri6i76r65r6',
+  'content-type': 'application/x-www-form-urlencoded',
+  host: 'nairalink_authentication',
+  connection: 'close',
+  'content-length': '13',
+  'user-agent': 'curl/7.68.0',
+  accept: '*/*'
+}
+[0mPOST /oauth/token [32m200[0m 29.698 ms - 138[0m
+{
+  customerid: '65687875556',
+  email: 'mendyslam@gmail.com',
+  phonenumber: '07061755048',
+  firstname: 'Mendy',
+  lastname: 'Slam',
+  uri: '/api/v1/customers/getMe',
+  host: 'nairalink_authentication',
+  connection: 'close',
+  'content-length': '13',
+  'user-agent': 'curl/7.68.0',
+  accept: '*/*',
+  'content-type': 'application/json',
+  authorization: 'Bearer uyuyfuytfiytryitritri6i76r65r6'
+}
+{ who: 'me' }
+[0mGET /api/v1/customers/getMe [32m200[0m 21.559 ms - 2[0m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env ./server.js`[39m
+Server listening on port 5000
+DB connection succssfully!
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env ./server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env ./server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env ./server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env ./server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env ./server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env ./server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env ./server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env ./server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env ./server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env ./server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env ./server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env ./server.js`[39m
+Error Route.post() requires a callback function but got a [object Undefined]
+UNCAUGHT EXCEPTION SHUTTING DOWN...
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m

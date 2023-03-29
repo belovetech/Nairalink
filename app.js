@@ -34,6 +34,8 @@ const limiter = rateLimit({
 });
 app.use('/api', limiter);
 
+app.post('/oauth/token', AuthRouter.authenticate);
+
 app.get('/api/auth-docs', (req, res) => {
   res.sendFile(path.join(__dirname, './public/index.html'));
 });

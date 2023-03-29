@@ -12,13 +12,13 @@ router.get('/stats', AppController.getStats);
 router.get('/status', AppController.getStatus);
 
 // Protect all routes after this middleware
-router.use(AuthController.protect);
-router.get('/getMe', CustomerController.getMe, CustomerController.getCustomer);
+// router.use(AuthController.protect);
+router.get('/getMe', CustomerController.getMe);
 router.patch('/updateMe', CustomerController.updateMe);
 router.delete('/deleteMe', CustomerController.deleteMe);
 
 // All these routes are restricted to only admin(s) and moderator(s)
-router.use(restrictTo(['admin', 'moderator']));
+// router.use(restrictTo(['admin', 'moderator']));
 router
   .route('/')
   .post(CustomerController.createCustomer)

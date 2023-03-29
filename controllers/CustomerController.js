@@ -75,8 +75,11 @@ class CustomerController {
   }
 
   static async getMe(req, res, next) {
-    req.params.id = req.user.id;
-    next();
+    console.log(req.headers);
+    console.log(req.body);
+    return res.status(200).json({});
+    // req.params.id = req.user.id;
+    // next();
   }
 
   static async updateMe(req, res, next) {

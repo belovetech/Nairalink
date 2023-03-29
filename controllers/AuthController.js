@@ -144,7 +144,7 @@ class AuthController {
     if (!authorization) {
       return next(new AppError('Unauthorised', 401));
     }
-    if (uthorization.startsWith('Bearer ')) {
+    if (authorization.startsWith('Bearer ')) {
       token = authorization.split(' ')[1];
     } else if (req.cookies.jwt) {
       token = req.cookies.jwt;
@@ -181,6 +181,54 @@ class AuthController {
         return next(new AppError('Server error...', 500));
       }
       return next(error);
+    }
+  }
+
+  static async authenticate(req, res) {
+    let token = undefined;
+    const { authorization, uri } = req.headers;
+    if (!authorization) {
+      return res.status(401).json({ active: false});
+    }
+    if (authorization.startsWith('Bearer ')) {
+      token = authorization.split(' ')[1];
+    }
+    if (!token) {
+      return res.status(401).json({ active: false});
+    }
+    try {
+      const valid = await redisClient.get(`auth_${token}`);
+      if (valid === null) {
+        return res.status(403).json({ active: false});
+      }
+
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const CurrentCustomer = await Customer.findOne({
+        _id: decoded.customerId,
+      });
+      if (!CurrentCustomer) {
+        return res.status(401).json({ active: false});
+      }
+      if (CurrentCustomer.passwordChangeAfter(decoded.iat)) {
+        return res.status(401).json({ active: false});
+      }
+      if (uri === '/api/v1/accounts' || uri === '/api/v1/cards') {
+        return res.status(200).json({
+          customerid: CurrentCustomer._id,
+          email: CurrentCustomer.email,
+          phonenumber: CurrentCustomer.phoneNumber,
+          firstname: CurrentCustomer.firstName,
+          lastname: CurrentCustomer.lastName,
+        });
+      }
+      return res.status(200).json({
+        customerid: CurrentCustomer._id,
+      });
+    } catch (error) {
+      if (error.message === 'invalid signature') {
+        return res.status(401).json({ active: false});
+      }
+      return res.status(500).json({ active: false});
     }
   }
 
