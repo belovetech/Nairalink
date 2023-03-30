@@ -2,7 +2,7 @@
 
 This is authentication service repository for Nairalink project
 
-
+```
 info:
   title: Auth Service API
   description: This is the API documentation for authentication and authorization.
@@ -16,7 +16,7 @@ consumes:
   - application/json
 produces:
   - application/json
-
+```
 ## PATHS
 paths:
 *  /auth/signup:
