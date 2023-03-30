@@ -1,0 +1,50 @@
+openapi: 3.0.0
+servers:
+  - url: http://localhost:8000/api/v1
+tags:
+  - name: card_transactions
+
+definitions:
+  CardTransaction:
+    type: object
+    properties:
+      id:
+        type: string
+      card_number:
+        type: string
+      transaction_type:
+        type: string
+      description:
+        type: string
+      currency:
+        type: string
+      amount:
+        type: string
+      status:
+        type: string
+      datetime_created:
+        type: string
+        format: date
+      datetime_updated:
+        type: string
+        format: date
+
+parameters:
+  - name: card_transactions
+    in: body
+    type: object
+    description: fund Nairalink virtual card
+    properties:
+      customer_id:
+        type: string
+        example: 6422f8d3cea5142afdfa0d12
+      amount:
+        type: string
+        example: 1000
+responses:
+  '201':
+    description: card has been funded
+  '400':
+    description: invalid amount, must be a number.
+  '500':
+    description: Internal Server Error

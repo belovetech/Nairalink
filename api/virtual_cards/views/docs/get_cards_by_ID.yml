@@ -1,0 +1,19 @@
+openapi: 3.0.0
+servers:
+  - url: http://localhost:8000/api/v1
+tags:
+  - name: cards
+parameters:
+  - name: customer_id
+    in: path
+    description: Return Nairalink virtual card by ID
+    placeholder: 1234-0987-2344-4672
+get:
+  description: Get Nairalink virtual card by ID
+responses:
+  '201':
+    description: Successful created
+  '400':
+    description: Wrong parameters
+  '500':
+    description: Internal Server Error

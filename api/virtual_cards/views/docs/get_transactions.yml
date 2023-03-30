@@ -1,0 +1,12 @@
+openapi: 3.0.0
+servers:
+  - url: http://localhost:8000/api/v1
+tags:
+  - name: card_transactions
+get:
+  description: Returns all Nairalink virtual card transactions
+responses:
+  '200':
+    description: OK
+  '500':
+    description: Internal Server Error

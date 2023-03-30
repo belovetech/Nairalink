@@ -1,8 +1,8 @@
 openapi: 3.0.0
 tags:
-  - name: Card service server status from docs
+  - name: cards
 get:
-  description: None
+  description: Check status of card service API
 responses:
   '200':
     description: Successful response

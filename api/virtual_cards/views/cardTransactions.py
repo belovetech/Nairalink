@@ -10,7 +10,7 @@ from worker.processor import send_transaction_status
 from helpers.fundCard import fund_card
 from worker.notificationProcessor import phone_notification
 from api.virtual_cards.views import app_views
-
+from flasgger import swag_from
 from rq import Queue
 from redis import Redis
 
@@ -25,6 +25,7 @@ cd = Cards()
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 
+@swag_from('docs/post_transaction.yml')
 @app_views.route('/cards/transactions', methods=['POST'], strict_slashes=False)
 async def fund_virtual_card():
     """Fund a  virtual card"""
@@ -91,6 +92,7 @@ async def fund_virtual_card():
                 return jsonify({'error': "Unable to perform transaction"}), 400
     return jsonify({'error': "Not a dictionary"}), 401
 
+@swag_from('docs/get_transactions.yml')
 @app_views.route('/cards/transactions', methods=['GET'], strict_slashes=False)
 def get_all_cardTransactions():
     cardTransactions = tr.all_cardTransactions()

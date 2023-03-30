@@ -10,6 +10,7 @@ from api.virtual_cards.views import app_views
 from worker.processor import send_transaction_status
 from worker.notificationProcessor import email_notification
 from helpers.fundCard import fund_card
+from flasgger import swag_from
 
 from rq import Queue
 from redis import Redis
@@ -23,7 +24,7 @@ cd = Cards()
 tr = Transaction()
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
-
+@swag_from('docs/post_cards.yml', methods=['POST'])
 @app_views.route('/cards', methods=['POST'], strict_slashes=False)
 async def create_card():
     """Create a new virtual card"""
@@ -97,12 +98,14 @@ async def create_card():
 
     return jsonify({'error': "Not a dictionary"}), 401
 
+@swag_from('docs/get_cards.yml', methods=['GET'])
 @app_views.route('/cards', methods=['GET'], strict_slashes=False)
 def get_all_cards():
     """Get all cards registered"""
     cards = cd.all_cards()
     return jsonify({"results": len(cards), "cards": cards})
 
+@swag_from('docs/get_cards_by_ID.yml', methods=['GET'])
 @app_views.route('/cards/<card_number>', methods=['GET'], strict_slashes=False)
 def get_card_details(card_number):
     """Get a card registered to a user by card id"""
@@ -123,6 +126,7 @@ def get_card_details(card_number):
     except NoResultFound as err:
         return jsonify({'error': 'Card does not exist'})
 
+@swag_from('docs/update_card.yml')
 @app_views.route('/cards/<card_number>', methods=["PATCH"], strict_slashes=False)
 def update_card_status(card_number, status=""):
     """Updates the status of a virtual card"""

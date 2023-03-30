@@ -1,0 +1,26 @@
+openapi: 3.0.0
+servers:
+  - url: http://localhost:8000/api/v1
+    description: Cards base URL
+
+paths:
+  /cards:
+    summary: Cards endpoint
+tags:
+  - name: cards
+parameters:
+  - name: card_number
+    in: body
+    type: object
+    description: Updates the status of a virtual card
+    properties:
+      card_number:
+        type: string
+        example: 5551-5677-2345-8642
+patch:
+  description: This endpoint is used to update the status of Nairalink virtual cards either to active, inactive or terminated.
+responses:
+  '201':
+    description: Virtual card with card id 5551-5677-2345-8642 has been activated
+  '400':
+    description: Could not update status of virtual card
