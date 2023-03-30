@@ -1058,6 +1058,7 @@ definitions:
 components:
   schemas:
    * Customer:
+```
       type: object
       properties:
         id:
@@ -1076,7 +1077,9 @@ components:
         updatedAt:
           type: string
           format: date-time
-   * CustomerCreate:
+```
+ CustomerCreate:
+```
       type: object
       properties:
         firstName:
@@ -1098,7 +1101,9 @@ components:
         email: leomart@gmail.com
         password: '123ert%&PO'
         passwordConfirmation: '123ert%&PO'
-  *  CustomerUpdate:
+```
+ CustomerUpdate:
+```
       type: object
       properties:
         firstName:
@@ -1111,17 +1116,22 @@ components:
         firstName: frello
         lastName: richard
         userName: frechard
- *   StatsResponse:
+```
+  StatsResponse:
+```
       type: object
       properties:
         customers:
           type: integer
       required:
         - customers
-*   Status:
+```
+   Status:
+```
       type: object
       properties:
         db:
           type: boolean
         redis:
           type: boolean
+```
