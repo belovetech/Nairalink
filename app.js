@@ -11,6 +11,8 @@ const path = require('path');
 const GlobalErrorHandler = require('./helpers/errorHandler');
 const AppError = require('./helpers/AppError');
 
+const AuthController = require('./controllers/AuthController');
+
 const CustomerRouter = require('./routes/customerRouter');
 const AuthRouter = require('./routes/authRouter');
 const verificationRouter = require('./routes/verificationRouter');
@@ -34,7 +36,7 @@ const limiter = rateLimit({
 });
 app.use('/api', limiter);
 
-app.post('/oauth/token', AuthRouter.authenticate);
+app.post('/oauth/token', AuthController.authenticate);
 
 app.get('/api/auth-docs', (req, res) => {
   res.sendFile(path.join(__dirname, './public/index.html'));

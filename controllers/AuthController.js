@@ -186,7 +186,7 @@ class AuthController {
 
   static async authenticate(req, res) {
     let token = undefined;
-    const { authorization, uri } = req.headers;
+    const { authorization } = req.headers;
     if (!authorization) {
       return res.status(401).json({ active: false});
     }
