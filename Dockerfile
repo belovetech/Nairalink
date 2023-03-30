@@ -12,7 +12,7 @@ RUN npm install
 # stage two
 FROM node:gallium-alpine3.17
 
-Expose 5000
+EXPOSE 5000
 
 ENV NODE_ENV=development
 

@@ -17,6 +17,7 @@ const redisClient = require('../db/redis');
 const generateJWToken = require('../helpers/generateJWToken');
 const verificationPin = require('../helpers/verificationPin');
 const verificationToken = require('../helpers/verificationToken');
+const validator = require('email-validator');
 
 class AuthController {
   static async signup(req, res, next) {
@@ -71,6 +72,9 @@ class AuthController {
     try {
       if (!email || !password) {
         return next(new AppError('Invalid login credentials', 400));
+      }
+      if (!validator.validate(email)) {
+        return next(new AppError('Invalid email', 400));
       }
       let customer = await Customer.findOne({ email });
       if (!customer) {
