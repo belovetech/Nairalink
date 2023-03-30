@@ -15,7 +15,7 @@ module.exports = {
       Promise.all([
         queryInterface.createTable(
           'accounts', {
-            userId: {
+            customerId: {
               type: Sequelize.DataTypes.STRING,
               allowNull: false,
               primaryKey: true,

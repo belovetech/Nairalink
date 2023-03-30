@@ -5,13 +5,13 @@ const Account = require('../models/Account');
 class AccountController {
   static async createAccount(req, res, next) {
     try {
-      const { userId, accountNumber, firstName, lastName, email } = req.body;
+      const { customerid, accountnumber, firstname, lastname, email } = req.body;
       const account = await Account.create({
-        userId,
-        accountNumber,
-        firstName,
-        lastName,
-        email,
+        customerId: customerid,
+        accountNumber: accountnumber,
+        firstName: firstname,
+        lastName: lastname,
+        email: email,
       });
       return res.status(201).json(account.toJSON());
     } catch (error) {
@@ -27,8 +27,8 @@ class AccountController {
 
   static async getAccount(req, res, next) {
     try {
-      const { userId } = req.params;
-      const account = await Account.findByPk(userId);
+      const { customerId } = req.params;
+      const account = await Account.findByPk(customerId);
       if (!account) {
         return res.status(404).json({ message: 'Account not found' });
       }
@@ -63,13 +63,13 @@ class AccountController {
 
   static async deleteAccount(req, res, next) {
     try {
-      const { userId } = req.params;
-      console.log(userId);
-      const account = await Account.findByPk(userId);
+      const { customerId } = req.params;
+      console.log(customerId);
+      const account = await Account.findByPk(customerId);
       if (account === null) {
         return res.status(404).json({ error: 'User does not have an account' });
       }
-      await Account.destroy({ where: { userId } });
+      await Account.destroy({ where: { customerId } });
       return res.status(204).end();
     } catch (err) {
       return next(err);

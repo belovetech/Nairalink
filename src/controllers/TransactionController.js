@@ -21,12 +21,16 @@ class TransactionController {
   static async transfer(req, res) {
     // Get the request body
     let transact;
-    const { userId, creditAccountNumber, amount, description } = req.body;
+    const customerId = req.headers.customerid;
+    if (!customerId) {
+      return res.status(400).json({error: 'Unknown customer' });
+    }
+    const { creditAccountNumber, amount, description } = req.body;
     const t = await sequelize.transaction();
     try {
       const results = await Promise.all([
         Account.findOne({
-          where: { userId },
+          where: { customerId },
           lock: t.LOCK.UPDATE,
           transaction: t,
         }),
@@ -125,8 +129,8 @@ class TransactionController {
 
   static async accountTransaction(req, res, next) {
     try {
-      const { userId } = req.params;
-      const account = await Account.findByPk(userId);
+      const { customerId } = req.params;
+      const account = await Account.findByPk(customerId);
       if (!account) {
         return res.status(404).json({ message: 'Account not found' });
       }
@@ -156,10 +160,10 @@ class TransactionController {
   static async prepareToFund(req, res, next) {
     try {
       const stripe = require('stripe')(process.env.STRIPE_API_KEY);
-      const { userId } = req.params;
+      const { customerId } = req.headers.customerid;
       const { amount, cardDetails, shipping, email } = req.body;
 
-      const account = await Account.findByPk(userId);
+      const account = await Account.findByPk(customerId);
       if (!account) {
         return res.status(404).json({ message: 'Account not found' });
       }
@@ -273,7 +277,7 @@ class TransactionController {
     const t = await sequelize.transaction();
     try {
       const customerAccount = await Account.findOne({
-        where: { userId: customerId },
+        where: { customerId: customerId },
         lock: t.LOCK.UPDATE,
         transaction: t,
       });
@@ -295,7 +299,7 @@ class TransactionController {
         // customerAccount.save({ transaction: t }),
         Account.decrement(
           { balance: amount },
-          { where: { userId: customerId }, transaction: t }
+          { where: { customerId: customerId }, transaction: t }
         ),
         Transaction.create(
           {
@@ -333,6 +337,7 @@ class TransactionController {
       });
     }
   }
+
   static async UpdateFundCardTransaction(req, res, next) {
     const { transactionId, status } = req.body;
 

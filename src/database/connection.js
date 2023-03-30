@@ -3,7 +3,7 @@ import path from 'path';
 import { Sequelize } from 'sequelize';
 import { config } from 'dotenv';
 
-config({ path: path.join(__dirname, '/../config/.config.env') });
+config({ path: path.join(__dirname, '/../../.config.env') });
 
 const sequelize = new Sequelize(
   process.env.DB_NAME,

@@ -18,7 +18,7 @@ components:
     Account:
       type: object
       properties:
-        userId:
+        customerId:
           type: string
         accountNumber:
           type: integer
@@ -115,8 +115,8 @@ components:
       description: 'By default transactions are sorted by createdAt. You can sort by all the available fields Example **sort=amount**'
       schema:
         type: string
-    userId:
-      name: userId
+    customerId:
+      name: customerId
       in: path
       required: true
       example: 6422f8d3cea5142afdfa0d12
@@ -138,7 +138,7 @@ paths:
             schema:
               type: object
               properties:
-                userId:
+                customerId:
                   type: string
                   example: 6422f8d3cea5142afdfa0d12
                 accountNumber:
@@ -168,13 +168,13 @@ paths:
         200:
           description: Ok
 
-  /accounts/{userId}:
+  /accounts/{customerId}:
     get:
       tags:
         - accounts
       summary: Return Nairalink accounts by user ID
       parameters:
-        - $ref: '#/components/parameters/userId'
+        - $ref: '#/components/parameters/customerId'
       responses:
         200:
           description: Ok
@@ -184,7 +184,7 @@ paths:
         - accounts
       summary: Delete Nairalink accounts by user ID
       parameters:
-        - $ref: '#/components/parameters/userId'
+        - $ref: '#/components/parameters/customerId'
       responses:
         204:
           description: No Content
@@ -202,7 +202,7 @@ paths:
             schema:
               type: object
               properties:
-                userId:
+                customerId:
                   type: string
                   example: 6422acbdbcb51191a955629d
                 creditAccountNumber:
@@ -250,14 +250,14 @@ paths:
         200:
           description: Ok
 
-  /transactions/{userId}:
+  /transactions/{customerId}:
     get:
       tags:
         - transactions
       summary: Return a list of Nairalink transactions
       description: List of all Nairalink transactions
       parameters:
-        - $ref: '#/components/parameters/userId'
+        - $ref: '#/components/parameters/customerId'
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/limit'
         - $ref: '#/components/parameters/sort'
@@ -279,7 +279,7 @@ paths:
             schema:
               type: object
               properties:
-                userId:
+                customerId:
                   type: string
                   example: 6422f8d3cea5142afdfa0d12
                 amount:
