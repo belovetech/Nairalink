@@ -29,11 +29,11 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 @app_views.route('/cards/transactions', methods=['POST'], strict_slashes=False)
 async def fund_virtual_card():
     """Fund a  virtual card"""
+    customer_id = request.headers.get('customerid', None)
+    if customer_id is None:
+        return jsonify({'error': 'Service is unable identify this cutomer'}), 400
     data = request.get_json()
     if type(data) == dict:
-        # get customer ID from req.user.userId
-        if "customer_id" not in data or not data['customer_id']:
-            return jsonify({'error': 'something went wrong'}), 500
         try:
             if "amount" not in data or int(data['amount']) < 500:
                 return jsonify({'error': 'The minimum amount should be 500'}), 400

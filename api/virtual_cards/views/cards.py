@@ -28,11 +28,12 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 @app_views.route('/cards', methods=['POST'], strict_slashes=False)
 async def create_card():
     """Create a new virtual card"""
+    customer_id = request.headers.get('customerid', None)
+    if customer_id is None:
+        return jsonify({'error': 'Service is unable identify this cutomer'}), 400
     data = request.get_json()
     accepted_card_brands = ['Visa', 'Mastercard', 'Verve']
     if type(data) is dict:
-        if "customer_id" in data:
-            customer_id = data['customer_id']
         if "card_brand" in data:
             card_brand = data['card_brand']
         if "card_currency" in data:

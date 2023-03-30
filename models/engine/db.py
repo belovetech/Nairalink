@@ -11,9 +11,9 @@ class DB:
     """Database Connector class"""
     def __init__(self) -> None:
         """Initialises a new DB instance"""
-        DB_USER = getenv("DB_USER")
-        DB_PWD = getenv("DB_PWD")
-        DB_NAME = getenv("DB_NAME")
+        DB_USER = getenv("DB_USER", 'root')
+        DB_PWD = getenv("DB_PWD", '')
+        DB_NAME = getenv("DB_NAME", 'virtual_cards')
         ENV = getenv("ENV")
         self.__engine = create_engine("mysql+mysqldb://{}:{}@localhost:3306/{}"
                                       .format(DB_USER, DB_PWD, DB_NAME))
