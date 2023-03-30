@@ -2,7 +2,7 @@
 
 This is authentication service repository for Nairalink project
 
-swagger: "2.0"
+
 info:
   title: Auth Service API
   description: This is the API documentation for authentication and authorization.
@@ -17,11 +17,13 @@ consumes:
 produces:
   - application/json
 
+## PATHS
 paths:
-  /auth/signup:
-    post:
+*  /auth/signup:
+-    post:
       summary: Create a new user account
       description: Sign up a new user with email, password, and other required details
+```
       tags:
         - Authentication
       parameters:
@@ -44,11 +46,12 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ServerErrorResponse"
-
-  /auth/login:
-    post:
+```
+*  /auth/login:
+-    post:
       summary: User login
       description: Log in a user with email and password
+```
       tags:
         - Authentication
       parameters:
@@ -75,11 +78,12 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ServerErrorResponse"
-
-  /auth/logout:
-    post:
+```
+*  /auth/logout:
+-    post:
       summary: User logout
       description: Log out a user, clearing their authentication token
+```
       tags:
         - Authentication
       responses:
@@ -97,11 +101,12 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ServerErrorResponse"
-
-  /auth/protect:
-    get:
+```
+*  /auth/protect:
+-    get:
       summary: User authentication
       description: Protects the route for authenticated users only
+```
       tags:
         - Authentication
       responses:
@@ -119,11 +124,12 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ServerErrorResponse"
-
-  /auth/forgetPassword:
+```
+* /auth/forgetPassword:
     post:
       summary: Forget password
       description: Send a password reset link to the user's email
+```
       tags:
         - Authentication
       parameters:
@@ -146,11 +152,12 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ServerErrorResponse"
-
-  /auth/confirmResetPassword:
-    get:
+```
+* /auth/confirmResetPassword:
+-    get:
       summary: Confirm reset password URL
       description: Confirm the reset password URL
+```
       tags:
         - Authentication
       parameters:
@@ -181,9 +188,10 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ServerErrorResponse"
-
-  /auth/resetPassword/{token}:
-    post:
+```
+* /auth/resetPassword/{token}:
+-   post:
+```
       tags:
         - Authentication
       summary: Reset user password
@@ -213,9 +221,10 @@ paths:
           description: Internal server error
           schema:
             $ref: "#/definitions/ServerErrorResponse"
-
-  /auth/updatePassword:
-    put:
+```
+* /auth/updatePassword:
+-    put:
+```
       tags:
         - Authentication
       summary: Update user password
@@ -250,9 +259,10 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ServerErrorResponse"
-
-  /customers/stats:
-    get:
+```
+* /customers/stats:
+-    get:
+```
       tags:
         - Information
       summary: Get statistics
@@ -262,9 +272,10 @@ paths:
           description: Successful operation
           schema:
             $ref: "#/components/schemas/StatsResponse"
-
-  /customers/status:
-    get:
+```
+* /customers/status:
+-    get:
+```
       tags:
         - Information
       summary: Get API status
@@ -276,9 +287,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Status"
-
-  /customers/getMe:
-    get:
+```
+* /customers/getMe:
+-    get:
+```
       tags:
         - Customer
       summary: Get current customer
@@ -295,9 +307,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Customer"
-
-  /customers/updateMe:
-    patch:
+```
+* /customers/updateMe:
+-    patch:
+```
       tags:
         - Customer
       summary: Update current customer
@@ -325,9 +338,10 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ServerErrorResponse"
-
-  /customers/deleteMe:
-    delete:
+```
+* /customers/deleteMe:
+-    delete:
+```
       tags:
         - Customer
       summary: Delete current customer
@@ -356,9 +370,10 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ServerErrorResponse"
-
-  /customers/:
-    post:
+```
+* /customers/:
+-    post:
+```
       tags:
         - Customer
       summary: Create a customer
@@ -384,7 +399,9 @@ paths:
                   message:
                     type: string
                     description: failure message
-    get:
+```
+-    get:
+```
       tags:
         - Customer
       summary: Get all customers
@@ -407,9 +424,10 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ServerErrorResponse"
-
-  /customers/{id}:
-    get:
+```
+* /customers/{id}:
+-    get:
+```
       tags:
         - Customer
       summary: Get a customer by ID
@@ -436,8 +454,9 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ServerErrorResponse"
-
-    patch:
+```
+-   patch:
+```
       tags:
         - Customer
       summary: Update a customer by ID
@@ -470,8 +489,9 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ServerErrorResponse"
-
-    delete:
+```
+-    delete:
+```
       tags:
         - Customer
       summary: Delete a customer by ID
@@ -500,8 +520,9 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ServerErrorResponse"
-
-  /verify/token:
+```
+- /verify/token:
+```
     post:
       tags:
         - Verification
@@ -539,8 +560,9 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ServerErrorResponse"
-
-  /verify/verifyToken:
+```
+- /verify/verifyToken:
+```
     post:
       tags:
         - Verification
@@ -579,8 +601,9 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ServerErrorResponse"
-
-  /verify/PhoneToken:
+```
+- /verify/PhoneToken:
+```
     post:
       tags:
         - Verification
@@ -617,8 +640,9 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ServerErrorResponse"
-
-  /verify/verifyPhoneToken:
+```
+- /verify/verifyPhoneToken:
+```
     post:
       tags:
         - Verification
@@ -651,9 +675,10 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ServerErrorResponse"
-
-  /verify/EmailToken:
-    post:
+```
+- /verify/EmailToken:
+```
+  post:
       tags:
         - Verification
       summary: Send email verification token
@@ -670,8 +695,9 @@ paths:
       responses:
         200:
           description: Email Verification token sent
-
-  /verify/verifyEmailToken:
+```
+- /verify/verifyEmailToken:
+```
     post:
       tags:
         - Verification
@@ -708,9 +734,10 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ServerErrorResponse"
-
+```
 definitions:
-  Signup:
+-  Signup:
+```
     type: object
     properties:
       firstName:
@@ -740,8 +767,9 @@ definitions:
       phoneNumber: '08109211864'
       password: 'myp@$$w0rd'
       passwordConfirmation: 'myp@$$w0rd'
-
-  SignupResponse:
+```
+-  SignupResponse:
+```
     type: object
     properties:
       status:
@@ -762,8 +790,9 @@ definitions:
     required:
       - status
       - data
-
-  SignupResponseBadRequest:
+```
+- SignupResponseBadRequest:
+```
     type: object
     properties:
       error:
@@ -789,8 +818,9 @@ definitions:
             description: 'Error message for passwordConfirmation validation'
     required:
       - error
-
-  Login:
+```
+- Login:
+```
     type: object
     properties:
       email:
@@ -804,8 +834,9 @@ definitions:
     example:
       email: eladebayoor@gmail.com
       password: 'myp@$w0rd'
-
-  LoginResponse:
+```
+- LoginResponse:
+```
     type: object
     properties:
       token:
@@ -815,8 +846,9 @@ definitions:
     required:
       - token
       - customer
-
-  Customer:
+```
+- Customer:
+```
     type: object
     properties:
       id:
@@ -835,8 +867,9 @@ definitions:
       - lastName
       - email
       - phoneNumber
-
-  ForgetPassword:
+```
+- ForgetPassword:
+```
     type: object
     required:
       - email
@@ -846,8 +879,9 @@ definitions:
         format: email
     example:
       email: eladebayoor@gmail.com
-
-  forgetPasswordResponse:
+```
+- forgetPasswordResponse:
+```
     type: object
     properties:
       status:
@@ -859,8 +893,9 @@ definitions:
     required:
       - status
       - message
-
-  confirmResetPasswordResponse:
+```
+- confirmResetPasswordResponse:
+```
     type: object
     properties:
       status:
@@ -880,8 +915,9 @@ definitions:
       - id
       - token
       - message
-
-  resetPassword:
+```
+- resetPassword:
+```
     type: object
     properties:
       newPassword:
@@ -897,9 +933,10 @@ definitions:
     example:
       newPassword: 'myNe@#$Pass1'
       passwordConfirmation: 'myNe@#$Pass1'
-
-  resetPasswordResponse:
-    type: object
+```
+- resetPasswordResponse:
+```
+   type: object
     properties:
       status:
         type: string
@@ -910,8 +947,9 @@ definitions:
     required:
       - status
       - message
-
-  updatePassword:
+```
+- updatePassword:
+```
     type: object
     properties:
       currentPassword:
@@ -932,8 +970,9 @@ definitions:
       currentPassword: 'myNe@#$Pass1'
       newPassword: 'latestPassword1@#'
       newPasswordConfirmation: 'latestPassword1@#'
-
-  updatePasswordResponse:
+```
+- updatePasswordResponse:
+```
     type: object
     properties:
       status:
@@ -945,8 +984,9 @@ definitions:
     required:
       - status
       - message
-
-  UnauthorizedResponse:
+```
+- UnauthorizedResponse:
+```
     type: object
     properties:
       status:
@@ -958,8 +998,9 @@ definitions:
     required:
       - status
       - message
-
-  ForbiddenResponse:
+```
+- ForbiddenResponse:
+```
     type: object
     properties:
       status:
@@ -971,8 +1012,9 @@ definitions:
     required:
       - status
       - message
-
-  BadRequestResponse:
+```
+- BadRequestResponse:
+```
     type: object
     properties:
       status:
@@ -984,8 +1026,9 @@ definitions:
     required:
       - status
       - message
-
-  NotFoundResponse:
+```
+- NotFoundResponse:
+```
     type: object
     properties:
       status:
@@ -997,8 +1040,9 @@ definitions:
     required:
       - status
       - message
-
-  ServerErrorResponse:
+```
+- ServerErrorResponse:
+```
     type: object
     properties:
       status:
@@ -1010,10 +1054,10 @@ definitions:
     required:
       - status
       - message
-
+```
 components:
   schemas:
-    Customer:
+   * Customer:
       type: object
       properties:
         id:
@@ -1032,7 +1076,7 @@ components:
         updatedAt:
           type: string
           format: date-time
-    CustomerCreate:
+   * CustomerCreate:
       type: object
       properties:
         firstName:
@@ -1054,7 +1098,7 @@ components:
         email: leomart@gmail.com
         password: '123ert%&PO'
         passwordConfirmation: '123ert%&PO'
-    CustomerUpdate:
+  *  CustomerUpdate:
       type: object
       properties:
         firstName:
@@ -1067,14 +1111,14 @@ components:
         firstName: frello
         lastName: richard
         userName: frechard
-    StatsResponse:
+ *   StatsResponse:
       type: object
       properties:
         customers:
           type: integer
       required:
         - customers
-    Status:
+*   Status:
       type: object
       properties:
         db:
