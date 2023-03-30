@@ -26,7 +26,7 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 
 @swag_from('docs/post_transaction.yml')
-@app_views.route('/cards/transactions', methods=['POST'], strict_slashes=False)
+@app_views.route('/card/transactions', methods=['POST'], strict_slashes=False)
 async def fund_virtual_card():
     """Fund a  virtual card"""
     customer_id = request.headers.get('customerid', None)
@@ -93,7 +93,7 @@ async def fund_virtual_card():
     return jsonify({'error': "Not a dictionary"}), 401
 
 @swag_from('docs/get_transactions.yml')
-@app_views.route('/cards/transactions', methods=['GET'], strict_slashes=False)
+@app_views.route('/card/transactions', methods=['GET'], strict_slashes=False)
 def get_all_cardTransactions():
     cardTransactions = tr.all_cardTransactions()
     print(cardTransactions)

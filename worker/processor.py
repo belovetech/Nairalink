@@ -6,7 +6,7 @@ async def send_transaction_status(job):
     """
     """
     time.sleep(10)
-    url = 'http://localhost:3000/api/v1/transactions/fund-card/update'
+    url = 'http://localhost:3000/api/v1/transaction/fund-card/update'
 
     paylaod = {'transactionId': job.get('transactionId'),
                'status': job.get('status')}

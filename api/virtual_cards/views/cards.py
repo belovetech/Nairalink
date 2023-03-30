@@ -107,7 +107,7 @@ def get_all_cards():
     return jsonify({"results": len(cards), "cards": cards})
 
 @swag_from('docs/get_cards_by_ID.yml', methods=['GET'])
-@app_views.route('/cards/<card_number>', methods=['GET'], strict_slashes=False)
+@app_views.route('/card/<card_number>', methods=['GET'], strict_slashes=False)
 def get_card_details(card_number):
     """Get a card registered to a user by card id"""
     try:
@@ -128,7 +128,7 @@ def get_card_details(card_number):
         return jsonify({'error': 'Card does not exist'})
 
 @swag_from('docs/update_card.yml')
-@app_views.route('/cards/<card_number>', methods=["PATCH"], strict_slashes=False)
+@app_views.route('/card/<card_number>', methods=["PATCH"], strict_slashes=False)
 def update_card_status(card_number, status=""):
     """Updates the status of a virtual card"""
     data = request.get_json()
