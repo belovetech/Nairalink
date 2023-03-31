@@ -3,11 +3,18 @@ info:
   title: Auth Service API
   description: This is the API documentation for authentication and authorization.
   version: '1.0.0'
-host: 'localhost:5000'
+host: 'localhost'
 basePath: '/api/v1'
 schemes:
   - http
   - https
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+    description: >-
+      Enter the token with the `Bearer: ` prefix, e.g. "Bearer abcde12345".
 consumes:
   - application/json
 produces:
@@ -79,7 +86,7 @@ paths:
       tags:
         - Authentication
       security:
-        - bearerAuth: []
+        - Bearer: []
       responses:
         200:
           description: User logged out successfully
@@ -96,29 +103,29 @@ paths:
           schema:
             $ref: '#/definitions/ServerErrorResponse'
 
-  /auth/protect:
-    get:
-      summary: User authentication
-      description: Protects the route for authenticated users only
-      tags:
-        - Authentication
-      security:
-        - bearerAuth: []
-      responses:
-        200:
-          description: Access granted
-        401:
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/UnauthorizedResponse'
-        403:
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ForbiddenResponse'
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ServerErrorResponse'
+  # /auth/protect:
+  #   get:
+  #     summary: User authentication
+  #     description: Protects the route for authenticated users only
+  #     tags:
+  #       - Authentication
+  #     security:
+  #       - Bearer: []
+  #     responses:
+  #       200:
+  #         description: Access granted
+  #       401:
+  #         description: Unauthorized
+  #         schema:
+  #           $ref: '#/definitions/UnauthorizedResponse'
+  #       403:
+  #         description: Forbidden
+  #         schema:
+  #           $ref: '#/definitions/ForbiddenResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         schema:
+  #           $ref: '#/definitions/ServerErrorResponse'
 
   /auth/forgetPassword:
     post:
@@ -222,7 +229,7 @@ paths:
       description: This route updates the password for an authenticated user.
       operationId: updatePassword
       security:
-        - BearerAuth: []
+        - Bearer: []
       parameters:
         - in: header
           name: id
@@ -283,17 +290,11 @@ paths:
 
   /customers/getMe:
     get:
+      security:
+        - Bearer: []
       tags:
         - Customer
       summary: Get current customer
-      operationId: getMe
-      security:
-        - bearerAuth: []
-      parameters:
-        - in: params
-          name: id
-          description: update current customer
-          required: true
       responses:
         200:
           description: Successful operation
@@ -311,9 +312,8 @@ paths:
       tags:
         - Customer
       summary: Update current customer
-      operationId: updateMe
       security:
-        - bearerAuth: []
+        - Bearer: []
       parameters:
         - in: body
           name: body
@@ -321,11 +321,6 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/CustomerUpdate'
-        - in: header
-          name: id
-          type: string
-          required: true
-          description: The user ID
       responses:
         200:
           description: Successful operation
@@ -349,13 +344,7 @@ paths:
       summary: Delete current customer
       operationId: deleteMe
       security:
-        - bearerAuth: []
-      parameters:
-        - in: header
-          name: id
-          type: string
-          required: true
-          description: The user ID
+        - Bearer: []
       responses:
         204:
           description: Successful operation
@@ -375,175 +364,175 @@ paths:
           schema:
             $ref: '#/definitions/ServerErrorResponse'
 
-  /customers/:
-    post:
-      tags:
-        - Customer
-      summary: Create a customer
-      operationId: createCustomer
-      security:
-        - bearerAuth: []
-      parameters:
-        - in: body
-          name: body
-          description: update current customer
-          required: true
-          schema:
-            $ref: '#/components/schemas/CustomerCreate'
-      responses:
-        401:
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/UnauthorizedError'
-        405:
-          description: Not allowed
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    description: fail
-                  message:
-                    type: string
-                    description: failure message
-    get:
-      tags:
-        - Customer
-      summary: Get all customers
-      operationId: getAllCustomers
-      security:
-        - bearerAuth: []
-      responses:
-        200:
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  results:
-                    type: integer
-                  customers:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Customer'
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ServerErrorResponse'
+  # /customers/:
+  #   post:
+  #     tags:
+  #       - Customer
+  #     summary: Create a customer
+  #     operationId: createCustomer
+  #     security:
+  #       - Bearer: []
+  #     parameters:
+  #       - in: body
+  #         name: body
+  #         description: update current customer
+  #         required: true
+  #         schema:
+  #           $ref: '#/components/schemas/CustomerCreate'
+  #     responses:
+  #       401:
+  #         description: Unauthorized
+  #         schema:
+  #           $ref: '#/definitions/UnauthorizedError'
+  #       405:
+  #         description: Not allowed
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: object
+  #               properties:
+  #                 status:
+  #                   type: string
+  #                   description: fail
+  #                 message:
+  #                   type: string
+  #                   description: failure message
+  #   get:
+  #     tags:
+  #       - Customer
+  #     summary: Get all customers
+  #     operationId: getAllCustomers
+  #     security:
+  #       - Bearer: []
+  #     responses:
+  #       200:
+  #         description: Successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: object
+  #               properties:
+  #                 results:
+  #                   type: integer
+  #                 customers:
+  #                   type: array
+  #                   items:
+  #                     $ref: '#/components/schemas/Customer'
+  #       500:
+  #         description: Internal Server Error
+  #         schema:
+  #           $ref: '#/definitions/ServerErrorResponse'
 
-  /customers/{id}:
-    get:
-      tags:
-        - Customer
-      summary: Get a customer by ID
-      operationId: getCustomer
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          description: Customer ID
-          required: true
-          schema:
-            type: string
-      responses:
-        200:
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Customer'
-        401:
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/UnauthorizedError'
-        404:
-          description: User not found
-          schema:
-            $ref: '#/definitions/NotFoundResponse'
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ServerErrorResponse'
+  # /customers/{id}:
+  #   get:
+  #     tags:
+  #       - Customer
+  #     summary: Get a customer by ID
+  #     operationId: getCustomer
+  #     security:
+  #       - Bearer: []
+  #     parameters:
+  #       - name: id
+  #         in: path
+  #         description: Customer ID
+  #         required: true
+  #         schema:
+  #           type: string
+  #     responses:
+  #       200:
+  #         description: Successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/Customer'
+  #       401:
+  #         description: Unauthorized
+  #         schema:
+  #           $ref: '#/definitions/UnauthorizedError'
+  #       404:
+  #         description: User not found
+  #         schema:
+  #           $ref: '#/definitions/NotFoundResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         schema:
+  #           $ref: '#/definitions/ServerErrorResponse'
 
-    patch:
-      tags:
-        - Customer
-      summary: Update a customer by ID
-      operationId: updateCustomer
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          description: Customer ID
-          required: true
-          schema:
-            type: string
-        - in: body
-          name: body
-          description: update customer
-          required: true
-          schema:
-            $ref: '#/components/schemas/CustomerUpdate'
-      responses:
-        200:
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Customer'
-        401:
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/UnauthorizedError'
-        404:
-          description: User not found
-          schema:
-            $ref: '#/definitions/NotFoundResponse'
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ServerErrorResponse'
+  #   patch:
+  #     tags:
+  #       - Customer
+  #     summary: Update a customer by ID
+  #     operationId: updateCustomer
+  #     security:
+  #       - Bearer: []
+  #     parameters:
+  #       - name: id
+  #         in: path
+  #         description: Customer ID
+  #         required: true
+  #         schema:
+  #           type: string
+  #       - in: body
+  #         name: body
+  #         description: update customer
+  #         required: true
+  #         schema:
+  #           $ref: '#/components/schemas/CustomerUpdate'
+  #     responses:
+  #       200:
+  #         description: Successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/Customer'
+  #       401:
+  #         description: Unauthorized
+  #         schema:
+  #           $ref: '#/definitions/UnauthorizedError'
+  #       404:
+  #         description: User not found
+  #         schema:
+  #           $ref: '#/definitions/NotFoundResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         schema:
+  #           $ref: '#/definitions/ServerErrorResponse'
 
-    delete:
-      tags:
-        - Customer
-      summary: Delete a customer by ID
-      operationId: deleteCustomer
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          description: Customer ID
-          required: true
-          schema:
-            type: string
-      responses:
-        204:
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status: string
-        401:
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/UnauthorizedError'
-        404:
-          description: Customer not found
-          schema:
-            $ref: '#/definitions/NotFoundResponse'
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ServerErrorResponse'
+  #   delete:
+  #     tags:
+  #       - Customer
+  #     summary: Delete a customer by ID
+  #     operationId: deleteCustomer
+  #     security:
+  #       - Bearer: []
+  #     parameters:
+  #       - name: id
+  #         in: path
+  #         description: Customer ID
+  #         required: true
+  #         schema:
+  #           type: string
+  #     responses:
+  #       204:
+  #         description: Successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: object
+  #               properties:
+  #                 status: string
+  #       401:
+  #         description: Unauthorized
+  #         schema:
+  #           $ref: '#/definitions/UnauthorizedError'
+  #       404:
+  #         description: Customer not found
+  #         schema:
+  #           $ref: '#/definitions/NotFoundResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         schema:
+  #           $ref: '#/definitions/ServerErrorResponse'
 
   /verify/token:
     post:
@@ -624,156 +613,156 @@ paths:
           schema:
             $ref: '#/definitions/ServerErrorResponse'
 
-  /verify/PhoneToken:
-    post:
-      tags:
-        - Verification
-      summary: Send phone number verification token
-      security:
-        - bearerAuth: []
-      parameters:
-        - in: body
-          name: body
-          description: Send verification token
-          required: true
-          schema:
-            type: object
-            properties:
-              phoneNumber:
-                type: string
-      responses:
-        200:
-          description: Verification token sent
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-        400:
-          description: Bad Request, Invalid user input
-          schema:
-            $ref: '#/definitions/BadRequestResponse'
-        401:
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/UnauthorizedError'
-        404:
-          description: User not found
-          schema:
-            $ref: '#/definitions/NotFoundResponse'
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ServerErrorResponse'
+  # /verify/PhoneToken:
+  #   post:
+  #     tags:
+  #       - Verification
+  #     summary: Send phone number verification token
+  #     security:
+  #       - Bearer: []
+  #     parameters:
+  #       - in: body
+  #         name: body
+  #         description: Send verification token
+  #         required: true
+  #         schema:
+  #           type: object
+  #           properties:
+  #             phoneNumber:
+  #               type: string
+  #     responses:
+  #       200:
+  #         description: Verification token sent
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: object
+  #               properties:
+  #                 message:
+  #                   type: string
+  #       400:
+  #         description: Bad Request, Invalid user input
+  #         schema:
+  #           $ref: '#/definitions/BadRequestResponse'
+  #       401:
+  #         description: Unauthorized
+  #         schema:
+  #           $ref: '#/definitions/UnauthorizedError'
+  #       404:
+  #         description: User not found
+  #         schema:
+  #           $ref: '#/definitions/NotFoundResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         schema:
+  #           $ref: '#/definitions/ServerErrorResponse'
 
-  /verify/verifyPhoneToken:
-    post:
-      tags:
-        - Verification
-      summary: Verify phone number
-      security:
-        - bearerAuth: []
-      parameters:
-        - in: body
-          name: body
-          description: Send verification token
-          required: true
-          schema:
-            type: object
-            properties:
-              phoneToken:
-                type: string
-      responses:
-        200:
-          description: Verification token sent
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-        400:
-          description: Bad Request, Invalid user input
-          schema:
-            $ref: '#/definitions/BadRequestResponse'
-        401:
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/UnauthorizedError'
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ServerErrorResponse'
+  # /verify/verifyPhoneToken:
+  #   post:
+  #     tags:
+  #       - Verification
+  #     summary: Verify phone number
+  #     security:
+  #       - Bearer: []
+  #     parameters:
+  #       - in: body
+  #         name: body
+  #         description: Send verification token
+  #         required: true
+  #         schema:
+  #           type: object
+  #           properties:
+  #             phoneToken:
+  #               type: string
+  #     responses:
+  #       200:
+  #         description: Verification token sent
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: object
+  #               properties:
+  #                 message:
+  #                   type: string
+  #       400:
+  #         description: Bad Request, Invalid user input
+  #         schema:
+  #           $ref: '#/definitions/BadRequestResponse'
+  #       401:
+  #         description: Unauthorized
+  #         schema:
+  #           $ref: '#/definitions/UnauthorizedError'
+  #       500:
+  #         description: Internal Server Error
+  #         schema:
+  #           $ref: '#/definitions/ServerErrorResponse'
 
-  /verify/EmailToken:
-    post:
-      tags:
-        - Verification
-      summary: Send email verification token
-      security:
-        - bearerAuth: []
-      parameters:
-        - in: body
-          name: body
-          description: Send verification token
-          required: true
-          schema:
-            type: object
-            properties:
-              email:
-                type: string
-      responses:
-        200:
-          description: Email Verification token sent
-      401:
-        schema:
-          $ref: '#/definitions/UnauthorizedError'
+  # /verify/EmailToken:
+  #   post:
+  #     tags:
+  #       - Verification
+  #     summary: Send email verification token
+  #     security:
+  #       - Bearer: []
+  #     parameters:
+  #       - in: body
+  #         name: body
+  #         description: Send verification token
+  #         required: true
+  #         schema:
+  #           type: object
+  #           properties:
+  #             email:
+  #               type: string
+  #     responses:
+  #       200:
+  #         description: Email Verification token sent
+  #     401:
+  #       schema:
+  #         $ref: '#/definitions/UnauthorizedError'
 
-  /verify/verifyEmailToken:
-    post:
-      tags:
-        - Verification
-      summary: Verify email token
-      security:
-        - bearerAuth: []
-      parameters:
-        - in: body
-          name: body
-          description: Send verification token
-          required: true
-          schema:
-            type: object
-            properties:
-              emailToken:
-                type: string
-      responses:
-        200:
-          description: Verification token sent
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-        400:
-          description: Bad Request, Invalid user input
-          schema:
-            $ref: '#/definitions/BadRequestResponse'
-        404:
-          description: User not found
-          schema:
-            $ref: '#/definitions/NotFoundResponse'
-        401:
-          schema:
-          $ref: '#/definitions/UnauthorizedError'
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ServerErrorResponse'
+  # /verify/verifyEmailToken:
+  #   post:
+  #     tags:
+  #       - Verification
+  #     summary: Verify email token
+  #     security:
+  #       - Bearer: []
+  #     parameters:
+  #       - in: body
+  #         name: body
+  #         description: Send verification token
+  #         required: true
+  #         schema:
+  #           type: object
+  #           properties:
+  #             emailToken:
+  #               type: string
+  #     responses:
+  #       200:
+  #         description: Verification token sent
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: object
+  #               properties:
+  #                 message:
+  #                   type: string
+  #       400:
+  #         description: Bad Request, Invalid user input
+  #         schema:
+  #           $ref: '#/definitions/BadRequestResponse'
+  #       404:
+  #         description: User not found
+  #         schema:
+  #           $ref: '#/definitions/NotFoundResponse'
+  #       401:
+  #         schema:
+  #         $ref: '#/definitions/UnauthorizedError'
+  #       500:
+  #         description: Internal Server Error
+  #         schema:
+  #           $ref: '#/definitions/ServerErrorResponse'
 
 definitions:
   Signup:
@@ -1081,12 +1070,6 @@ definitions:
     description: Access token is missing or invalid
 
 components:
-  securitySchemes:
-    bearerAuth: # arbitrary name for the security scheme
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-
   schemas:
     Customer:
       type: object
