@@ -15,7 +15,7 @@ The Authentication microservice plays the following roles:
 * Grants users the capability to recall accounts with forgotten login details through the forgetPassoword endpoint
 
 ## ARCHITECTURE
-Node.js is the core backend language of the account and transaction microservice
+Node.js is the core backend language of the authentication microservice
 The service uses MongoDB for the database and Mongoose as an ORM
 
 ## API INFORMATION 
