@@ -9,7 +9,11 @@ export class NotificationClient {
   /* eslint-disable no-unused-vars */
   async enqueue(jobName, job, retry = undefined) {
     await this.queue.add(jobName, job);
-    console.log(`Enqueued an mobile alert to ${job.to}`);
+    console.log(
+      `Enqueued an mobile alert to ${
+        job.to || job.toAccount || job.fromAccount
+      }`
+    );
   }
 
   close() {

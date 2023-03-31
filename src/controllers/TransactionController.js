@@ -187,11 +187,12 @@ class TransactionController {
 
       const transactionId = uuidv4();
 
+      console.log(account);
       await Transaction.create({
         transactionId,
         transactionType: 'fund',
-        fromAccount: 1111111111,
         toAccount: account.accountNumber,
+        fromAccount: account.accountNumber,
         amount,
         transactionStatus: 'pending',
         transactionDescription: 'pending payment',
@@ -222,10 +223,10 @@ class TransactionController {
 
   static async fundAccount(req, res, next) {
     try {
+      console.log('GOT HERE');
       const stripe = require('stripe')(process.env.STRIPE_API_KEY);
       const endpointSecret = process.env.STRIPE_CLI_ENDPOINT_SECRET;
       const signature = req.headers['stripe-signature'];
-
       let event;
       try {
         event = stripe.webhooks.constructEvent(
@@ -238,9 +239,10 @@ class TransactionController {
         return;
       }
 
-      const { metadata, amountReceived } = event.data.object;
+      const { metadata, amount } = event.data.object;
       let paymentIntent;
 
+      console.log(amount);
       switch (event.type) {
         case 'payment_intent.succeeded':
           paymentIntent = event.data.object;
@@ -248,9 +250,7 @@ class TransactionController {
           console.log('PaymentIntent was successful!:', paymentIntent);
           await Promise.all([
             updateTransactionStatus(metadata.transactionId, 'successful'),
-            updateAccountBalance(metadata.transactionId, amountReceived),
-            sendEmail(paymentIntent),
-            // alertClient.enqueue('credit', { transact }),
+            updateAccountBalance(metadata.transactionId, amount),
           ]);
           res.status(200).send({
             status: 'success',
@@ -269,7 +269,6 @@ class TransactionController {
           console.log('PaymentIntent was unsuccessful:', message);
           await Promise.all([
             updateTransactionStatus(metadata.transactionId, 'failed'),
-            sendEmail(paymentIntent),
           ]);
           res.status(200).send({
             status: 'failure',

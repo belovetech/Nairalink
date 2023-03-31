@@ -5,6 +5,8 @@
  */
 const Account = require('../models/Account');
 const Transaction = require('../models/Transaction');
+// const { alertClient } = require('./alert');
+import alertClient from './alert';
 
 module.exports = async (transactionId, amount) => {
   const transaction = await Transaction.findOne({ where: { transactionId } });
@@ -22,6 +24,6 @@ module.exports = async (transactionId, amount) => {
   const newBalance = parseFloat(balance) + parseFloat((amount * 1).toFixed(2));
 
   await Account.update({ balance: newBalance }, { where: { accountNumber } });
-
-  console.log(account);
+  await alertClient.enqueue('credit', { transact: transaction }),
+    console.log('Account funded successfully!');
 };
