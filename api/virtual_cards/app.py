@@ -21,7 +21,6 @@ swagger_template = dict(
         'description': LazyString(lambda: 'Nairalink virtual debit card service and card transaction documentation')
     },
     host = LazyString(lambda: request.host)
-    # host = LazyString(lambda: 'http://localhost:8000/api/v1')
 )
 swagger_config = {
     "headers": [],
@@ -35,7 +34,7 @@ swagger_config = {
     ],
     "static_url_path": "/flasgger_static",
     "swagger_ui": True,
-    "specs_route": "/api-docs"
+    "specs_route": "/api/v1/cards/docs"
 }
 
 swagger = Swagger(app, template=swagger_template, config=swagger_config)

@@ -29,32 +29,32 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 async def create_card():
     """Create a new virtual card"""
     customer_id = request.headers.get('customerid', None)
+    first_name = request.headers.get('firstname', None)
+    last_name = request.headers.get('lastname', None)
+    email = request.headers.get('email', None)
+    phone_number = request.headers.get('phonenumber', None)
+    name_on_card = '{} {}'.format(first_name, last_name)
+    card_currency = 'NGN'
     if customer_id is None:
-        return jsonify({'error': 'Service is unable identify this cutomer'}), 400
+        return jsonify({'error': 'Service is unable to identify this customer'}), 400
     data = request.get_json()
     accepted_card_brands = ['Visa', 'Mastercard', 'Verve']
     if type(data) is dict:
         if "card_brand" in data:
             card_brand = data['card_brand']
-        if "card_currency" in data:
-            card_currency = data['card_currency']
-        if "name_on_card" in data:
-            name_on_card = data['name_on_card']
         if "pin" in data:
             pin = data['pin']
-        if "email" in data:
-            email = data['email'],
-        if "phone_number" in data:
-            phone_number = data['phone_number']
         else:
-            return jsonify({'error': 'Wrong parameters'}), 400
+            return jsonify({'error': 'Pls provide a valid card brand and the card pin'}), 400
 
         try:
-            #customer_id = request.get(user.id)
             if str(card_brand).capitalize() not in accepted_card_brands:
                 return jsonify({'error': 'Card brand can either be Visa, Verve, or Mastercard'}), 400
+            hasCard = cd.find_card_number(customer_id=customer_id)
+            if hasCard is not None:
+                return jsonify({'error': 'You can only have one active Nairalink virtual card'}), 400
 
-            res = fund_card(customer_id, 1000)
+            res = fund_card(customer_id, "Charge for card creation", 1000)
             if res is None:
                 return jsonify({'error': "server error"}), 500
             resDict = res.json()
@@ -74,7 +74,9 @@ async def create_card():
 
             job = {
                 "transactionId": resDict['data']['transactionId'],
-                "status": 'successful'
+                "status": 'successful',
+                "amount": 1000,
+                "customer_id": customer_id
             }
             if not transaction:
                 job['status'] = 'failed'
@@ -107,7 +109,7 @@ def get_all_cards():
     return jsonify({"results": len(cards), "cards": cards})
 
 @swag_from('docs/get_cards_by_ID.yml', methods=['GET'])
-@app_views.route('/card/<card_number>', methods=['GET'], strict_slashes=False)
+@app_views.route('/cards/<card_number>', methods=['GET'], strict_slashes=False)
 def get_card_details(card_number):
     """Get a card registered to a user by card id"""
     try:
@@ -128,7 +130,7 @@ def get_card_details(card_number):
         return jsonify({'error': 'Card does not exist'})
 
 @swag_from('docs/update_card.yml')
-@app_views.route('/card/<card_number>', methods=["PATCH"], strict_slashes=False)
+@app_views.route('/cards/<card_number>', methods=["PATCH"], strict_slashes=False)
 def update_card_status(card_number, status=""):
     """Updates the status of a virtual card"""
     data = request.get_json()
