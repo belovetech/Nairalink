@@ -2,6 +2,24 @@
 
 This is authentication service repository for Nairalink project
 
+## TECHNOLOGIES USED
+Node.js, MongoDB, Mongoose
+
+## ROLES
+The Authentication microservice plays the following roles:
+* Grants users the capability to sign up and login to the Nairalink platform
+* Verifies users through generated links sent to email addresses
+* Generates access tokens for verified users of Nairalink
+* Validates all user requests to subsequent microservices with the token
+* Provides protection to the routes accessible to the user
+* Grants users the capability to recall accounts with forgotten login details through the forgetPassoword endpoint
+
+## ARCHITECTURE
+Node.js is the core backend language of the account and transaction microservice
+The service uses MongoDB for the database and Mongoose as an ORM
+
+## API INFORMATION 
+
 ```
 info:
   title: Auth Service API
