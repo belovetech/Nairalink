@@ -4,18 +4,28 @@
 [33m[nodemon] watching extensions: js,mjs,json[39m
 [32m[nodemon] starting `babel-node --presets @babel/preset-env ./server.js`[39m
 Server listening on port 5000
-Failed to connect to the database: MongoParseError: option gssapiservicename is not supported
-[31m[nodemon] app crashed - waiting for file changes before starting...[39m
-[32m[nodemon] restarting due to changes...[39m
-[32m[nodemon] starting `babel-node --presets @babel/preset-env ./server.js`[39m
-Server listening on port 5000
 DB connection succssfully!
-[32m[nodemon] restarting due to changes...[39m
-[32m[nodemon] starting `babel-node --presets @babel/preset-env ./server.js`[39m
-Server listening on port 5000
-DB connection succssfully!
+[0mPOST /api/v1/auth/signup [33m400[0m 201.875 ms - 48[0m
+[0mPOST /api/v1/auth/signup [33m400[0m 13.206 ms - 48[0m
+Enqueued an email sending to +2348152344126
+Enqueued a verification token sending to +2348152344126
+Enqueued an email sending to ayobamyahmed@gmail.com
+Enqueued an email sending to ayobamyahmed@gmail.com
+[0mPOST /api/v1/auth/signup [32m201[0m 293.784 ms - 177[0m
+Enqueued an email sending to +2348152344126
+Enqueued a verification token sending to +2348152344126
+Enqueued an email sending to ayobamyahmed@gmail.com
+Enqueued an email sending to ayobamyahmed@gmail.com
+[0mPOST /api/v1/verify/token [32m200[0m 165.588 ms - 37[0m
+Enqueued an email sending to +2347061755048
+Enqueued a verification token sending to +2347061755048
+Enqueued an email sending to slamchillz@gmail.com
+Enqueued an email sending to slamchillz@gmail.com
+[0mPOST /api/v1/auth/signup [32m201[0m 47.795 ms - 173[0m
+[0mPOST /api/v1/auth/login [32m200[0m 100.342 ms - 351[0m
 I was here
 {
+  authorization: 'Baerer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjYzOTk3LCJleHAiOjE2ODEwNDE1OTd9.rrO99yj32Ka5iYkj_o3N9TzjkJtafD5A1R8uXxa_yRk',
   'content-type': 'application/x-www-form-urlencoded',
   host: 'nairalink_authentication',
   connection: 'close',
@@ -30,9 +40,10 @@ I was here
   'accept-encoding': 'gzip, deflate, br',
   'accept-language': 'en-US,en;q=0.9'
 }
-[0mPOST /oauth/token [33m401[0m 75.132 ms - 16[0m
+[0mPOST /oauth/token [33m401[0m 24.867 ms - 16[0m
 I was here
 {
+  authorization: 'Baerer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjYzOTk3LCJleHAiOjE2ODEwNDE1OTd9.rrO99yj32Ka5iYkj_o3N9TzjkJtafD5A1R8uXxa_yRk',
   'content-type': 'application/x-www-form-urlencoded',
   host: 'nairalink_authentication',
   connection: 'close',
@@ -47,13 +58,10 @@ I was here
   'accept-encoding': 'gzip, deflate, br',
   'accept-language': 'en-US,en;q=0.9'
 }
-[0mPOST /oauth/token [33m401[0m 2.563 ms - 16[0m
-[0mPOST /api/v1/auth/login [33m404[0m 167.267 ms - 30[0m
-[0mPOST /api/v1/auth/login [33m404[0m 7.222 ms - 30[0m
-[0mPOST /api/v1/auth/login [32m200[0m 77.256 ms - 360[0m
+[0mPOST /oauth/token [33m401[0m 2.032 ms - 16[0m
 I was here
 {
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNmE1MDYyYzNlOGI0NzYxYjQ1ZGI1IiwiaWF0IjoxNjgwMjU1OTU2LCJleHAiOjE2ODEwMzM1NTZ9.9CRNkf8byT0UHbzMM8VDzXXsWFWzgUI_3NbzXnnNs-E',
+  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjYzOTk3LCJleHAiOjE2ODEwNDE1OTd9.rrO99yj32Ka5iYkj_o3N9TzjkJtafD5A1R8uXxa_yRk',
   'content-type': 'application/x-www-form-urlencoded',
   host: 'nairalink_authentication',
   connection: 'close',
@@ -68,19 +76,20 @@ I was here
   'accept-encoding': 'gzip, deflate, br',
   'accept-language': 'en-US,en;q=0.9'
 }
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNmE1MDYyYzNlOGI0NzYxYjQ1ZGI1IiwiaWF0IjoxNjgwMjU1OTU2LCJleHAiOjE2ODEwMzM1NTZ9.9CRNkf8byT0UHbzMM8VDzXXsWFWzgUI_3NbzXnnNs-E
-is valid 6426a5062c3e8b4761b45db5
-DECODE 6426a5062c3e8b4761b45db5
-CUSTOMER Samuel
+TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjYzOTk3LCJleHAiOjE2ODEwNDE1OTd9.rrO99yj32Ka5iYkj_o3N9TzjkJtafD5A1R8uXxa_yRk
+is valid 6425ffaeb9ac2554fae47fd5
+DECODE 6425ffaeb9ac2554fae47fd5
+CUSTOMER Abeeb
 FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 20.054 ms - 163[0m
-[0mGET /api/v1/customers/getMe [36m304[0m 13.229 ms - -[0m
+[0mPOST /oauth/token [32m200[0m 47.511 ms - 154[0m
+[0mGET /api/v1/customers/getMe [32m200[0m 40.263 ms - 159[0m
 I was here
 {
+  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjYzOTk3LCJleHAiOjE2ODEwNDE1OTd9.rrO99yj32Ka5iYkj_o3N9TzjkJtafD5A1R8uXxa_yRk',
   'content-type': 'application/x-www-form-urlencoded',
   host: 'nairalink_authentication',
   connection: 'close',
-  'content-length': '78',
+  'content-length': '467',
   'sec-ch-ua': '"Google Chrome";v="111", "Not(A:Brand";v="8", "Chromium";v="111"',
   accept: 'application/json',
   'sec-ch-ua-mobile': '?0',
@@ -90,16 +99,23 @@ I was here
   'sec-fetch-site': 'same-origin',
   'sec-fetch-mode': 'cors',
   'sec-fetch-dest': 'empty',
+  referer: 'http://localhost/api/v1/accounts/docs/',
   'accept-encoding': 'gzip, deflate, br',
   'accept-language': 'en-US,en;q=0.9'
 }
-[0mPOST /oauth/token [33m401[0m 1.602 ms - 16[0m
+TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjYzOTk3LCJleHAiOjE2ODEwNDE1OTd9.rrO99yj32Ka5iYkj_o3N9TzjkJtafD5A1R8uXxa_yRk
+is valid 6425ffaeb9ac2554fae47fd5
+DECODE 6425ffaeb9ac2554fae47fd5
+CUSTOMER Abeeb
+FINALLY GOT USER
+[0mPOST /oauth/token [32m200[0m 31.945 ms - 154[0m
 I was here
 {
+  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjYzOTk3LCJleHAiOjE2ODEwNDE1OTd9.rrO99yj32Ka5iYkj_o3N9TzjkJtafD5A1R8uXxa_yRk',
   'content-type': 'application/x-www-form-urlencoded',
   host: 'nairalink_authentication',
   connection: 'close',
-  'content-length': '78',
+  'content-length': '467',
   'sec-ch-ua': '"Google Chrome";v="111", "Not(A:Brand";v="8", "Chromium";v="111"',
   accept: 'application/json',
   'sec-ch-ua-mobile': '?0',
@@ -109,74 +125,65 @@ I was here
   'sec-fetch-site': 'same-origin',
   'sec-fetch-mode': 'cors',
   'sec-fetch-dest': 'empty',
+  referer: 'http://localhost/api/v1/accounts/docs/',
   'accept-encoding': 'gzip, deflate, br',
   'accept-language': 'en-US,en;q=0.9'
 }
-[0mPOST /oauth/token [33m401[0m 3.845 ms - 16[0m
-[32m[nodemon] restarting due to changes...[39m
-[32m[nodemon] starting `babel-node --presets @babel/preset-env ./server.js`[39m
-Server listening on port 5000
-DB connection succssfully!
-[32m[nodemon] restarting due to changes...[39m
-[32m[nodemon] starting `babel-node --presets @babel/preset-env ./server.js`[39m
-Server listening on port 5000
-DB connection succssfully!
+TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjYzOTk3LCJleHAiOjE2ODEwNDE1OTd9.rrO99yj32Ka5iYkj_o3N9TzjkJtafD5A1R8uXxa_yRk
+is valid 6425ffaeb9ac2554fae47fd5
+DECODE 6425ffaeb9ac2554fae47fd5
+CUSTOMER Abeeb
+FINALLY GOT USER
+[0mPOST /oauth/token [32m200[0m 21.920 ms - 154[0m
 I was here
 {
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNmE1MDYyYzNlOGI0NzYxYjQ1ZGI1IiwiaWF0IjoxNjgwMjU1OTU2LCJleHAiOjE2ODEwMzM1NTZ9.9CRNkf8byT0UHbzMM8VDzXXsWFWzgUI_3NbzXnnNs-E',
+  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjYzOTk3LCJleHAiOjE2ODEwNDE1OTd9.rrO99yj32Ka5iYkj_o3N9TzjkJtafD5A1R8uXxa_yRk',
   'content-type': 'application/x-www-form-urlencoded',
   host: 'nairalink_authentication',
   connection: 'close',
+  'content-length': '467',
   'sec-ch-ua': '"Google Chrome";v="111", "Not(A:Brand";v="8", "Chromium";v="111"',
   accept: 'application/json',
   'sec-ch-ua-mobile': '?0',
   'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36',
   'sec-ch-ua-platform': '"Linux"',
+  origin: 'http://localhost',
   'sec-fetch-site': 'same-origin',
   'sec-fetch-mode': 'cors',
   'sec-fetch-dest': 'empty',
+  referer: 'http://localhost/api/v1/accounts/docs/',
   'accept-encoding': 'gzip, deflate, br',
   'accept-language': 'en-US,en;q=0.9'
 }
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNmE1MDYyYzNlOGI0NzYxYjQ1ZGI1IiwiaWF0IjoxNjgwMjU1OTU2LCJleHAiOjE2ODEwMzM1NTZ9.9CRNkf8byT0UHbzMM8VDzXXsWFWzgUI_3NbzXnnNs-E
-is valid 6426a5062c3e8b4761b45db5
-DECODE 6426a5062c3e8b4761b45db5
-CUSTOMER Samuel
+TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjYzOTk3LCJleHAiOjE2ODEwNDE1OTd9.rrO99yj32Ka5iYkj_o3N9TzjkJtafD5A1R8uXxa_yRk
+is valid 6425ffaeb9ac2554fae47fd5
+DECODE 6425ffaeb9ac2554fae47fd5
+CUSTOMER Abeeb
 FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 110.086 ms - 163[0m
-[0mGET /api/v1/customers/getMe [36m304[0m 22.533 ms - -[0m
-[0mGET /api/v1/auth/docs/ [36m304[0m 9.353 ms - -[0m
-[0mGET /api/v1/auth/docs/swagger-ui.css [36m304[0m 6.453 ms - -[0m
-[0mGET /api/v1/auth/docs/swagger-ui-bundle.js [36m304[0m 3.103 ms - -[0m
-[0mGET /api/v1/auth/docs/swagger-ui-standalone-preset.js [36m304[0m 18.735 ms - -[0m
-[0mGET /api/v1/auth/docs/swagger-ui-init.js [32m200[0m 1.741 ms - 31459[0m
-[0mGET /api/v1/auth/docs/swagger-ui-bundle.js [36m304[0m 8.509 ms - -[0m
-[0mGET /api/v1/auth/docs/swagger-ui-standalone-preset.js [36m304[0m 3.243 ms - -[0m
-[0mGET /api/v1/auth/docs/swagger-ui-init.js [32m200[0m 6.266 ms - 31459[0m
-[0mGET /api/v1/auth/docs/ [36m304[0m 1.251 ms - -[0m
-[0mGET /api/v1/auth/docs/favicon-32x32.png [36m304[0m 1.961 ms - -[0m
+[0mPOST /oauth/token [32m200[0m 14.827 ms - 154[0m
 I was here
 {
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNmE1MDYyYzNlOGI0NzYxYjQ1ZGI1IiwiaWF0IjoxNjgwMjU1OTU2LCJleHAiOjE2ODEwMzM1NTZ9.9CRNkf8byT0UHbzMM8VDzXXsWFWzgUI_3NbzXnnNs-E',
+  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjYzOTk3LCJleHAiOjE2ODEwNDE1OTd9.rrO99yj32Ka5iYkj_o3N9TzjkJtafD5A1R8uXxa_yRk',
   'content-type': 'application/x-www-form-urlencoded',
   host: 'nairalink_authentication',
   connection: 'close',
+  'content-length': '467',
   'sec-ch-ua': '"Google Chrome";v="111", "Not(A:Brand";v="8", "Chromium";v="111"',
   accept: 'application/json',
   'sec-ch-ua-mobile': '?0',
   'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36',
   'sec-ch-ua-platform': '"Linux"',
+  origin: 'http://localhost',
   'sec-fetch-site': 'same-origin',
   'sec-fetch-mode': 'cors',
   'sec-fetch-dest': 'empty',
+  referer: 'http://localhost/api/v1/accounts/docs/',
   'accept-encoding': 'gzip, deflate, br',
   'accept-language': 'en-US,en;q=0.9'
 }
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNmE1MDYyYzNlOGI0NzYxYjQ1ZGI1IiwiaWF0IjoxNjgwMjU1OTU2LCJleHAiOjE2ODEwMzM1NTZ9.9CRNkf8byT0UHbzMM8VDzXXsWFWzgUI_3NbzXnnNs-E
-is valid 6426a5062c3e8b4761b45db5
-DECODE 6426a5062c3e8b4761b45db5
-CUSTOMER Samuel
+TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjYzOTk3LCJleHAiOjE2ODEwNDE1OTd9.rrO99yj32Ka5iYkj_o3N9TzjkJtafD5A1R8uXxa_yRk
+is valid 6425ffaeb9ac2554fae47fd5
+DECODE 6425ffaeb9ac2554fae47fd5
+CUSTOMER Abeeb
 FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 20.863 ms - 163[0m
-[0mGET /api/v1/customers/getMe [36m304[0m 10.997 ms - -[0m
-[0mPATCH /api/v1/customers/updateMe [32m200[0m 161.805 ms - 190[0m
+[0mPOST /oauth/token [32m200[0m 22.079 ms - 154[0m
