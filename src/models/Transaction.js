@@ -22,7 +22,7 @@ module.exports = sequelize.define('transactions', {
     },
     set(value) {
       if (this.transactionType === 'fund') {
-        this.setDataValue('fromAccount', this.toAccount);
+        this.setDataValue('fromAccount', 1111111111);
       } else {
         this.setDataValue('fromAccount', value);
       }

@@ -171,10 +171,11 @@ class TransactionController {
   static async prepareToFund(req, res, next) {
     try {
       const stripe = require('stripe')(process.env.STRIPE_API_KEY);
-      const { customerId } = req.headers.customerid;
+      const { customerid } = req.headers;
+      console.log(customerid);
       const { amount, cardDetails, shipping, email } = req.body;
 
-      const account = await Account.findByPk(customerId);
+      const account = await Account.findByPk(customerid);
       if (!account) {
         return res.status(404).json({ message: 'Account not found' });
       }
@@ -189,7 +190,7 @@ class TransactionController {
       await Transaction.create({
         transactionId,
         transactionType: 'fund',
-        fromAccount: account.accountNumber,
+        fromAccount: 1111111111,
         toAccount: account.accountNumber,
         amount,
         transactionStatus: 'pending',
