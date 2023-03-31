@@ -5,540 +5,130 @@
 [32m[nodemon] starting `babel-node --presets @babel/preset-env ./server.js`[39m
 Server listening on port 5000
 DB connection succssfully!
+[0mPOST /api/v1/auth/login [32m200[0m 528.773 ms - 351[0m
 I was here
-{}
 {
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjEzODc5LCJleHAiOjE2ODA5OTE0Nzl9.eMk_wHSp3eAceevEqey81Pk8tI7u-JgIR7_R2AZ2K5g',
+  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjMyMTk4LCJleHAiOjE2ODEwMDk3OTh9.6ArF1JwjepU5CriE7FcomxEC3NTwmTv6UQ0K0EnSkoE',
   'content-type': 'application/x-www-form-urlencoded',
   host: 'nairalink_authentication',
   connection: 'close',
+  'content-length': '494',
   'user-agent': 'PostmanRuntime/7.29.2',
   accept: '*/*',
-  'postman-token': 'c539280e-de57-4831-8ccf-9e81cb9f3c40',
+  'postman-token': 'a7b0a826-570d-4456-b302-dd3a121f6fae',
   'accept-encoding': 'gzip, deflate, br'
 }
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjEzODc5LCJleHAiOjE2ODA5OTE0Nzl9.eMk_wHSp3eAceevEqey81Pk8tI7u-JgIR7_R2AZ2K5g
+TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjMyMTk4LCJleHAiOjE2ODEwMDk3OTh9.6ArF1JwjepU5CriE7FcomxEC3NTwmTv6UQ0K0EnSkoE
 is valid 6425ffaeb9ac2554fae47fd5
 DECODE 6425ffaeb9ac2554fae47fd5
 CUSTOMER Abeeb
 FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 375.528 ms - 154[0m
+[0mPOST /oauth/token [32m200[0m 243.276 ms - 154[0m
 I was here
-{}
 {
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjEzODc5LCJleHAiOjE2ODA5OTE0Nzl9.eMk_wHSp3eAceevEqey81Pk8tI7u-JgIR7_R2AZ2K5g',
+  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjMyMTk4LCJleHAiOjE2ODEwMDk3OTh9.6ArF1JwjepU5CriE7FcomxEC3NTwmTv6UQ0K0EnSkoE',
   'content-type': 'application/x-www-form-urlencoded',
   host: 'nairalink_authentication',
   connection: 'close',
+  'content-length': '494',
   'user-agent': 'PostmanRuntime/7.29.2',
   accept: '*/*',
-  'postman-token': '95a72604-e3d5-441e-8eb2-f4a7ae3e23f3',
+  'postman-token': '9b15fec9-583e-4382-b2e1-c7b0f78466e4',
   'accept-encoding': 'gzip, deflate, br'
 }
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjEzODc5LCJleHAiOjE2ODA5OTE0Nzl9.eMk_wHSp3eAceevEqey81Pk8tI7u-JgIR7_R2AZ2K5g
+TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjMyMTk4LCJleHAiOjE2ODEwMDk3OTh9.6ArF1JwjepU5CriE7FcomxEC3NTwmTv6UQ0K0EnSkoE
 is valid 6425ffaeb9ac2554fae47fd5
 DECODE 6425ffaeb9ac2554fae47fd5
 CUSTOMER Abeeb
 FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 217.014 ms - 154[0m
-Enqueued an email sending to +2347061755048
-Enqueued a verification token sending to +2347061755048
-Enqueued an email sending to slamchillz@gmail.com
-Enqueued an email sending to slamchillz@gmail.com
-[0mPOST /api/v1/auth/signup [32m201[0m 459.971 ms - 172[0m
-Enqueued an email sending to slamchillz@gmail.com
-Enqueued an email sending to slamchillz@gmail.com
-[object Object]
-[0mPOST /api/v1/verify/verifyToken [32m200[0m 729.996 ms - 37[0m
-Enqueued create an account for mendy
+[0mPOST /oauth/token [32m200[0m 244.170 ms - 154[0m
 I was here
-{}
 {
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjEzODc5LCJleHAiOjE2ODA5OTE0Nzl9.eMk_wHSp3eAceevEqey81Pk8tI7u-JgIR7_R2AZ2K5g',
+  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjMyMTk4LCJleHAiOjE2ODEwMDk3OTh9.6ArF1JwjepU5CriE7FcomxEC3NTwmTv6UQ0K0EnSkoE',
   'content-type': 'application/x-www-form-urlencoded',
   host: 'nairalink_authentication',
   connection: 'close',
-  'content-length': '89',
+  'content-length': '494',
   'user-agent': 'PostmanRuntime/7.29.2',
   accept: '*/*',
-  'postman-token': '0d3124a5-7094-4448-8168-f8ef1a77d9fc',
+  'postman-token': 'bfef52fe-30ff-47a3-b1bc-10d3436d1fe8',
   'accept-encoding': 'gzip, deflate, br'
 }
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjEzODc5LCJleHAiOjE2ODA5OTE0Nzl9.eMk_wHSp3eAceevEqey81Pk8tI7u-JgIR7_R2AZ2K5g
+TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjMyMTk4LCJleHAiOjE2ODEwMDk3OTh9.6ArF1JwjepU5CriE7FcomxEC3NTwmTv6UQ0K0EnSkoE
 is valid 6425ffaeb9ac2554fae47fd5
 DECODE 6425ffaeb9ac2554fae47fd5
 CUSTOMER Abeeb
 FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 878.986 ms - 154[0m
+[0mPOST /oauth/token [32m200[0m 228.359 ms - 154[0m
 I was here
-{}
 {
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjEzODc5LCJleHAiOjE2ODA5OTE0Nzl9.eMk_wHSp3eAceevEqey81Pk8tI7u-JgIR7_R2AZ2K5g',
+  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjMyMTk4LCJleHAiOjE2ODEwMDk3OTh9.6ArF1JwjepU5CriE7FcomxEC3NTwmTv6UQ0K0EnSkoE',
   'content-type': 'application/x-www-form-urlencoded',
   host: 'nairalink_authentication',
   connection: 'close',
-  'content-length': '92',
+  'content-length': '494',
   'user-agent': 'PostmanRuntime/7.29.2',
   accept: '*/*',
-  'postman-token': '321bac68-2391-4400-8ec9-78cd9bcd1cf3',
+  'postman-token': 'c764533b-90b5-41ee-bcde-cbc4239641b4',
   'accept-encoding': 'gzip, deflate, br'
 }
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjEzODc5LCJleHAiOjE2ODA5OTE0Nzl9.eMk_wHSp3eAceevEqey81Pk8tI7u-JgIR7_R2AZ2K5g
+TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjMyMTk4LCJleHAiOjE2ODEwMDk3OTh9.6ArF1JwjepU5CriE7FcomxEC3NTwmTv6UQ0K0EnSkoE
 is valid 6425ffaeb9ac2554fae47fd5
 DECODE 6425ffaeb9ac2554fae47fd5
 CUSTOMER Abeeb
 FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 763.787 ms - 154[0m
+[0mPOST /oauth/token [32m200[0m 272.770 ms - 154[0m
 I was here
-{}
 {
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjEzODc5LCJleHAiOjE2ODA5OTE0Nzl9.eMk_wHSp3eAceevEqey81Pk8tI7u-JgIR7_R2AZ2K5g',
+  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjMyMTk4LCJleHAiOjE2ODEwMDk3OTh9.6ArF1JwjepU5CriE7FcomxEC3NTwmTv6UQ0K0EnSkoE',
   'content-type': 'application/x-www-form-urlencoded',
   host: 'nairalink_authentication',
   connection: 'close',
-  'content-length': '92',
+  'content-length': '494',
   'user-agent': 'PostmanRuntime/7.29.2',
   accept: '*/*',
-  'postman-token': 'b603f7ce-6704-41f5-944d-6126622b420a',
+  'postman-token': '29e50aa3-acd6-4f95-b3c4-fc78cc69e52f',
   'accept-encoding': 'gzip, deflate, br'
 }
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjEzODc5LCJleHAiOjE2ODA5OTE0Nzl9.eMk_wHSp3eAceevEqey81Pk8tI7u-JgIR7_R2AZ2K5g
+TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjMyMTk4LCJleHAiOjE2ODEwMDk3OTh9.6ArF1JwjepU5CriE7FcomxEC3NTwmTv6UQ0K0EnSkoE
 is valid 6425ffaeb9ac2554fae47fd5
 DECODE 6425ffaeb9ac2554fae47fd5
 CUSTOMER Abeeb
 FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 221.697 ms - 154[0m
+[0mPOST /oauth/token [32m200[0m 226.933 ms - 154[0m
 I was here
-{}
 {
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjEzODc5LCJleHAiOjE2ODA5OTE0Nzl9.eMk_wHSp3eAceevEqey81Pk8tI7u-JgIR7_R2AZ2K5g',
+  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjMyMTk4LCJleHAiOjE2ODEwMDk3OTh9.6ArF1JwjepU5CriE7FcomxEC3NTwmTv6UQ0K0EnSkoE',
   'content-type': 'application/x-www-form-urlencoded',
   host: 'nairalink_authentication',
   connection: 'close',
+  'content-length': '494',
   'user-agent': 'PostmanRuntime/7.29.2',
   accept: '*/*',
-  'postman-token': 'c51becd5-077d-4a0b-acf4-62bbfe937d68',
+  'postman-token': '778c2a61-c8e2-4f05-b8f5-d51df95ba5c8',
   'accept-encoding': 'gzip, deflate, br'
 }
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjEzODc5LCJleHAiOjE2ODA5OTE0Nzl9.eMk_wHSp3eAceevEqey81Pk8tI7u-JgIR7_R2AZ2K5g
+TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjMyMTk4LCJleHAiOjE2ODEwMDk3OTh9.6ArF1JwjepU5CriE7FcomxEC3NTwmTv6UQ0K0EnSkoE
 is valid 6425ffaeb9ac2554fae47fd5
 DECODE 6425ffaeb9ac2554fae47fd5
 CUSTOMER Abeeb
 FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 315.799 ms - 154[0m
+[0mPOST /oauth/token [32m200[0m 232.990 ms - 154[0m
 I was here
-{}
 {
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjEzODc5LCJleHAiOjE2ODA5OTE0Nzl9.eMk_wHSp3eAceevEqey81Pk8tI7u-JgIR7_R2AZ2K5g',
+  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjMyMTk4LCJleHAiOjE2ODEwMDk3OTh9.6ArF1JwjepU5CriE7FcomxEC3NTwmTv6UQ0K0EnSkoE',
   'content-type': 'application/x-www-form-urlencoded',
   host: 'nairalink_authentication',
   connection: 'close',
+  'content-length': '494',
   'user-agent': 'PostmanRuntime/7.29.2',
   accept: '*/*',
-  'postman-token': '333592fa-ef02-465e-b9c0-913e15718ef3',
+  'postman-token': '062a15a1-6875-4e51-b523-7d143d13dede',
   'accept-encoding': 'gzip, deflate, br'
 }
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjEzODc5LCJleHAiOjE2ODA5OTE0Nzl9.eMk_wHSp3eAceevEqey81Pk8tI7u-JgIR7_R2AZ2K5g
+TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjMyMTk4LCJleHAiOjE2ODEwMDk3OTh9.6ArF1JwjepU5CriE7FcomxEC3NTwmTv6UQ0K0EnSkoE
 is valid 6425ffaeb9ac2554fae47fd5
 DECODE 6425ffaeb9ac2554fae47fd5
 CUSTOMER Abeeb
 FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 218.783 ms - 154[0m
-I was here
-{}
-{
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjEzODc5LCJleHAiOjE2ODA5OTE0Nzl9.eMk_wHSp3eAceevEqey81Pk8tI7u-JgIR7_R2AZ2K5g',
-  'content-type': 'application/x-www-form-urlencoded',
-  host: 'nairalink_authentication',
-  connection: 'close',
-  'user-agent': 'PostmanRuntime/7.29.2',
-  accept: '*/*',
-  'postman-token': 'bb581a1e-757e-439d-aaaa-1d5c26539b0d',
-  'accept-encoding': 'gzip, deflate, br'
-}
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjEzODc5LCJleHAiOjE2ODA5OTE0Nzl9.eMk_wHSp3eAceevEqey81Pk8tI7u-JgIR7_R2AZ2K5g
-[0mPOST /oauth/token [33m403[0m 2.702 ms - 16[0m
-I was here
-{}
-{
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjEzODc5LCJleHAiOjE2ODA5OTE0Nzl9.eMk_wHSp3eAceevEqey81Pk8tI7u-JgIR7_R2AZ2K5g',
-  'content-type': 'application/x-www-form-urlencoded',
-  host: 'nairalink_authentication',
-  connection: 'close',
-  'user-agent': 'PostmanRuntime/7.29.2',
-  accept: '*/*',
-  'postman-token': 'd67c00c9-02d8-4354-a0d8-2c6d940be1dc',
-  'accept-encoding': 'gzip, deflate, br'
-}
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjEzODc5LCJleHAiOjE2ODA5OTE0Nzl9.eMk_wHSp3eAceevEqey81Pk8tI7u-JgIR7_R2AZ2K5g
-[0mPOST /oauth/token [33m403[0m 3.194 ms - 16[0m
-[32m[nodemon] restarting due to changes...[39m
-[32m[nodemon] starting `babel-node --presets @babel/preset-env ./server.js`[39m
-Server listening on port 5000
-DB connection succssfully!
-[0mPOST /api/v1/auth/login [32m200[0m 1064.133 ms - 351[0m
-I was here
-{
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjE3NzY1LCJleHAiOjE2ODA5OTUzNjV9.2LR7u7v1mux4mCkEusSPwEk55xbKR19Cl3YyeimrTBs',
-  'content-type': 'application/x-www-form-urlencoded',
-  host: 'nairalink_authentication',
-  connection: 'close',
-  'user-agent': 'PostmanRuntime/7.29.2',
-  accept: '*/*',
-  'postman-token': '72c0631a-145f-40d7-9aed-4e55042f0df6',
-  'accept-encoding': 'gzip, deflate, br'
-}
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjE3NzY1LCJleHAiOjE2ODA5OTUzNjV9.2LR7u7v1mux4mCkEusSPwEk55xbKR19Cl3YyeimrTBs
-is valid 6425ffaeb9ac2554fae47fd5
-DECODE 6425ffaeb9ac2554fae47fd5
-CUSTOMER Abeeb
-FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 267.881 ms - 154[0m
-I was here
-{
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjE3NzY1LCJleHAiOjE2ODA5OTUzNjV9.2LR7u7v1mux4mCkEusSPwEk55xbKR19Cl3YyeimrTBs',
-  'content-type': 'application/x-www-form-urlencoded',
-  host: 'nairalink_authentication',
-  connection: 'close',
-  'user-agent': 'PostmanRuntime/7.29.2',
-  accept: '*/*',
-  'postman-token': 'c58ed246-3840-4dfd-83d3-19b9e579b5f7',
-  'accept-encoding': 'gzip, deflate, br'
-}
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjE3NzY1LCJleHAiOjE2ODA5OTUzNjV9.2LR7u7v1mux4mCkEusSPwEk55xbKR19Cl3YyeimrTBs
-is valid 6425ffaeb9ac2554fae47fd5
-DECODE 6425ffaeb9ac2554fae47fd5
-CUSTOMER Abeeb
-FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 223.754 ms - 154[0m
-I was here
-{
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjE3NzY1LCJleHAiOjE2ODA5OTUzNjV9.2LR7u7v1mux4mCkEusSPwEk55xbKR19Cl3YyeimrTBs',
-  'content-type': 'application/x-www-form-urlencoded',
-  host: 'nairalink_authentication',
-  connection: 'close',
-  'user-agent': 'PostmanRuntime/7.29.2',
-  accept: '*/*',
-  'postman-token': '7832c5a0-3167-40d9-9830-d2d10efd4d2b',
-  'accept-encoding': 'gzip, deflate, br'
-}
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjE3NzY1LCJleHAiOjE2ODA5OTUzNjV9.2LR7u7v1mux4mCkEusSPwEk55xbKR19Cl3YyeimrTBs
-is valid 6425ffaeb9ac2554fae47fd5
-DECODE 6425ffaeb9ac2554fae47fd5
-CUSTOMER Abeeb
-FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 223.300 ms - 154[0m
-I was here
-{
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjE3NzY1LCJleHAiOjE2ODA5OTUzNjV9.2LR7u7v1mux4mCkEusSPwEk55xbKR19Cl3YyeimrTBs',
-  'content-type': 'application/x-www-form-urlencoded',
-  host: 'nairalink_authentication',
-  connection: 'close',
-  'user-agent': 'PostmanRuntime/7.29.2',
-  accept: '*/*',
-  'postman-token': 'ca620116-f881-4ee3-9362-41123afc28c8',
-  'accept-encoding': 'gzip, deflate, br'
-}
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjE3NzY1LCJleHAiOjE2ODA5OTUzNjV9.2LR7u7v1mux4mCkEusSPwEk55xbKR19Cl3YyeimrTBs
-is valid 6425ffaeb9ac2554fae47fd5
-DECODE 6425ffaeb9ac2554fae47fd5
-CUSTOMER Abeeb
-FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 212.176 ms - 154[0m
-I was here
-{
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjE3NzY1LCJleHAiOjE2ODA5OTUzNjV9.2LR7u7v1mux4mCkEusSPwEk55xbKR19Cl3YyeimrTBs',
-  'content-type': 'application/x-www-form-urlencoded',
-  host: 'nairalink_authentication',
-  connection: 'close',
-  'user-agent': 'PostmanRuntime/7.29.2',
-  accept: '*/*',
-  'postman-token': '9af9bf88-b4f7-40c6-934a-dc26284101ba',
-  'accept-encoding': 'gzip, deflate, br'
-}
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjE3NzY1LCJleHAiOjE2ODA5OTUzNjV9.2LR7u7v1mux4mCkEusSPwEk55xbKR19Cl3YyeimrTBs
-is valid 6425ffaeb9ac2554fae47fd5
-DECODE 6425ffaeb9ac2554fae47fd5
-CUSTOMER Abeeb
-FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 215.490 ms - 154[0m
-I was here
-{
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjE3NzY1LCJleHAiOjE2ODA5OTUzNjV9.2LR7u7v1mux4mCkEusSPwEk55xbKR19Cl3YyeimrTBs',
-  'content-type': 'application/x-www-form-urlencoded',
-  host: 'nairalink_authentication',
-  connection: 'close',
-  'user-agent': 'PostmanRuntime/7.29.2',
-  accept: '*/*',
-  'postman-token': '9b5a6b99-5f1d-4d75-91e8-858fdd9285ac',
-  'accept-encoding': 'gzip, deflate, br'
-}
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjE3NzY1LCJleHAiOjE2ODA5OTUzNjV9.2LR7u7v1mux4mCkEusSPwEk55xbKR19Cl3YyeimrTBs
-is valid 6425ffaeb9ac2554fae47fd5
-DECODE 6425ffaeb9ac2554fae47fd5
-CUSTOMER Abeeb
-FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 251.469 ms - 154[0m
-I was here
-{
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjE3NzY1LCJleHAiOjE2ODA5OTUzNjV9.2LR7u7v1mux4mCkEusSPwEk55xbKR19Cl3YyeimrTBs',
-  'content-type': 'application/x-www-form-urlencoded',
-  host: 'nairalink_authentication',
-  connection: 'close',
-  'user-agent': 'PostmanRuntime/7.29.2',
-  accept: '*/*',
-  'postman-token': '6fdf3516-30fb-486c-b10e-ab37756c5502',
-  'accept-encoding': 'gzip, deflate, br'
-}
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjE3NzY1LCJleHAiOjE2ODA5OTUzNjV9.2LR7u7v1mux4mCkEusSPwEk55xbKR19Cl3YyeimrTBs
-is valid 6425ffaeb9ac2554fae47fd5
-DECODE 6425ffaeb9ac2554fae47fd5
-CUSTOMER Abeeb
-FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 438.836 ms - 154[0m
-I was here
-{
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjE3NzY1LCJleHAiOjE2ODA5OTUzNjV9.2LR7u7v1mux4mCkEusSPwEk55xbKR19Cl3YyeimrTBs',
-  'content-type': 'application/x-www-form-urlencoded',
-  host: 'nairalink_authentication',
-  connection: 'close',
-  'user-agent': 'PostmanRuntime/7.29.2',
-  accept: '*/*',
-  'postman-token': '3b697b9e-492c-4dab-b28d-21891428cf8a',
-  'accept-encoding': 'gzip, deflate, br'
-}
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjE3NzY1LCJleHAiOjE2ODA5OTUzNjV9.2LR7u7v1mux4mCkEusSPwEk55xbKR19Cl3YyeimrTBs
-is valid 6425ffaeb9ac2554fae47fd5
-DECODE 6425ffaeb9ac2554fae47fd5
-CUSTOMER Abeeb
-FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 222.555 ms - 154[0m
-I was here
-{
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjE3NzY1LCJleHAiOjE2ODA5OTUzNjV9.2LR7u7v1mux4mCkEusSPwEk55xbKR19Cl3YyeimrTBs',
-  'content-type': 'application/x-www-form-urlencoded',
-  host: 'nairalink_authentication',
-  connection: 'close',
-  'user-agent': 'PostmanRuntime/7.29.2',
-  accept: '*/*',
-  'postman-token': '1822e2c8-bf01-4637-b147-09d43cd437a5',
-  'accept-encoding': 'gzip, deflate, br'
-}
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjE3NzY1LCJleHAiOjE2ODA5OTUzNjV9.2LR7u7v1mux4mCkEusSPwEk55xbKR19Cl3YyeimrTBs
-is valid 6425ffaeb9ac2554fae47fd5
-DECODE 6425ffaeb9ac2554fae47fd5
-CUSTOMER Abeeb
-FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 220.249 ms - 154[0m
-I was here
-{
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjE3NzY1LCJleHAiOjE2ODA5OTUzNjV9.2LR7u7v1mux4mCkEusSPwEk55xbKR19Cl3YyeimrTBs',
-  'content-type': 'application/x-www-form-urlencoded',
-  host: 'nairalink_authentication',
-  connection: 'close',
-  'user-agent': 'PostmanRuntime/7.29.2',
-  accept: '*/*',
-  'postman-token': '1338eed5-9dd7-4662-a892-62ac6ae3a1ef',
-  'accept-encoding': 'gzip, deflate, br'
-}
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjE3NzY1LCJleHAiOjE2ODA5OTUzNjV9.2LR7u7v1mux4mCkEusSPwEk55xbKR19Cl3YyeimrTBs
-is valid 6425ffaeb9ac2554fae47fd5
-DECODE 6425ffaeb9ac2554fae47fd5
-CUSTOMER Abeeb
-FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 272.531 ms - 154[0m
-I was here
-{
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjE3NzY1LCJleHAiOjE2ODA5OTUzNjV9.2LR7u7v1mux4mCkEusSPwEk55xbKR19Cl3YyeimrTBs',
-  'content-type': 'application/x-www-form-urlencoded',
-  host: 'nairalink_authentication',
-  connection: 'close',
-  'content-length': '48',
-  'user-agent': 'PostmanRuntime/7.29.2',
-  accept: '*/*',
-  'postman-token': '3bb8d6a5-d7f3-43c3-89ee-32df5b1b98a8',
-  'accept-encoding': 'gzip, deflate, br'
-}
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjE3NzY1LCJleHAiOjE2ODA5OTUzNjV9.2LR7u7v1mux4mCkEusSPwEk55xbKR19Cl3YyeimrTBs
-is valid 6425ffaeb9ac2554fae47fd5
-DECODE 6425ffaeb9ac2554fae47fd5
-CUSTOMER Abeeb
-FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 765.434 ms - 154[0m
-I was here
-{
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjE3NzY1LCJleHAiOjE2ODA5OTUzNjV9.2LR7u7v1mux4mCkEusSPwEk55xbKR19Cl3YyeimrTBs',
-  'content-type': 'application/x-www-form-urlencoded',
-  host: 'nairalink_authentication',
-  connection: 'close',
-  'content-length': '48',
-  'user-agent': 'PostmanRuntime/7.29.2',
-  accept: '*/*',
-  'postman-token': '8fc6fb65-8325-4176-9795-1ca95d486403',
-  'accept-encoding': 'gzip, deflate, br'
-}
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjE3NzY1LCJleHAiOjE2ODA5OTUzNjV9.2LR7u7v1mux4mCkEusSPwEk55xbKR19Cl3YyeimrTBs
-is valid 6425ffaeb9ac2554fae47fd5
-DECODE 6425ffaeb9ac2554fae47fd5
-CUSTOMER Abeeb
-FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 224.498 ms - 154[0m
-I was here
-{
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjE3NzY1LCJleHAiOjE2ODA5OTUzNjV9.2LR7u7v1mux4mCkEusSPwEk55xbKR19Cl3YyeimrTBs',
-  'content-type': 'application/x-www-form-urlencoded',
-  host: 'nairalink_authentication',
-  connection: 'close',
-  'content-length': '48',
-  'user-agent': 'PostmanRuntime/7.29.2',
-  accept: '*/*',
-  'postman-token': 'f8a9c7cb-76e4-48a1-ae1d-c2636b7739b6',
-  'accept-encoding': 'gzip, deflate, br'
-}
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjE3NzY1LCJleHAiOjE2ODA5OTUzNjV9.2LR7u7v1mux4mCkEusSPwEk55xbKR19Cl3YyeimrTBs
-is valid 6425ffaeb9ac2554fae47fd5
-DECODE 6425ffaeb9ac2554fae47fd5
-CUSTOMER Abeeb
-FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 210.268 ms - 154[0m
-I was here
-{
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjE3NzY1LCJleHAiOjE2ODA5OTUzNjV9.2LR7u7v1mux4mCkEusSPwEk55xbKR19Cl3YyeimrTBs',
-  'content-type': 'application/x-www-form-urlencoded',
-  host: 'nairalink_authentication',
-  connection: 'close',
-  'content-length': '48',
-  'user-agent': 'PostmanRuntime/7.29.2',
-  accept: '*/*',
-  'postman-token': 'd56d663c-48d7-4067-a14d-d20022e5b209',
-  'accept-encoding': 'gzip, deflate, br'
-}
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjE3NzY1LCJleHAiOjE2ODA5OTUzNjV9.2LR7u7v1mux4mCkEusSPwEk55xbKR19Cl3YyeimrTBs
-[0mPOST /oauth/token [33m403[0m 2.536 ms - 16[0m
-[0mPOST /api/v1/auth/login [32m200[0m 443.817 ms - 351[0m
-I was here
-{
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjIxNTcwLCJleHAiOjE2ODA5OTkxNzB9.dmkXQ7IzxYESySpLRWlXPlf-fZfMOPdONKqG2o5iibw',
-  'content-type': 'application/x-www-form-urlencoded',
-  host: 'nairalink_authentication',
-  connection: 'close',
-  'content-length': '48',
-  'user-agent': 'PostmanRuntime/7.29.2',
-  accept: '*/*',
-  'postman-token': 'd23e8a48-dba6-47e0-bbab-cf032a21dd78',
-  'accept-encoding': 'gzip, deflate, br'
-}
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjIxNTcwLCJleHAiOjE2ODA5OTkxNzB9.dmkXQ7IzxYESySpLRWlXPlf-fZfMOPdONKqG2o5iibw
-is valid 6425ffaeb9ac2554fae47fd5
-DECODE 6425ffaeb9ac2554fae47fd5
-CUSTOMER Abeeb
-FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 245.351 ms - 154[0m
-I was here
-{
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjIxNTcwLCJleHAiOjE2ODA5OTkxNzB9.dmkXQ7IzxYESySpLRWlXPlf-fZfMOPdONKqG2o5iibw',
-  'content-type': 'application/x-www-form-urlencoded',
-  host: 'nairalink_authentication',
-  connection: 'close',
-  'content-length': '48',
-  'user-agent': 'PostmanRuntime/7.29.2',
-  accept: '*/*',
-  'postman-token': '59790050-e19b-4298-bcf5-7c2e7dff80a1',
-  'accept-encoding': 'gzip, deflate, br'
-}
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjIxNTcwLCJleHAiOjE2ODA5OTkxNzB9.dmkXQ7IzxYESySpLRWlXPlf-fZfMOPdONKqG2o5iibw
-is valid 6425ffaeb9ac2554fae47fd5
-DECODE 6425ffaeb9ac2554fae47fd5
-CUSTOMER Abeeb
-FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 233.855 ms - 154[0m
-I was here
-{
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjIxNTcwLCJleHAiOjE2ODA5OTkxNzB9.dmkXQ7IzxYESySpLRWlXPlf-fZfMOPdONKqG2o5iibw',
-  'content-type': 'application/x-www-form-urlencoded',
-  host: 'nairalink_authentication',
-  connection: 'close',
-  'content-length': '48',
-  'user-agent': 'PostmanRuntime/7.29.2',
-  accept: '*/*',
-  'postman-token': '8cd41c44-e7eb-4408-8498-3b229d4d6981',
-  'accept-encoding': 'gzip, deflate, br'
-}
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjIxNTcwLCJleHAiOjE2ODA5OTkxNzB9.dmkXQ7IzxYESySpLRWlXPlf-fZfMOPdONKqG2o5iibw
-is valid 6425ffaeb9ac2554fae47fd5
-DECODE 6425ffaeb9ac2554fae47fd5
-CUSTOMER Abeeb
-FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 243.548 ms - 154[0m
-I was here
-{
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjIxNTcwLCJleHAiOjE2ODA5OTkxNzB9.dmkXQ7IzxYESySpLRWlXPlf-fZfMOPdONKqG2o5iibw',
-  'content-type': 'application/x-www-form-urlencoded',
-  host: 'nairalink_authentication',
-  connection: 'close',
-  'content-length': '48',
-  'user-agent': 'PostmanRuntime/7.29.2',
-  accept: '*/*',
-  'postman-token': '909587d2-94c0-4dff-8f65-891b6fa62bc7',
-  'accept-encoding': 'gzip, deflate, br'
-}
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjIxNTcwLCJleHAiOjE2ODA5OTkxNzB9.dmkXQ7IzxYESySpLRWlXPlf-fZfMOPdONKqG2o5iibw
-is valid 6425ffaeb9ac2554fae47fd5
-DECODE 6425ffaeb9ac2554fae47fd5
-CUSTOMER Abeeb
-FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 246.947 ms - 154[0m
-I was here
-{
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjIxNTcwLCJleHAiOjE2ODA5OTkxNzB9.dmkXQ7IzxYESySpLRWlXPlf-fZfMOPdONKqG2o5iibw',
-  'content-type': 'application/x-www-form-urlencoded',
-  host: 'nairalink_authentication',
-  connection: 'close',
-  'content-length': '48',
-  'user-agent': 'PostmanRuntime/7.29.2',
-  accept: '*/*',
-  'postman-token': '648096ad-a172-4885-aad0-6e6be7f56443',
-  'accept-encoding': 'gzip, deflate, br'
-}
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjIxNTcwLCJleHAiOjE2ODA5OTkxNzB9.dmkXQ7IzxYESySpLRWlXPlf-fZfMOPdONKqG2o5iibw
-is valid 6425ffaeb9ac2554fae47fd5
-DECODE 6425ffaeb9ac2554fae47fd5
-CUSTOMER Abeeb
-FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 212.612 ms - 154[0m
-I was here
-{
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjIxNTcwLCJleHAiOjE2ODA5OTkxNzB9.dmkXQ7IzxYESySpLRWlXPlf-fZfMOPdONKqG2o5iibw',
-  'content-type': 'application/x-www-form-urlencoded',
-  host: 'nairalink_authentication',
-  connection: 'close',
-  'content-length': '48',
-  'user-agent': 'PostmanRuntime/7.29.2',
-  accept: '*/*',
-  'postman-token': '05157ee3-c855-4e14-a340-5e82489ef6dd',
-  'accept-encoding': 'gzip, deflate, br'
-}
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjIxNTcwLCJleHAiOjE2ODA5OTkxNzB9.dmkXQ7IzxYESySpLRWlXPlf-fZfMOPdONKqG2o5iibw
-is valid 6425ffaeb9ac2554fae47fd5
-DECODE 6425ffaeb9ac2554fae47fd5
-CUSTOMER Abeeb
-FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 252.136 ms - 154[0m
-I was here
-{
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjIxNTcwLCJleHAiOjE2ODA5OTkxNzB9.dmkXQ7IzxYESySpLRWlXPlf-fZfMOPdONKqG2o5iibw',
-  'content-type': 'application/x-www-form-urlencoded',
-  host: 'nairalink_authentication',
-  connection: 'close',
-  'content-length': '48',
-  'user-agent': 'PostmanRuntime/7.29.2',
-  accept: '*/*',
-  'postman-token': '61e47e1f-e15d-4d0d-a324-f18b5428b755',
-  'accept-encoding': 'gzip, deflate, br'
-}
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNWZmYWViOWFjMjU1NGZhZTQ3ZmQ1IiwiaWF0IjoxNjgwMjIxNTcwLCJleHAiOjE2ODA5OTkxNzB9.dmkXQ7IzxYESySpLRWlXPlf-fZfMOPdONKqG2o5iibw
-is valid 6425ffaeb9ac2554fae47fd5
-DECODE 6425ffaeb9ac2554fae47fd5
-CUSTOMER Abeeb
-FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 210.729 ms - 154[0m
+[0mPOST /oauth/token [32m200[0m 232.691 ms - 154[0m

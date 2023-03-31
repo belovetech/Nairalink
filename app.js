@@ -10,7 +10,9 @@ const rateLimit = require('express-rate-limit');
 const path = require('path');
 const GlobalErrorHandler = require('./helpers/errorHandler');
 const AppError = require('./helpers/AppError');
-
+const swaggerUi = require('swagger-ui-express');
+const fs = require('fs');
+const YAML = require('yamljs');
 const AuthController = require('./controllers/AuthController');
 
 const CustomerRouter = require('./routes/customerRouter');
@@ -18,6 +20,12 @@ const AuthRouter = require('./routes/authRouter');
 const verificationRouter = require('./routes/verificationRouter');
 
 const app = express();
+const file = fs.readFileSync(path.join(__dirname, 'swagger.yaml'), 'utf8');
+const swaggerDocument = YAML.parse(file);
+const options = {
+  explorer: true,
+  customSiteTitle: 'Nairalink',
+};
 
 app.use(express.json());
 app.use(cookieParser());
@@ -34,6 +42,13 @@ const limiter = rateLimit({
   message: 'Too many request from this IP, Please try again in 15 mins.',
 });
 app.use('/api', limiter);
+
+// Set up the Swagger UI
+app.use(
+  '/api/v1/auth/docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument, options)
+);
 
 app.post('/oauth/token', AuthController.authenticate);
 

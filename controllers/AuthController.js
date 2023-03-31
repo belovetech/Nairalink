@@ -350,11 +350,15 @@ class AuthController {
   }
 
   static async updatePassword(req, res, next) {
+    const customerId = req.headers.customerid;
+    if (!customerId) {
+      return res.status(403).json({ error: 'Forbidden' });
+    }
     const { currentPassword, newPassword, newPasswordConfirmation } = req.body;
     try {
-      const customer = await Customer.findById(
-        new ObjectId(req.user.id)
-      ).select('+password');
+      const customer = await Customer.findById(new ObjectId(customerId)).select(
+        '+password'
+      );
 
       if (!customer) return next(new AppError('Forbidden', 403));
       if (!currentPassword || !newPassword) {

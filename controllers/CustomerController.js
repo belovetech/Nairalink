@@ -31,7 +31,6 @@ class CustomerController {
 
   static async getCustomer(req, res, next) {
     try {
-      console.log(req.params.id);
       const customer = await Customer.findById(req.params.id);
       if (!customer) {
         return next(new AppError('Customer with this ID does not exist', 404));
@@ -45,8 +44,12 @@ class CustomerController {
 
   static async updateCustomer(req, res, next) {
     try {
+      const { customerid } = req.headers;
+      if (!customerid) {
+        return next(new AppError('Forbidden', 403));
+      }
       const updatedCustomer = await Customer.findByIdAndUpdate(
-        { _id: req.params.id },
+        { _id: customerid },
         req.body,
         { new: true, runValidators: true }
       );
@@ -64,7 +67,11 @@ class CustomerController {
 
   static async deleteCustomer(req, res, next) {
     try {
-      const customer = await Customer.findByIdAndDelete(req.params.id);
+      const { customerid } = req.headers;
+      if (!customerid) {
+        return next(new AppError('Forbidden', 403));
+      }
+      const customer = await Customer.findByIdAndDelete(customerid);
 
       if (!customer) {
         return next(new AppError('Customer with this ID does not exist', 404));
@@ -77,13 +84,15 @@ class CustomerController {
   }
 
   static async getMe(req, res, next) {
-    console.log('I WAS HERE GETME');
-    console.log(req.headers);
     req.params.id = ObjectId(req.headers.customerid);
     next();
   }
 
   static async updateMe(req, res, next) {
+    const { customerid } = req.headers;
+    if (!customerid) {
+      return next(new AppError('Forbidden', 403));
+    }
     if (req.body.password || req.body.passwordConfirmation) {
       return next(
         new AppError(
@@ -109,7 +118,7 @@ class CustomerController {
         'userName',
       ]);
       const updatedCustomer = await Customer.findByIdAndUpdate(
-        req.headers.user.id || req.user.id,
+        customerid,
         filterredFields,
         { new: true, runValidators: true }
       );
@@ -124,7 +133,9 @@ class CustomerController {
 
   static async deleteMe(req, res, next) {
     try {
-      const customer = await Customer.findByIdAndUpdate(req.user.id, {
+      const { customerid } = req.headers;
+
+      const customer = await Customer.findByIdAndUpdate(customerid, {
         active: false,
       });
 
