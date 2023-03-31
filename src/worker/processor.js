@@ -14,7 +14,7 @@ if (process.env.NODE_ENV === 'development') {
 
 const alertJob = (alertMsg, alertRecipient) => ({
   body: alertMsg,
-  messagingServiceSid: process.env.TWILIO_MESSAGE_SERVICE_SID,
+  messagingServiceSid: 'MG626e9a294e281b5bfda75bf74abad3c5',
   from: 'Nairalink',
   to: alertRecipient,
 });
