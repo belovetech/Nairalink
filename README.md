@@ -1,5 +1,23 @@
 # ACCOUNTS AND TRANSACTION SERVICE
 This is the repository for the accounts and transaction microservice
+
+## TECHNOLOGIES USED
+Node.js, MySQL, Sequelize
+
+## ROLES
+The Account and Transaction microservice plays the following roles:
+* Generates accounts for verfied users of Nairalink
+* Enables users to be able to make transactions with their accounts
+* Gives users autonomy over modification and updation of their account details
+* Provides the users with the ability to request for virtual cards
+* Enables users to fund generated virtual cards
+
+## ARCHITECTURE
+Node.js is the core backend language of the account and transaction microservice
+The service uses MySQL for the database and Sequelize as an ORM
+
+## API INFORMATION 
+
 ```
 openapi: '3.0.0'
 info:
