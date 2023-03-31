@@ -46,7 +46,7 @@ async def fund_virtual_card():
         except NoResultFound as err:
             return jsonify({'error': 'Customer does not exist'}), 404
         try:
-            res = fund_card(customer_id, amount)
+            res = fund_card(customer_id, "Card Funding", amount)
             if res is None:
                 return jsonify({'error': 'Server error'}), 500
             resDict = res.json()
