@@ -6,7 +6,7 @@ async function sendPhoneRegistrationPin(phoneNumber, pin) {
   });
   const job = {
     body: `Your Verification token ${pin}`,
-    messagingServiceSid: 'MGe12f0e19d3ad3ced889ce36157ca446f',
+    messagingServiceSid: process.env.TWILIO_PHONE_MSG,
     from: 'Nairalink',
     to: `+234${phoneNumber.slice(1)}`,
   };
