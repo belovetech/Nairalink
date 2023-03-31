@@ -1,5 +1,22 @@
 # CARD SERVICE
-This is the virtual-card microservice for the NairaLink project
+This is the card microservice for the NairaLink project
+
+## TECHNOLOGIES USED
+Python (Flask), MySQL, SQLAlchemy
+
+## ROLES
+The VirtualCard microservice plays the following roles:
+* Receives user information from verified requests from the accounts and transaction service
+* Generates virtual cards for the verified users
+* Gives users autonomy over modification and updation of their virtual card details
+* Enables users to fund generated virtual cards
+* Grants users the ability to freeze, unfreeze or delete a generated virtual card
+
+## ARCHITECTURE
+Python(Flask) is the core backend language of the Card microservice
+The service uses MySQL for the database and SQLAlchemy as an ORM
+
+## API INFORMATION 
 
 ## CARD ENDPOINTS
 * All endpoints return success if there are no errors, otherwise:
