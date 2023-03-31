@@ -1,5 +1,18 @@
-# repo-template
-This is a repo template for new repositories
+# NOTIFICATION SERVICE
+This is the notification microservice of the Nairalink project
+
+## TECHNOLOGIES USED
+Node.js, Redis
+
+## ROLES
+The Notification microservice plays the following roles:
+* Sends information to verified users of the platform through text or email
+
+## ARCHITECTURE
+Node.js is the core backend language of the notification microservice
+The service also uses Redis as a client
+
+## API INFORMATION 
 ```
 openapi: 3.0.0
 info:
