@@ -5,6 +5,7 @@ const Customer = require('../models/customerModel');
 const AppError = require('../helpers/AppError');
 const formatResponse = require('../helpers/formatResponse');
 const filterFields = require('../helpers/filterFields');
+const { ObjectId } = require('mongodb');
 
 class CustomerController {
   static async createCustomer(req, res, next) {
@@ -30,6 +31,7 @@ class CustomerController {
 
   static async getCustomer(req, res, next) {
     try {
+      console.log(req.params.id);
       const customer = await Customer.findById(req.params.id);
       if (!customer) {
         return next(new AppError('Customer with this ID does not exist', 404));
@@ -75,11 +77,10 @@ class CustomerController {
   }
 
   static async getMe(req, res, next) {
+    console.log('I WAS HERE GETME');
     console.log(req.headers);
-    console.log(req.body);
-    return res.status(200).json({});
-    // req.params.id = req.user.id;
-    // next();
+    req.params.id = ObjectId(req.headers.customerid);
+    next();
   }
 
   static async updateMe(req, res, next) {

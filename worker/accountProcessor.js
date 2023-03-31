@@ -2,7 +2,6 @@ const http = require('http');
 
 const options = {
   hostname: process.env.ACCOUNTS_HOST,
-  port: 3000,
   protocol: 'http:',
   method: 'POST',
   path: '/api/v1/accounts',
@@ -12,6 +11,8 @@ const options = {
 };
 
 module.exports = async (job) => {
+  console.log('JOB WAS PASSED HERE');
+  console.log(job.data);
   const request = http.request(options, (res) => {
     const status = res.statusCode;
     if (status === 201) {

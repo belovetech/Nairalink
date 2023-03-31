@@ -12,7 +12,7 @@ router.post('/resetPassword/:token', AuthController.resetPassword);
 router.get('/logout', AuthController.logout);
 
 // Protect all routes after this middleware
-router.use(AuthController.protect);
+// router.use(AuthController.protect);
 router.patch('/updatePassword', AuthController.updatePassword);
 
 module.exports = router;

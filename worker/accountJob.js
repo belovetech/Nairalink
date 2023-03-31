@@ -1,4 +1,4 @@
-import { Queue } from 'bullmq';
+import { Queue, raw2NextJobData } from 'bullmq';
 
 const queue = new Queue('account', {
   connection: {
@@ -9,12 +9,13 @@ const queue = new Queue('account', {
 
 const createAccount = async (customer) => {
   const job = {
-    userId: customer._id,
+    customerId: customer._id,
     accountNumber: customer.phoneNumber.slice(1),
     firstName: customer.firstName,
     lastName: customer.lastName,
     email: customer.email,
   };
+  console.log(job.toString());
   (async () => {
     await queue.add('create-account', job, {
       attempts: 3,

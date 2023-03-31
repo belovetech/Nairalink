@@ -18,7 +18,6 @@ const AuthRouter = require('./routes/authRouter');
 const verificationRouter = require('./routes/verificationRouter');
 
 const app = express();
-app.use(express.static(path.join(__dirname, './public')));
 
 app.use(express.json());
 app.use(cookieParser());
@@ -37,10 +36,6 @@ const limiter = rateLimit({
 app.use('/api', limiter);
 
 app.post('/oauth/token', AuthController.authenticate);
-
-app.get('/api/auth-docs', (req, res) => {
-  res.sendFile(path.join(__dirname, './public/index.html'));
-});
 
 // ROUTER MIDDLEWARE
 app.use('/api/v1/auth', AuthRouter);

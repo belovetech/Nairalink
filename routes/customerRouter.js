@@ -13,7 +13,7 @@ router.get('/status', AppController.getStatus);
 
 // Protect all routes after this middleware
 // router.use(AuthController.protect);
-router.get('/getMe', CustomerController.getMe);
+router.get('/getMe', CustomerController.getMe, CustomerController.getCustomer);
 router.patch('/updateMe', CustomerController.updateMe);
 router.delete('/deleteMe', CustomerController.deleteMe);
 

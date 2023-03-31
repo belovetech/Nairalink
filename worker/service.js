@@ -2,8 +2,9 @@
 /* eslint-disable function-paren-newline */
 /* eslint-disable comma-dangle */
 const dotenv = require('dotenv');
+const path = require('path');
 
-dotenv.config({ path: '../.config.env' });
+dotenv.config({ path: path.join(__dirname, '/../.config.env') });
 
 const worker = require('./worker');
 

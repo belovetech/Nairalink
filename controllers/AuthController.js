@@ -189,50 +189,58 @@ class AuthController {
   }
 
   static async authenticate(req, res) {
+    console.log(`I was here`);
+    console.log(req.headers);
     let token = undefined;
     const { authorization } = req.headers;
     if (!authorization) {
-      return res.status(401).json({ active: false});
+      return res.status(401).json({ active: false });
     }
     if (authorization.startsWith('Bearer ')) {
       token = authorization.split(' ')[1];
     }
     if (!token) {
-      return res.status(401).json({ active: false});
+      return res.status(401).json({ active: false });
     }
+    console.log(`TOKEN ${token}`);
     try {
       const valid = await redisClient.get(`auth_${token}`);
       if (valid === null) {
-        return res.status(403).json({ active: false});
+        return res.status(403).json({ active: false });
       }
+      console.log(`is valid ${valid}`);
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      console.log(`DECODE ${decoded.customerId}`);
       const CurrentCustomer = await Customer.findOne({
         _id: decoded.customerId,
       });
       if (!CurrentCustomer) {
-        return res.status(401).json({ active: false});
+        return res.status(401).json({ active: false });
       }
       if (CurrentCustomer.passwordChangeAfter(decoded.iat)) {
-        return res.status(401).json({ active: false});
+        return res.status(401).json({ active: false });
       }
-      if (uri === '/api/v1/accounts' || uri === '/api/v1/cards') {
-        return res.status(200).json({
-          customerid: CurrentCustomer._id,
-          email: CurrentCustomer.email,
-          phonenumber: CurrentCustomer.phoneNumber,
-          firstname: CurrentCustomer.firstName,
-          lastname: CurrentCustomer.lastName,
-        });
-      }
+      console.log(`CUSTOMER ${CurrentCustomer.firstName}`);
+      // if (uri === '/api/v1/accounts' || uri === '/api/v1/cards') {
+      console.log('FINALLY GOT USER');
       return res.status(200).json({
+        active: true,
         customerid: CurrentCustomer._id,
+        email: CurrentCustomer.email,
+        phonenumber: CurrentCustomer.phoneNumber,
+        firstname: CurrentCustomer.firstName,
+        lastname: CurrentCustomer.lastName,
       });
+      // }
+      // return res.status(200).json({
+      //   customerid: CurrentCustomer._id,
+      // });
     } catch (error) {
       if (error.message === 'invalid signature') {
-        return res.status(401).json({ active: false});
+        return res.status(401).json({ active: false });
       }
-      return res.status(500).json({ active: false});
+      return res.status(500).json({ active: false });
     }
   }
 
