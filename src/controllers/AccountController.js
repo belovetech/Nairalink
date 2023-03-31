@@ -5,13 +5,14 @@ const Account = require('../models/Account');
 class AccountController {
   static async createAccount(req, res, next) {
     try {
-      const { userId, accountNumber, firstName, lastName, email } = req.body;
+      const { customerId, accountNumber, firstName, lastName, email } =
+        req.body;
       const account = await Account.create({
-        userId,
-        accountNumber,
-        firstName,
-        lastName,
-        email,
+        customerId: customerId,
+        accountNumber: accountNumber,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
       });
       return res.status(201).json(account.toJSON());
     } catch (error) {
@@ -27,10 +28,13 @@ class AccountController {
 
   static async getAccount(req, res, next) {
     try {
-      const { userId } = req.params;
-      const account = await Account.findByPk(userId);
+      const { customerId } = req.params;
+      if (req.headers.customerid !== customerId) {
+        return res.status(403).json({ error: 'Forbidden' });
+      }
+      const account = await Account.findByPk(customerId);
       if (!account) {
-        return res.status(404).json({ message: 'Account not found' });
+        return res.status(404).json({ error: 'Account not found' });
       }
       return res.status(200).json(account.toJSON());
     } catch (error) {
@@ -63,13 +67,13 @@ class AccountController {
 
   static async deleteAccount(req, res, next) {
     try {
-      const { userId } = req.params;
-      console.log(userId);
-      const account = await Account.findByPk(userId);
+      const { customerId } = req.params;
+      console.log(customerId);
+      const account = await Account.findByPk(customerId);
       if (account === null) {
         return res.status(404).json({ error: 'User does not have an account' });
       }
-      await Account.destroy({ where: { userId } });
+      await Account.destroy({ where: { customerId } });
       return res.status(204).end();
     } catch (err) {
       return next(err);

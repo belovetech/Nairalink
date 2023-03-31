@@ -6,7 +6,11 @@ import dotenv from 'dotenv';
 import Account from '../models/Account';
 import { notificationClient } from '../utils/notification';
 
-dotenv.config({ path: path.join(__dirname, '/../config/.config.env') });
+if (process.env.NODE_ENV === 'development') {
+  dotenv.config({ path: path.join(__dirname, '/../../.env') });
+} else {
+  dotenv.config({ path: path.join(__dirname, '/../../.config.env') });
+}
 
 const alertJob = (alertMsg, alertRecipient) => ({
   body: alertMsg,

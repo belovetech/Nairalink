@@ -19,7 +19,7 @@ const options = {
   customSiteTitle: 'Nairalink',
 };
 app.use(
-  '/api-docs',
+  '/api/v1/accounts/docs',
   swaggerUI.serve,
   swaggerUI.setup(swaggerDocument, options)
 );

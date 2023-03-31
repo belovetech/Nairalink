@@ -7,6 +7,7 @@
 [33m[nodemon] watching path(s): *.*[39m
 [33m[nodemon] watching extensions: js,mjs,json[39m
 [32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
 Worker listening for credit and debit alert jobs
 It is highly recommended to use a minimum Redis version of 6.2.0
            Current: 6.0.16
@@ -14,3 +15,585 @@ It is highly recommended to use a minimum Redis version of 6.2.0
            Current: 6.0.16
 It is highly recommended to use a minimum Redis version of 6.2.0
            Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+Executing (default): SELECT `balance` FROM `accounts` AS `accounts` WHERE `accounts`.`accountNumber` = 7042095602;
+Executing (default): SELECT `balance` FROM `accounts` AS `accounts` WHERE `accounts`.`accountNumber` = 7061755048;
+Enqueued an mobile alert to +2347042095602
+Completed job 71 successfully, transaction with c46fd51e-8ace-45f5-8e2c-eed0e78d1cdf
+Enqueued an mobile alert to +2347061755048
+Completed job 72 successfully, transaction with c46fd51e-8ace-45f5-8e2c-eed0e78d1cdf
+Executing (default): SELECT `balance` FROM `accounts` AS `accounts` WHERE `accounts`.`accountNumber` = 7042095602;
+Executing (default): SELECT `balance` FROM `accounts` AS `accounts` WHERE `accounts`.`accountNumber` = 7061755048;
+Enqueued an mobile alert to +2347042095602
+Enqueued an mobile alert to +2347061755048
+Completed job 73 successfully, transaction with 2608ef54-6951-4863-8250-61432c3db127
+Completed job 74 successfully, transaction with 2608ef54-6951-4863-8250-61432c3db127
+Executing (default): SELECT `balance` FROM `accounts` AS `accounts` WHERE `accounts`.`accountNumber` = 7042095602;
+Enqueued an mobile alert to +2347042095602
+Executing (default): SELECT `balance` FROM `accounts` AS `accounts` WHERE `accounts`.`accountNumber` = 7061755048;
+Completed job 75 successfully, transaction with f68213a2-0225-4454-968e-5eeafa93b752
+Enqueued an mobile alert to +2347061755048
+Completed job 76 successfully, transaction with f68213a2-0225-4454-968e-5eeafa93b752
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+Executing (default): SELECT `balance` FROM `accounts` AS `accounts` WHERE `accounts`.`accountNumber` = 7042095602;
+Enqueued an mobile alert to +2347042095602
+Completed job 77 successfully, transaction with a9ba9631-fb77-4abc-93aa-6a7e6bc3fcfa
+Executing (default): SELECT `balance` FROM `accounts` AS `accounts` WHERE `accounts`.`accountNumber` = 7042095602;
+Enqueued an mobile alert to +2347042095602
+Completed job 78 successfully, transaction with 3cb39c4c-5ba2-46be-8f06-80000e391da7
+Executing (default): SELECT `balance` FROM `accounts` AS `accounts` WHERE `accounts`.`accountNumber` = 7042095602;
+Enqueued an mobile alert to +2347042095602
+Completed job 79 successfully, transaction with 630c49a7-42bb-4b50-ad82-91f1fbf118b5
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+Executing (default): SELECT `balance` FROM `accounts` AS `accounts` WHERE `accounts`.`accountNumber` = 7042095602;
+Enqueued an mobile alert to +2347042095602
+Completed job 80 successfully, transaction with 40c662d1-52ef-4ad9-ac59-13432946a98b
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env src/worker/service.js`[39m
+nairalink
+Worker listening for credit and debit alert jobs
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+It is highly recommended to use a minimum Redis version of 6.2.0
+           Current: 6.0.16
+Executing (default): SELECT `balance` FROM `accounts` AS `accounts` WHERE `accounts`.`accountNumber` = 7042095602;
+Enqueued an mobile alert to +2347042095602
+Completed job 81 successfully, transaction with 8c5b84d6-cf6d-43e1-8a94-6d451de00723

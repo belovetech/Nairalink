@@ -21,12 +21,16 @@ class TransactionController {
   static async transfer(req, res) {
     // Get the request body
     let transact;
-    const { userId, creditAccountNumber, amount, description } = req.body;
+    const customerId = req.headers.customerid;
+    if (!customerId) {
+      return res.status(403).json({ error: 'Forbidden' });
+    }
+    const { creditAccountNumber, amount, description } = req.body;
     const t = await sequelize.transaction();
     try {
       const results = await Promise.all([
         Account.findOne({
-          where: { userId },
+          where: { customerId },
           lock: t.LOCK.UPDATE,
           transaction: t,
         }),
@@ -105,10 +109,23 @@ class TransactionController {
 
   static async getTransactions(req, res, next) {
     try {
+      const { customerid, phonenumber } = req.headers;
+      if (!customerid) {
+        return res.status(403).json({ error: 'Forbidden' });
+      }
+      const accountnumber = phonenumber.slice(1);
       const query = new ApiFeatures(req.query);
+      console.log(query.filter());
       const [skip, limit] = [...query.paginate()];
+
       const transactions = await Transaction.findAll({
         where: query.filter(),
+        where: {
+          [Op.or]: [
+            { toAccount: accountnumber },
+            { fromAccount: accountnumber },
+          ],
+        },
         attributes: query.fields(),
         order: [[query.sort(), 'DESC']],
         offset: skip,
@@ -124,29 +141,27 @@ class TransactionController {
   }
 
   static async accountTransaction(req, res, next) {
+    const customerId = req.headers.customerid;
+    if (!customerId) {
+      return res.status(403).json({ error: 'Forbidden' });
+    }
     try {
-      const { userId } = req.params;
-      const account = await Account.findByPk(userId);
+      const { transactionId } = req.params;
+      const account = await Account.findByPk(customerId);
       if (!account) {
-        return res.status(404).json({ message: 'Account not found' });
+        return res.status(403).json({ error: 'Forbidden' });
       }
-      const query = new ApiFeatures(req.query);
-      const [skip, limit] = [...query.paginate()];
-      const transactions = await Transaction.findAll({
-        where: {
-          [Op.or]: [
-            { fromAccount: account.accountNumber },
-            { toAccount: account.accountNumber },
-          ],
-        },
-        order: [[query.sort(), 'DESC']],
-        offset: skip,
-        limit,
-      });
-      return res.status(200).json({
-        results: transactions.length,
-        transactions,
-      });
+      const transactions = await Transaction.findByPk(transactionId);
+      if (!transactions) {
+        return res.status(404).json({ error: 'Transaction not found' });
+      }
+      if (
+        account.accountNumber == transactions.toAccount ||
+        account.accountNumber == transactions.fromAccount
+      ) {
+        return res.status(200).json({ transactions });
+      }
+      return res.status(403).json({ error: 'Forbidden' });
     } catch (error) {
       console.log(error);
       return next(error);
@@ -155,13 +170,11 @@ class TransactionController {
 
   static async prepareToFund(req, res, next) {
     try {
-      const stripe = require('stripe')(
-        'sk_test_51Mo4KaEvDiZFauUw5ilvvPxDaXxOVZm6TZXu2y0h3zGAwHpAhPzkZYAbT8YQ4A13SAyj5fwkN72TXoWwz0YYyP1R00OFGPM0DV'
-      );
-      const { userId } = req.params;
+      const stripe = require('stripe')(process.env.STRIPE_API_KEY);
+      const { customerId } = req.headers.customerid;
       const { amount, cardDetails, shipping, email } = req.body;
 
-      const account = await Account.findByPk(userId);
+      const account = await Account.findByPk(customerId);
       if (!account) {
         return res.status(404).json({ message: 'Account not found' });
       }
@@ -176,7 +189,7 @@ class TransactionController {
       await Transaction.create({
         transactionId,
         transactionType: 'fund',
-        fromAccount: 1111111111,
+        fromAccount: account.accountNumber,
         toAccount: account.accountNumber,
         amount,
         transactionStatus: 'pending',
@@ -208,16 +221,11 @@ class TransactionController {
 
   static async fundAccount(req, res, next) {
     try {
-      const stripe = require('stripe')(
-        'sk_test_51Mo4KaEvDiZFauUw5ilvvPxDaXxOVZm6TZXu2y0h3zGAwHpAhPzkZYAbT8YQ4A13SAyj5fwkN72TXoWwz0YYyP1R00OFGPM0DV'
-      );
-      const endpointSecret =
-        'whsec_f66a92a327d78729af9d5194a10395069d775ae4e9f91e32728c856e1d8f239b';
-
+      const stripe = require('stripe')(process.env.STRIPE_API_KEY);
+      const endpointSecret = process.env.STRIPE_CLI_ENDPOINT_SECRET;
       const signature = req.headers['stripe-signature'];
 
       let event;
-
       try {
         event = stripe.webhooks.constructEvent(
           req.rawBody,
@@ -276,11 +284,11 @@ class TransactionController {
     }
   }
   static async fundCard(req, res, next) {
-    const { customerId, amount } = req.body;
+    const { customerId, amount, type } = req.body;
     const t = await sequelize.transaction();
     try {
       const customerAccount = await Account.findOne({
-        where: { userId: customerId },
+        where: { customerId: customerId },
         lock: t.LOCK.UPDATE,
         transaction: t,
       });
@@ -302,7 +310,7 @@ class TransactionController {
         // customerAccount.save({ transaction: t }),
         Account.decrement(
           { balance: amount },
-          { where: { userId: customerId }, transaction: t }
+          { where: { customerId: customerId }, transaction: t }
         ),
         Transaction.create(
           {
@@ -312,7 +320,7 @@ class TransactionController {
             toAccount: customerAccount.accountNumber,
             amount,
             transactionStatus: 'pending',
-            transactionDescription: 'Card funding',
+            transactionDescription: type,
           },
           { transaction: t }
         ),
@@ -340,15 +348,25 @@ class TransactionController {
       });
     }
   }
-  static async UpdateFundCardTransaction(req, res, next) {
-    const { transactionId, status } = req.body;
 
-    console.log(typeof status === typeof 'successful', status === 'successful');
+  static async UpdateFundCardTransaction(req, res, next) {
+    console.log(req.body);
+    const { transactionId, status, amount, customerId } = req.body;
     const allowedStatus = ['successful', 'failed'];
     if (!transactionId || !status || allowedStatus.indexOf(status) === -1) {
       return res.status(400).json({ error: 'Bad request' });
     }
-
+    if (status === 'failed') {
+      const reversed = await Account.increment(
+        { balance: amount },
+        { where: { customerId } }
+      );
+      if (reversed[0][1] !== 1) {
+        return res.status(500).json({
+          error: `The reversal of ${amount} for Customer ID: ${customerId} with Transaction ID: ${transactionId} was not successful`,
+        });
+      }
+    }
     const transaction = Transaction.update(
       { transactionStatus: status },
       { where: { transactionId } }

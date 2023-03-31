@@ -1,9 +1,7 @@
 /* eslint-disable comma-dangle */
 /* eslint-disable no-unused-vars */
 const { exec } = require('child_process');
-const stripe = require('stripe')(
-  'sk_test_51Mo4KaEvDiZFauUw5ilvvPxDaXxOVZm6TZXu2y0h3zGAwHpAhPzkZYAbT8YQ4A13SAyj5fwkN72TXoWwz0YYyP1R00OFGPM0DV'
-);
+const stripe = require('stripe')(process.env.STRIPE_API_KEY);
 
 const triggerEvent = (status) => {
   exec(`stripe trigger payment_intent.${status}`, (error, stdout, stderr) => {

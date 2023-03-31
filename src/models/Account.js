@@ -2,7 +2,7 @@ import { DataTypes } from 'sequelize';
 import sequelize from '../database/connection';
 
 module.exports = sequelize.define('accounts', {
-  userId: {
+  customerId: {
     type: DataTypes.STRING,
     allowNull: false,
     primaryKey: true,

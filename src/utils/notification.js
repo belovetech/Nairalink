@@ -18,5 +18,5 @@ export class NotificationClient {
 }
 
 export const notificationClient = new NotificationClient('notification', {
-  connection: { host: 'localhost', port: 6379 },
+  connection: { host: process.env.REDIS_HOST, port: process.env.REDIS_PORT },
 });
