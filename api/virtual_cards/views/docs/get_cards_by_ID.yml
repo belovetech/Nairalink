@@ -3,17 +3,14 @@ servers:
   - url: http://localhost:8000/api/v1
 tags:
   - name: cards
-parameters:
-  - name: customer_id
-    in: path
-    description: Return Nairalink virtual card by ID
-    placeholder: 1234-0987-2344-4672
 get:
-  description: Get Nairalink virtual card by ID
+  description: Get Nairalink virtual card
 responses:
-  '201':
-    description: Successful created
-  '400':
-    description: Wrong parameters
+  '200':
+    description: Nairalink virtual card details
+  '403':
+    description: Forbidden
+  '404':
+    description: You do not have a Nairalink virtual card'
   '500':
-    description: Internal Server Error
+    description: Internal server error

@@ -30,21 +30,22 @@ definitions:
         format: date
 
 parameters:
-  - name: card_transactions
+  - name: amount
     in: body
     type: object
-    description: fund Nairalink virtual card
+    description: Updates the status of a virtual card
     properties:
-      customer_id:
-        type: string
-        example: 6422f8d3cea5142afdfa0d12
       amount:
         type: string
         example: 1000
+      description:
+        type: string
+        example: Card funding
+
 responses:
-  '201':
-    description: card has been funded
+  '200':
+    description: card has been funded successfully
   '400':
-    description: invalid amount, must be a number.
+    description: Not a dictionary
   '500':
-    description: Internal Server Error
+    description: Unable to perform transaction

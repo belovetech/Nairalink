@@ -4,9 +4,11 @@ servers:
 tags:
   - name: card_transactions
 get:
-  description: Returns all Nairalink virtual card transactions
+  description: Returns all customer Nairalink virtual card transactions
 responses:
   '200':
     description: OK
-  '500':
-    description: Internal Server Error
+  '403':
+    description: Forbidden
+  '404':
+    description: You do not have a Nairalink virtual card

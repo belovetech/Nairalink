@@ -40,14 +40,16 @@ class Cards(DB):
 
     def find_card_by(self, **kwargs) -> Card:
         """Find card from DB by key-value pairs argument"""
-        if not kwargs or not self.valid_query_args_cards(**kwargs):
-            raise InvalidRequestError
-
-        card = self._session.query(Card).filter_by(**kwargs).one_or_none()
-
-        if not card:
-            raise NoResultFound
-        return card
+        try:
+            if not kwargs or not self.valid_query_args_cards(**kwargs):
+                raise InvalidRequestError
+            card = self._session.query(Card).filter_by(**kwargs).one_or_none()
+            if not card:
+                raise NoResultFound
+            return card
+        except Exception as err:
+            print(err)
+            return None
 
     def find_card_number(self, customer_id: int) -> Card:
         """Get card details by using card_number"""

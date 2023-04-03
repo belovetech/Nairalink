@@ -109,11 +109,16 @@ def get_all_cards():
     return jsonify({"results": len(cards), "cards": cards})
 
 @swag_from('docs/get_cards_by_ID.yml', methods=['GET'])
-@app_views.route('/cards/<card_number>', methods=['GET'], strict_slashes=False)
-def get_card_details(card_number):
+@app_views.route('/cards/my-virtual-card', methods=['GET'], strict_slashes=False)
+def get_card_details():
     """Get a card registered to a user by card id"""
     try:
-        card = cd.find_card_number(card_number)
+        customer_id = request.headers.get('customerid', None)
+        if customer_id is None:
+            return jsonify({'error': 'Forbidden'}), 403
+        card = cd.find_card_number(customer_id=customer_id)
+        if card is None:
+            return jsonify({'error': 'You do not have a Nairalink virtual card'}), 404
         expiry = datetime.strptime(str(card['expiry_date']), '%Y-%m-%d %H:%M:%S')
         return jsonify({'card_details': {
             'customer_id': card['customer_id'],
@@ -127,12 +132,18 @@ def get_card_details(card_number):
             'expiry': f'{expiry.month}/{str(expiry.year)[2:]}'
         }}), 200
     except NoResultFound as err:
-        return jsonify({'error': 'Card does not exist'})
+        return jsonify({'error': 'Internal server error'}), 500
 
 @swag_from('docs/update_card.yml')
-@app_views.route('/cards/<card_number>', methods=["PATCH"], strict_slashes=False)
-def update_card_status(card_number, status=""):
+@app_views.route('/cards/my-virtual-card/status', methods=["PATCH"], strict_slashes=False)
+def update_card_status():
     """Updates the status of a virtual card"""
+    customer_id = request.headers.get('customerid', None)
+    if customer_id is None:
+        return jsonify({'error': 'Forbidden'}), 403
+    card = cd.find_card_by(customer_id=customer_id)
+    if card is None:
+        return jsonify({'error': 'You do not have a Nairalink virtual card'}), 404
     data = request.get_json()
     if 'status' in data:
         status = data['status']
@@ -141,8 +152,8 @@ def update_card_status(card_number, status=""):
 
     try:
         try:
-            updated_card = cd.update_card(card_number=card_number,
-                                          status=status)
+            card_number = card.card_number
+            updated_card = cd.update_card(card_number=card_number)
             if not updated_card:
                 return jsonify({'error': 'Could not find card with id:{}'.format(card_number)})
         except NoResultFound as err:
@@ -157,4 +168,4 @@ def update_card_status(card_number, status=""):
         else:
             return jsonify({'error': 'Invalid status'})
     except ValueError as err:
-        return jsonify({'error': 'Could not update status of virtual card'})
+        return jsonify({'error': 'Could not update status of virtual card'}), 500
