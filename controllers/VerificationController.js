@@ -57,6 +57,7 @@ class VerificationController {
   }
 
   static async verifyVerificationToken(req, res, next) {
+    console.log('I WAS HERE');
     const { phoneToken, emailToken } = req.body;
 
     try {
