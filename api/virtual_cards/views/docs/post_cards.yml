@@ -1,0 +1,76 @@
+openapi: 3.0.0
+servers:
+  - url: http://localhost:8000/api/v1
+tags:
+  - name: cards
+
+definitions:
+  Card:
+    type: object
+    properties:
+      card_number:
+        type: string
+      customer_id:
+        type: string
+      name_on_card:
+        type: string
+      email:
+        type: string
+      phone_number:
+        type: string
+      card_brand:
+        type: string
+      card_currency:
+        type: string
+      pin:
+        type: string
+      balance:
+        type: integer
+      cvv:
+        type: integer
+      status:
+        type: string
+      expiry_date:
+        type: string
+        format: date
+      createdAt:
+        type: string
+        format: date
+      updateAt:
+        type: string
+        format: date
+
+parameters:
+  - name: card
+    in: body
+    type: object
+    description: Create Nairalink virtual card
+    properties:
+      customer_id:
+        type: string
+        example: 6422f8d3cea5142afdfa0d12
+      card_brand:
+        type: string
+        example: Verve
+      card_currency:
+        type: string
+        example: NGN
+      name_on_card:
+        type: string
+        example: Abeeb Raheem
+      pin:
+        type: string
+        example: 1234
+      email:
+        type: string
+        example: abeeb@gmail.com
+      phone_number:
+        type: string
+        example: 08109211864
+responses:
+  '201':
+    description: Successful created
+  '400':
+    description: Wrong parameters
+  '500':
+    description: Internal Server Error

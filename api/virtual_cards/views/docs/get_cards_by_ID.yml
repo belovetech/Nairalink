@@ -1,0 +1,16 @@
+openapi: 3.0.0
+servers:
+  - url: http://localhost:8000/api/v1
+tags:
+  - name: cards
+get:
+  description: Get Nairalink virtual card
+responses:
+  '200':
+    description: Nairalink virtual card details
+  '403':
+    description: Forbidden
+  '404':
+    description: You do not have a Nairalink virtual card'
+  '500':
+    description: Internal server error

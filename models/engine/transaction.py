@@ -13,16 +13,27 @@ class Transaction(DB):
     def __init__(self) -> None:
         super().__init__()
 
-    def all_cardTransactions(self) -> List[CardTransaction]:
+    def all_cardTransactions(self, **kwargs) -> List[CardTransaction]:
         """Returns all cards"""
-        objs = []
-        cards = self._session.query(CardTransaction).order_by(desc(CardTransaction.datetime_updated)).all()
-        for card in cards:
-            obj = card.__dict__.copy()
-            if obj['_sa_instance_state']:
-                del obj['_sa_instance_state']
-            objs.append(obj)
-        return objs
+        try:
+            objs = []
+            if kwargs == {}:
+                cards = self._session.query(CardTransaction).order_by(desc(CardTransaction.datetime_updated)).all()
+            else:
+                if not kwargs or not self.valid_query_args_transaction(**kwargs):
+                    raise InvalidRequestError
+                cards = self._session.query(CardTransaction).filter_by(**kwargs).all()
+
+            for card in cards:
+                obj = card.__dict__.copy()
+                if obj['_sa_instance_state']:
+                    del obj['_sa_instance_state']
+                objs.append(obj)
+            return objs
+        except Exception as err:
+            print(err)
+            return None
+
 
     def create_transaction(self, **kwargs):
         """Starts a transaction for virtual cards
@@ -39,15 +50,20 @@ class Transaction(DB):
 
     def find_transaction_by(self, **kwargs) -> CardTransaction:
         """Find card from DB by key-value pairs argument"""
-        if not kwargs or not self.valid_query_args_transaction(**kwargs):
-            raise InvalidRequestError
+        print(kwargs)
+        try:
+            if not kwargs or not self.valid_query_args_transaction(**kwargs):
+                raise InvalidRequestError
 
-        card_transaction = self._session.query(
-            CardTransaction).filter_by(**kwargs).one_or_none()
-
-        if not card_transaction:
-            raise NoResultFound
-        return card_transaction
+            card_transaction = self._session.query(
+                CardTransaction).filter_by(**kwargs)
+            print(card_transaction)
+            if not card_transaction:
+                raise NoResultFound
+            return card_transaction
+        except Exception as err:
+            print(err)
+            return None
 
     def update_card_transaction(self, transaction_id: str, **kwargs) -> None:
         """Update card transaction details based on card ID"""
