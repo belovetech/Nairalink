@@ -1,43 +1,34 @@
-# ACCOUNTS AND TRANSACTION SERVICE
-This is the repository for the accounts and transaction microservice
-
-## TECHNOLOGIES USED
-Node.js, MySQL, Sequelize
-
-## ROLES
-The Account and Transaction microservice plays the following roles:
-* Generates accounts for verfied users of Nairalink
-* Enables users to be able to make transactions with their accounts
-* Gives users autonomy over modification and updation of their account details
-* Provides the users with the ability to request for virtual cards
-* Enables users to fund generated virtual cards
-
-## ARCHITECTURE
-Node.js is the core backend language of the account and transaction microservice
-The service uses MySQL for the database and Sequelize as an ORM
-
-## API INFORMATION
-
-```
-openapi: '3.0.0'
+swagger: '2.0'
 info:
   title: Account and Transaction API
   description: Nairalink account and tranaction services
   version: '1.0.0'
-
-servers:
-  - url: http://localhost:3000/api/v1
+host: 'localhost'
+basePath: '/api/v1'
+schemes:
+  - http
+  - https
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+    description: >-
+      Enter the token with the `Bearer: ` prefix, e.g. "Bearer abcde12345".
+consumes:
+  - application/json
+produces:
+  - application/json
 
 tags:
   - name: accounts
     description: Nairalink account routes
   - name: transactions
     description: Nairalink intra-transactions routes
-```
+
 components:
-*  schemas:
+  schemas:
     Account:
-```
       type: object
       properties:
         customerId:
@@ -63,9 +54,8 @@ components:
         updateAt:
           type: string
           format: date
-```
+
     Transaction:
-```
       type: object
       properties:
         transactionId:
@@ -90,9 +80,8 @@ components:
         updateAt:
           type: string
           format: date
-```
+
   responses:
-```
     201:
       title: successful transaction
       properties:
@@ -113,9 +102,8 @@ components:
         message:
           type: string
           example: Error while processing transaction...
-```
+
   parameters:
-```
     page:
       name: page
       in: query
@@ -148,45 +136,53 @@ components:
       schema:
         type: string
       description: Mongodb object ID
-```
+
+    transactionId:
+      name: transactionId
+      in: path
+      required: true
+      example: 66ea4f28-e8c4-432f-8eee-8ddb6bc65803
+      schema:
+        type: string
+      description: The transaction ID
+
 paths:
-*  /accounts:
+  /accounts:
     post:
-```
       tags:
         - accounts
       summary: Return Nairalink account created
       description: Create Nairalink account for the user using user's details
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                customerId:
-                  type: string
-                  example: 6422f8d3cea5142afdfa0d12
-                accountNumber:
-                  type: integer
-                  example: 9038028588
-                firstName:
-                  type: string
-                  example: Abeeb
-                lastName:
-                  type: string
-                  example: Raheem
-                email:
-                  type: string
-                  example: abeeb@gmail.com
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: object
+            properties:
+              customerId:
+                type: string
+                example: 6422f8d3cea5142afdfa0d12
+              accountNumber:
+                type: integer
+                example: 9038028588
+              firstName:
+                type: string
+                example: Abeeb
+              lastName:
+                type: string
+                example: Raheem
+              email:
+                type: string
+                example: abeeb@gmail.com
       responses:
         201:
           description: Created
         400:
           description: This user has already have a Nairalink account
-```
+
     get:
-```
+      security:
+        - Bearer: []
       tags:
         - accounts
       summary: Return a list of Nairalink accounts
@@ -194,10 +190,11 @@ paths:
       responses:
         200:
           description: Ok
-```
+
   /accounts/{customerId}:
     get:
-```
+      security:
+        - Bearer: []
       tags:
         - accounts
       summary: Return Nairalink accounts by user ID
@@ -208,6 +205,8 @@ paths:
           description: Ok
 
     delete:
+      security:
+        - Bearer: []
       tags:
         - accounts
       summary: Delete Nairalink accounts by user ID
@@ -216,37 +215,32 @@ paths:
       responses:
         204:
           description: No Content
-```
-*  /transactions/transfer:
+
+  /transactions/transfer:
     post:
-```
+      security:
+        - Bearer: []
       tags:
         - transactions
       summary: Transaction betweeen Nairalink accounts
       description: Transfer money from one Nairalink account to another
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                customerId:
-                  type: string
-                  example: 6422acbdbcb51191a955629d
-                creditAccountNumber:
-                  type: integer
-                  example: 9038028588
-                amount:
-                  type: integer
-                  format: float
-                  example: 1000
-                description:
-                  type: string
-                  example: Gotv subscription
-```
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: object
+            properties:
+              creditAccountNumber:
+                type: integer
+                example: 9038028588
+              amount:
+                type: integer
+                format: float
+                example: 1000
+              description:
+                type: string
+                example: Gotv subscription
       responses:
-```
         201:
           description: successful response
           content:
@@ -265,10 +259,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/responses/500'
-```
-*  /transactions:
+
+  /transactions:
     get:
-```
+      security:
+        - Bearer: []
       tags:
         - transactions
       summary: Return a list of Nairalink transactions
@@ -281,16 +276,17 @@ paths:
       responses:
         200:
           description: Ok
-```
-*  /transactions/{customerId}:
+
+  /transactions/{transactionId}:
     get:
-```
+      security:
+        - Bearer: []
       tags:
         - transactions
       summary: Return a list of Nairalink transactions
       description: List of all Nairalink transactions
       parameters:
-        - $ref: '#/components/parameters/customerId'
+        - $ref: '#/components/parameters/transactionId'
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/limit'
         - $ref: '#/components/parameters/sort'
@@ -298,31 +294,29 @@ paths:
       responses:
         200:
           description: Ok
-```
-*  /transaction/fund-card:
+
+  /transaction/fund-card:
     post:
-```
+      security:
+        - Bearer: []
       tags:
         - transactions
       summary: Nairalink virtual card
       description: Fund Nairalink virtual debit card through Nairalink account
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                customerId:
-                  type: string
-                  example: 6422f8d3cea5142afdfa0d12
-                amount:
-                  type: integer
-                  format: float
-                  example: 1000
-```
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: object
+            properties:
+              amount:
+                type: integer
+                format: float
+                example: 1000
+              description:
+                type: string
+                example: Gotv subscription
       responses:
-```
         201:
           description: successful response
           content:
@@ -341,4 +335,126 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/responses/500'
-```
+
+  /transactions/fund-account:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - transactions
+      summary: Nairalink Account fund
+      description: Fund Nairalink account through stripe API
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: object
+            properties:
+              amount:
+                type: string
+                example: 6422f8d3cea5142afdfa0d12
+              cardDetails:
+                type: object
+                properties:
+                  number:
+                    type: string
+                    example: 4242424242424242
+                  exp_month:
+                    type: integer
+                    example: 12
+                  exp_year:
+                    type: integer
+                    example: 204
+                  cvv:
+                    type: string
+                    example: 123
+              email:
+                type: string
+                example: belovetech@gmail.com
+              shipping:
+                type: object
+                properties:
+                  address:
+                    type: object
+                    properties:
+                      city:
+                        type: string
+                        example: Lagos
+                      country:
+                        type: string
+                        example: NG
+                      line1:
+                        type: string
+                        example: 510 Townsend St
+                      line2:
+                        type: string
+                        example: null
+                      postal_code:
+                        type: string
+                        example: 94103
+                      state:
+                        type: string
+                        example: NG
+                  carrier:
+                    type: string
+                    example: null
+                  name:
+                    type: string
+                    example: Abeeb Raheem
+                  phone:
+                    type: string
+                    example: null
+                  tracking_number:
+                    type: string
+                    example: null
+      responses:
+        201:
+          description: successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/201'
+        400:
+          description: bad request response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/400'
+        500:
+          description: server error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/500'
+
+  /transactions/webhook:
+    post:
+      tags:
+        - transactions
+      summary: Nairalink Account funding
+      description: Fund account through stripe webhook
+      parameters:
+        schema:
+          type: object
+          properties:
+            stripe event:
+              type: object
+      responses:
+        201:
+          description: successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/201'
+        400:
+          description: bad request response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/400'
+        500:
+          description: server error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/500'

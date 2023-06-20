@@ -1,0 +1,8 @@
+node_modules/
+.config.env
+.env
+/src/migrations/*
+/**/config.js
+/**/config.json
+todo.md
+log.txt
