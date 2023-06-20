@@ -10,9 +10,11 @@ router.post('/api/v1/notifications', async (req, res) => {
   switch (payload.type) {
     case 'sms': {
       phoneNotification(payload);
+      break;
     }
     case 'email': {
       emailNotification(payload);
+      break;
     }
   }
   return res
