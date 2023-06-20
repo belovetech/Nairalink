@@ -1,0 +1,100 @@
+{
+  "name": "authentication_service",
+  "version": "1.0.3",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "./node_modules/.bin/eslint",
+    "check-lint": "lint [0-9]*.js",
+    "start-server": "NODE_ENV=production nodemon --exec babel-node --presets @babel/preset-env ./server.js > server.txt",
+    "start-worker": "nodemon --exec babel-node --presets @babel/preset-env ./worker/service.js > log.txt &",
+    "start": "npm run start-worker && npm run start-server",
+    "dev": "nodemon --exec babel-node --presets @babel/preset-env",
+    "test": "echo testing...",
+    "release": "release-it"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@commitlint/cli": "^17.4.4",
+    "@commitlint/config-conventional": "^17.4.4",
+    "@release-it/conventional-changelog": "^5.1.1",
+    "bcrypt": "^5.1.0",
+    "bcryptjs": "^2.4.3",
+    "bullmq": "^3.10.1",
+    "chai-http": "^4.3.0",
+    "cookie-parser": "^1.4.6",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.0.3",
+    "email-validator": "^2.0.4",
+    "express": "^4.17.1",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^6.7.0",
+    "helmet": "^6.0.1",
+    "hpp": "^0.2.3",
+    "husky": "^8.0.3",
+    "jsonwebtoken": "^9.0.0",
+    "mailslurp-client": "^15.17.0",
+    "mongodb": "^3.5.9",
+    "mongoose": "^7.0.1",
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.9.1",
+    "redis": "^2.8.0",
+    "release-it": "^15.8.0",
+    "sha1": "^1.1.1",
+    "swagger-ui-express": "^4.6.2",
+    "twilio": "^4.8.0",
+    "uuid": "^9.0.0",
+    "validator": "^13.9.0",
+    "xss-clean": "^0.1.1",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.0",
+    "@babel/core": "^7.8.0",
+    "@babel/node": "^7.8.0",
+    "@babel/preset-env": "^7.8.2",
+    "@babel/register": "^7.8.0",
+    "@types/redis": "^4.0.11",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "eslint": "^6.4.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^22.17.0",
+    "mocha": "^6.2.2",
+    "nodemon": "^2.0.2",
+    "request": "^2.88.0",
+    "sinon": "^7.5.0"
+  },
+  "release-it": {
+    "git": {
+      "commitMessage": "[chore]: release v${version}"
+    },
+    "github": {
+      "release": true
+    },
+    "npm": {
+      "publish": false
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "infile": "CHANGELOG.md",
+        "preset": {
+          "name": "conventionalcommits",
+          "types": [
+            {
+              "type": "feat",
+              "section": "Features"
+            },
+            {
+              "type": "fix",
+              "section": "Bug Fixes"
+            },
+            {}
+          ]
+        }
+      }
+    }
+  }
+}
