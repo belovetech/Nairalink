@@ -4,3 +4,5 @@ dump.rdb
 payload.json
 todo.md
 log.txt
+server.txt
+.config.env

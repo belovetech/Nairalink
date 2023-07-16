@@ -8,11 +8,11 @@ const mongoSanitizer = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
-const GlobalErrorHandler = require('./helpers/errorHandler');
-const AppError = require('./helpers/AppError');
 const swaggerUi = require('swagger-ui-express');
 const fs = require('fs');
 const YAML = require('yamljs');
+const AppError = require('./helpers/AppError');
+const GlobalErrorHandler = require('./helpers/errorHandler');
 const AuthController = require('./controllers/AuthController');
 
 const CustomerRouter = require('./routes/customerRouter');

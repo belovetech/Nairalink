@@ -1,9 +1,7 @@
 /* eslint-disable comma-dangle */
 const express = require('express');
-const AuthController = require('../controllers/AuthController');
 const CustomerController = require('../controllers/CustomerController');
 const AppController = require('../controllers/AppController');
-const restrictTo = require('../helpers/restrictTo');
 
 const router = express.Router();
 

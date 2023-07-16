@@ -2,120 +2,57 @@
 [33m[nodemon] to restart at any time, enter `rs`[39m
 [33m[nodemon] watching path(s): *.*[39m
 [33m[nodemon] watching extensions: js,mjs,json[39m
-[32m[nodemon] starting `babel-node --presets @babel/preset-env ./server.js`[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env ./src/server.js`[39m
 Server listening on port 5000
 DB connection succssfully!
-Enqueued an email sending to +2347042095602
-Enqueued a verification token sending to +2347042095602
-Enqueued an email sending to belovetech@gmail.com
-Enqueued an email sending to belovetech@gmail.com
-[0mPOST /api/v1/auth/signup [32m201[0m 172.322 ms - 174[0m
-I WAS HERE
-Enqueued an email sending to belovetech@gmail.com
-Enqueued an email sending to belovetech@gmail.com
-[object Object]
-[0mPOST /api/v1/verify/verifyToken [32m200[0m 202.937 ms - 37[0m
-Enqueued create an account for Abeeb
-[0mPOST /api/v1/auth/login [32m200[0m 44.657 ms - 351[0m
-I was here
-{
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNzU1ZmE5OTllZjY1MzZjYmIyODExIiwiaWF0IjoxNjgwMjk5NjYzLCJleHAiOjE2ODEwNzcyNjN9.xy8m-MTmWE3Fin1VPH_l5ShbR8zPXAq-dKmNOz_-_U8',
-  'content-type': 'application/x-www-form-urlencoded',
-  host: 'nairalink_authentication',
-  connection: 'close',
-  'content-length': '468',
-  'sec-ch-ua': '"Google Chrome";v="111", "Not(A:Brand";v="8", "Chromium";v="111"',
-  accept: 'application/json',
-  'sec-ch-ua-mobile': '?0',
-  'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36',
-  'sec-ch-ua-platform': '"Linux"',
-  origin: 'http://localhost',
-  'sec-fetch-site': 'same-origin',
-  'sec-fetch-mode': 'cors',
-  'sec-fetch-dest': 'empty',
-  referer: 'http://localhost/api/v1/accounts/docs/',
-  'accept-encoding': 'gzip, deflate, br',
-  'accept-language': 'en-US,en;q=0.9'
-}
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNzU1ZmE5OTllZjY1MzZjYmIyODExIiwiaWF0IjoxNjgwMjk5NjYzLCJleHAiOjE2ODEwNzcyNjN9.xy8m-MTmWE3Fin1VPH_l5ShbR8zPXAq-dKmNOz_-_U8
-is valid 642755fa999ef6536cbb2811
-DECODE 642755fa999ef6536cbb2811
-[0mPOST /oauth/token [33m401[0m 46.042 ms - 16[0m
-I was here
-{
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNzVjYWJiOGZlMDNjZjg1ZWRhNDU5IiwiaWF0IjoxNjgwMzAxMzQ0LCJleHAiOjE2ODEwNzg5NDR9.Rt60KneNmsdEEjgAXJXA9ebWQfuT1VTh0RREC5p-NxQ',
-  'content-type': 'application/x-www-form-urlencoded',
-  host: 'nairalink_authentication',
-  connection: 'close',
-  'content-length': '468',
-  'sec-ch-ua': '"Google Chrome";v="111", "Not(A:Brand";v="8", "Chromium";v="111"',
-  accept: 'application/json',
-  'sec-ch-ua-mobile': '?0',
-  'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36',
-  'sec-ch-ua-platform': '"Linux"',
-  origin: 'http://localhost',
-  'sec-fetch-site': 'same-origin',
-  'sec-fetch-mode': 'cors',
-  'sec-fetch-dest': 'empty',
-  referer: 'http://localhost/api/v1/accounts/docs/',
-  'accept-encoding': 'gzip, deflate, br',
-  'accept-language': 'en-US,en;q=0.9'
-}
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNzVjYWJiOGZlMDNjZjg1ZWRhNDU5IiwiaWF0IjoxNjgwMzAxMzQ0LCJleHAiOjE2ODEwNzg5NDR9.Rt60KneNmsdEEjgAXJXA9ebWQfuT1VTh0RREC5p-NxQ
-is valid 64275cabb8fe03cf85eda459
-DECODE 64275cabb8fe03cf85eda459
-CUSTOMER Abeeb
-FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 53.727 ms - 154[0m
-I was here
-{
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNzU1ZmE5OTllZjY1MzZjYmIyODExIiwiaWF0IjoxNjgwMjk5NjYzLCJleHAiOjE2ODEwNzcyNjN9.xy8m-MTmWE3Fin1VPH_l5ShbR8zPXAq-dKmNOz_-_U8',
-  'content-type': 'application/x-www-form-urlencoded',
-  host: 'nairalink_authentication',
-  connection: 'close',
-  'content-length': '49',
-  'user-agent': 'PostmanRuntime/7.29.2',
-  accept: '*/*',
-  'postman-token': '8815a89b-b8e5-4bfd-bac2-5d179a600d10',
-  'accept-encoding': 'gzip, deflate, br'
-}
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNzU1ZmE5OTllZjY1MzZjYmIyODExIiwiaWF0IjoxNjgwMjk5NjYzLCJleHAiOjE2ODEwNzcyNjN9.xy8m-MTmWE3Fin1VPH_l5ShbR8zPXAq-dKmNOz_-_U8
-is valid 642755fa999ef6536cbb2811
-DECODE 642755fa999ef6536cbb2811
-[0mPOST /oauth/token [33m401[0m 11.215 ms - 16[0m
-I was here
-{
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNzVjYWJiOGZlMDNjZjg1ZWRhNDU5IiwiaWF0IjoxNjgwMzAxMzQ0LCJleHAiOjE2ODEwNzg5NDR9.Rt60KneNmsdEEjgAXJXA9ebWQfuT1VTh0RREC5p-NxQ',
-  'content-type': 'application/x-www-form-urlencoded',
-  host: 'nairalink_authentication',
-  connection: 'close',
-  'content-length': '49',
-  'user-agent': 'PostmanRuntime/7.29.2',
-  accept: '*/*',
-  'postman-token': 'e9ed7ddd-6872-452d-b5f9-4f9616ad8e79',
-  'accept-encoding': 'gzip, deflate, br'
-}
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNzVjYWJiOGZlMDNjZjg1ZWRhNDU5IiwiaWF0IjoxNjgwMzAxMzQ0LCJleHAiOjE2ODEwNzg5NDR9.Rt60KneNmsdEEjgAXJXA9ebWQfuT1VTh0RREC5p-NxQ
-is valid 64275cabb8fe03cf85eda459
-DECODE 64275cabb8fe03cf85eda459
-CUSTOMER Abeeb
-FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 42.145 ms - 154[0m
-I was here
-{
-  authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNzVjYWJiOGZlMDNjZjg1ZWRhNDU5IiwiaWF0IjoxNjgwMzAxMzQ0LCJleHAiOjE2ODEwNzg5NDR9.Rt60KneNmsdEEjgAXJXA9ebWQfuT1VTh0RREC5p-NxQ',
-  'content-type': 'application/x-www-form-urlencoded',
-  host: 'nairalink_authentication',
-  connection: 'close',
-  'content-length': '55',
-  'user-agent': 'PostmanRuntime/7.29.2',
-  accept: '*/*',
-  'postman-token': '1a25bed1-1c2e-4d2a-b9cd-a2a172e5b04b',
-  'accept-encoding': 'gzip, deflate, br'
-}
-TOKEN eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21lcklkIjoiNjQyNzVjYWJiOGZlMDNjZjg1ZWRhNDU5IiwiaWF0IjoxNjgwMzAxMzQ0LCJleHAiOjE2ODEwNzg5NDR9.Rt60KneNmsdEEjgAXJXA9ebWQfuT1VTh0RREC5p-NxQ
-is valid 64275cabb8fe03cf85eda459
-DECODE 64275cabb8fe03cf85eda459
-CUSTOMER Abeeb
-FINALLY GOT USER
-[0mPOST /oauth/token [32m200[0m 11.930 ms - 154[0m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env ./src/server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env ./src/server.js`[39m
+Server listening on port 5000
+DB connection succssfully!
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env ./src/server.js`[39m
+Server listening on port 5000
+DB connection succssfully!
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env ./src/server.js`[39m
+Server listening on port 5000
+DB connection succssfully!
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env ./src/server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env ./src/server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env ./src/server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env ./src/server.js`[39m
+Server listening on port 5000
+DB connection succssfully!
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env ./src/server.js`[39m
+Server listening on port 5000
+DB connection succssfully!
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env ./src/server.js`[39m
+Server listening on port 5000
+DB connection succssfully!
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env ./src/server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env ./src/server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env ./src/server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env ./src/server.js`[39m
+Server listening on port 5000
+DB connection succssfully!
+[0mGET /status [33m404[0m 15.726 ms - 69[0m
+[0mGET /stats [33m404[0m 1.333 ms - 68[0m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `babel-node --presets @babel/preset-env ./src/server.js`[39m
+Server listening on port 5000
+DB connection succssfully!
+[0mGET /api/v1/stats [33m404[0m 9.405 ms - 52[0m
+[0mGET /api/v1/customers/stats [32m200[0m 141.092 ms - 15[0m
+[0mGET /api/v1/customers/status [32m200[0m 1.902 ms - 24[0m

@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable object-curly-newline */
 /* eslint-disable comma-dangle */
+const { ObjectId } = require('mongodb');
 const Customer = require('../models/customerModel');
 const AppError = require('../helpers/AppError');
 const formatResponse = require('../helpers/formatResponse');
 const filterFields = require('../helpers/filterFields');
-const { ObjectId } = require('mongodb');
 
 class CustomerController {
   static async createCustomer(req, res, next) {

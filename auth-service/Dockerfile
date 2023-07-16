@@ -1,5 +1,5 @@
 # stage one
-FROM node:gallium-alpine3.17 as base
+FROM node:gallium-alpine3.17 AS base
 
 # install dependencies for node-gyp
 RUN apk add --no-cache python3 make g++

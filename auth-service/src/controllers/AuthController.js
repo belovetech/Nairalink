@@ -7,6 +7,7 @@
 const sha1 = require('sha1');
 const jwt = require('jsonwebtoken');
 const { ObjectId } = require('mongodb');
+const validator = require('email-validator');
 const AppError = require('../helpers/AppError');
 const Customer = require('../models/customerModel');
 const formatResponse = require('../helpers/formatResponse');
@@ -17,7 +18,6 @@ const redisClient = require('../db/redis');
 const generateJWToken = require('../helpers/generateJWToken');
 const verificationPin = require('../helpers/verificationPin');
 const verificationToken = require('../helpers/verificationToken');
-const validator = require('email-validator');
 
 class AuthController {
   static async signup(req, res, next) {
@@ -189,9 +189,7 @@ class AuthController {
   }
 
   static async authenticate(req, res) {
-    console.log(`I was here`);
-    console.log(req.headers);
-    let token = undefined;
+    let token;
     const { authorization } = req.headers;
     if (!authorization) {
       return res.status(401).json({ active: false });
@@ -222,8 +220,7 @@ class AuthController {
         return res.status(401).json({ active: false });
       }
       console.log(`CUSTOMER ${CurrentCustomer.firstName}`);
-      // if (uri === '/api/v1/accounts' || uri === '/api/v1/cards') {
-      console.log('FINALLY GOT USER');
+
       return res.status(200).json({
         active: true,
         customerid: CurrentCustomer._id,
@@ -232,10 +229,6 @@ class AuthController {
         firstname: CurrentCustomer.firstName,
         lastname: CurrentCustomer.lastName,
       });
-      // }
-      // return res.status(200).json({
-      //   customerid: CurrentCustomer._id,
-      // });
     } catch (error) {
       if (error.message === 'invalid signature') {
         return res.status(401).json({ active: false });

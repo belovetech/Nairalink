@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-// const DB = process.env.URL.replace('<PASSWORD>', process.env.PASSWORD);
 const DB = process.env.LOCAL_URL;
 
 class DbClient {

@@ -4,7 +4,7 @@ import { promisify } from 'util';
 class RedisClient {
   constructor() {
     this.client = createClient({
-      url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`
+      url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
     });
 
     this.client.on('error', (err) => {
