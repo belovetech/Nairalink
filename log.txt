@@ -1,0 +1,5 @@
+13:16:21 Worker rq:worker:e97fd71004b3468da2b51860a248302a: started, version 1.13.0
+13:16:21 Subscribing to channel rq:pubsub:e97fd71004b3468da2b51860a248302a
+13:16:21 *** Listening on default...
+13:16:48 Warm shut down requested
+13:16:48 Unsubscribing from channel rq:pubsub:e97fd71004b3468da2b51860a248302a

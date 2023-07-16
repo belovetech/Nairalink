@@ -1,0 +1,14 @@
+openapi: 3.0.0
+servers:
+  - url: http://localhost:8000/api/v1
+tags:
+  - name: card_transactions
+get:
+  description: Returns all customer Nairalink virtual card transactions
+responses:
+  '200':
+    description: OK
+  '403':
+    description: Forbidden
+  '404':
+    description: You do not have a Nairalink virtual card
