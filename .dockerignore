@@ -1,0 +1,10 @@
+.git
+.github
+.husky
+Dockerfile
+docker-compose*
+node_modules
+*.rdb
+nairalink.json
+.eslintrc.js
+commitlint.config.js

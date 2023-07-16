@@ -1,0 +1,1157 @@
+# Auth Service
+
+This is authentication service repository for Nairalink project
+
+
+## TECHNOLOGIES USED
+Node.js, MongoDB, Mongoose
+
+## ROLES
+The Authentication microservice plays the following roles:
+* Grants users the capability to sign up and login to the Nairalink platform
+* Verifies users through generated links sent to email addresses
+* Generates access tokens for verified users of Nairalink
+* Validates all user requests to subsequent microservices with the token
+* Provides protection to the routes accessible to the user
+* Grants users the capability to recall accounts with forgotten login details through the forgetPassoword endpoint
+
+## ARCHITECTURE
+Node.js is the core backend language of the authentication microservice
+The service uses MongoDB for the database and Mongoose as an ORM
+
+## API INFORMATION
+
+```
+info:
+  title: Auth Service API
+  description: This is the API documentation for authentication and authorization.
+  version: "1.0.0"
+host: "localhost:5000"
+basePath: "/api/v1"
+schemes:
+  - http
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+```
+## PATHS
+paths:
+*  /auth/signup:
+-    post:
+      summary: Create a new user account
+      description: Sign up a new user with email, password, and other required details
+```
+      tags:
+        - Authentication
+      parameters:
+        - in: body
+          name: body
+          description: Signup user object
+          required: true
+          schema:
+            $ref: "#/definitions/Signup"
+      responses:
+        201:
+          description: User created successfully
+          schema:
+            $ref: "#/definitions/SignupResponse"
+        400:
+          description: Bad Request, Invalid user input
+          schema:
+            $ref: "#/definitions/SignupResponseBadRequest"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ServerErrorResponse"
+```
+*  /auth/login:
+-    post:
+      summary: User login
+      description: Log in a user with email and password
+```
+      tags:
+        - Authentication
+      parameters:
+        - in: body
+          name: body
+          description: Login user object
+          required: true
+          schema:
+            $ref: "#/definitions/Login"
+      responses:
+        200:
+          description: User logged in successfully
+          schema:
+            $ref: "#/definitions/LoginResponse"
+        400:
+          description: Bad Request, Invalid user input
+          schema:
+            $ref: "#/definitions/BadRequestResponse"
+        404:
+          description: User not found
+          schema:
+            $ref: "#/definitions/NotFoundResponse"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ServerErrorResponse"
+```
+*  /auth/logout:
+-    post:
+      summary: User logout
+      description: Log out a user, clearing their authentication token
+```
+      tags:
+        - Authentication
+      responses:
+        200:
+          description: User logged out successfully
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/UnauthorizedResponse"
+        403:
+          description: Forbidden
+          schema:
+            $ref: "#/definitions/ForbiddenResponse"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ServerErrorResponse"
+```
+*  /auth/protect:
+-    get:
+      summary: User authentication
+      description: Protects the route for authenticated users only
+```
+      tags:
+        - Authentication
+      responses:
+        200:
+          description: Access granted
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/UnauthorizedResponse"
+        403:
+          description: Forbidden
+          schema:
+            $ref: "#/definitions/ForbiddenResponse"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ServerErrorResponse"
+```
+* /auth/forgetPassword:
+    post:
+      summary: Forget password
+      description: Send a password reset link to the user's email
+```
+      tags:
+        - Authentication
+      parameters:
+        - in: body
+          name: body
+          description: Forget password object
+          required: true
+          schema:
+            $ref: "#/definitions/ForgetPassword"
+      responses:
+        200:
+          description: Password reset link sent
+          schema:
+            $ref: "#/definitions/forgetPasswordResponse"
+        404:
+          description: User not found
+          schema:
+            $ref: "#/definitions/NotFoundResponse"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ServerErrorResponse"
+```
+* /auth/confirmResetPassword:
+-    get:
+      summary: Confirm reset password URL
+      description: Confirm the reset password URL
+```
+      tags:
+        - Authentication
+      parameters:
+        - in: query
+          name: token
+          description: Reset password token
+          type: string
+          required: true
+        - in: query
+          name: id
+          description: Customer ID
+          type: string
+          required: true
+      responses:
+        200:
+          description: Redirect to reset password
+          schema:
+            $ref: "#/definitions/confirmResetPasswordResponse"
+        400:
+          description: Bad Request, Invalid user input
+          schema:
+            $ref: "#/definitions/BadRequestResponse"
+        404:
+          description: User not found
+          schema:
+            $ref: "#/definitions/NotFoundResponse"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ServerErrorResponse"
+```
+* /auth/resetPassword/{token}:
+-   post:
+```
+      tags:
+        - Authentication
+      summary: Reset user password
+      description: This route resets a user's password.
+      operationId: resetPassword
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+          required: true
+          description: The ID of the user whose password needs to be reset.
+        - in: body
+          name: body
+          schema:
+              $ref: "#/definitions/resetPassword"
+      responses:
+        200:
+          description: Password reset successfully
+          schema:
+            $ref: "#/definitions/resetPasswordResponse"
+        400:
+          description: Bad request - Invalid input or expired token
+          schema:
+            $ref: "#/definitions/BadRequestResponse"
+        500:
+          description: Internal server error
+          schema:
+            $ref: "#/definitions/ServerErrorResponse"
+```
+* /auth/updatePassword:
+-    put:
+```
+      tags:
+        - Authentication
+      summary: Update user password
+      description: This route updates the password for an authenticated user.
+      operationId: updatePassword
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: header
+          name: id
+          type: string
+          required: true
+          description: The user ID
+        - in: body
+          name: body
+          schema:
+            $ref: "#/definitions/updatePassword"
+      responses:
+        200:
+          description: Password updated successfully
+          schema:
+            $ref: "#/definitions/updatePasswordResponse"
+        400:
+          description: Bad Request, Invalid user input
+          schema:
+            $ref: "#/definitions/BadRequestResponse"
+        403:
+          description: Forbidden
+          schema:
+            $ref: "#/definitions/ForbiddenResponse"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ServerErrorResponse"
+```
+* /customers/stats:
+-    get:
+```
+      tags:
+        - Information
+      summary: Get statistics
+      operationId: getStats
+      responses:
+        200:
+          description: Successful operation
+          schema:
+            $ref: "#/components/schemas/StatsResponse"
+```
+* /customers/status:
+-    get:
+```
+      tags:
+        - Information
+      summary: Get API status
+      operationId: getStatus
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+```
+* /customers/getMe:
+-    get:
+```
+      tags:
+        - Customer
+      summary: Get current customer
+      operationId: getMe
+      parameters:
+        - in: params
+          name: id
+          description: update current customer
+          required: true
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+```
+* /customers/updateMe:
+-    patch:
+```
+      tags:
+        - Customer
+      summary: Update current customer
+      operationId: updateMe
+      parameters:
+        - in: body
+          name: body
+          description: update current customer
+          required: true
+          schema:
+            $ref: '#/components/schemas/CustomerUpdate'
+        - in: header
+          name: id
+          type: string
+          required: true
+          description: The user ID
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ServerErrorResponse"
+```
+* /customers/deleteMe:
+-    delete:
+```
+      tags:
+        - Customer
+      summary: Delete current customer
+      operationId: deleteMe
+      parameters:
+        - in: header
+          name: id
+          type: string
+          required: true
+          description: The user ID
+      responses:
+        204:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+        403:
+          description: Forbidden
+          schema:
+            $ref: "#/definitions/ForbiddenResponse"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ServerErrorResponse"
+```
+* /customers/:
+-    post:
+```
+      tags:
+        - Customer
+      summary: Create a customer
+      operationId: createCustomer
+      parameters:
+        - in: body
+          name: body
+          description: update current customer
+          required: true
+          schema:
+            $ref: '#/components/schemas/CustomerCreate'
+      responses:
+        405:
+          description: Not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: fail
+                  message:
+                    type: string
+                    description: failure message
+```
+-    get:
+```
+      tags:
+        - Customer
+      summary: Get all customers
+      operationId: getAllCustomers
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: integer
+                  customers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Customer'
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ServerErrorResponse"
+```
+* /customers/{id}:
+-    get:
+```
+      tags:
+        - Customer
+      summary: Get a customer by ID
+      operationId: getCustomer
+      parameters:
+        - name: id
+          in: path
+          description: Customer ID
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        404:
+          description: User not found
+          schema:
+            $ref: "#/definitions/NotFoundResponse"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ServerErrorResponse"
+```
+-   patch:
+```
+      tags:
+        - Customer
+      summary: Update a customer by ID
+      operationId: updateCustomer
+      parameters:
+        - name: id
+          in: path
+          description: Customer ID
+          required: true
+          schema:
+            type: string
+        - in: body
+          name: body
+          description: update customer
+          required: true
+          schema:
+            $ref: '#/components/schemas/CustomerUpdate'
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        404:
+          description: User not found
+          schema:
+            $ref: "#/definitions/NotFoundResponse"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ServerErrorResponse"
+```
+-    delete:
+```
+      tags:
+        - Customer
+      summary: Delete a customer by ID
+      operationId: deleteCustomer
+      parameters:
+        - name: id
+          in: path
+          description: Customer ID
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: string
+        404:
+          description: Customer not found
+          schema:
+            $ref: "#/definitions/NotFoundResponse"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ServerErrorResponse"
+```
+- /verify/token:
+```
+    post:
+      tags:
+        - Verification
+      summary: Send verification token
+      parameters:
+        - in: body
+          name: body
+          description: Send verification token
+          required: true
+          schema:
+            type: object
+            properties:
+              phoneNumber:
+                type: string
+              email:
+                type: string
+            required:
+              - phoneNumber
+              - email
+      responses:
+        200:
+          description: Verification token sent
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        400:
+          description: Bad Request, Invalid user input
+          schema:
+            $ref: "#/definitions/BadRequestResponse"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ServerErrorResponse"
+```
+- /verify/verifyToken:
+```
+    post:
+      tags:
+        - Verification
+      summary: Verify verification token
+      parameters:
+      - in: body
+        name: body
+        description: Send verification token
+        required: true
+        schema:
+          type: object
+          properties:
+            phoneToken:
+              type: string
+            emailToken:
+              type: string
+      responses:
+        200:
+          description: Verification token sent
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        400:
+          description: Bad Request, Invalid user input
+          schema:
+            $ref: "#/definitions/BadRequestResponse"
+        404:
+          description: User not found
+          schema:
+            $ref: "#/definitions/NotFoundResponse"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ServerErrorResponse"
+```
+- /verify/PhoneToken:
+```
+    post:
+      tags:
+        - Verification
+      summary: Send phone number verification token
+      parameters:
+      - in: body
+        name: body
+        description: Send verification token
+        required: true
+        schema:
+          type: object
+          properties:
+            phoneNumber:
+              type: string
+      responses:
+        200:
+          description: Verification token sent
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        400:
+          description: Bad Request, Invalid user input
+          schema:
+            $ref: "#/definitions/BadRequestResponse"
+        404:
+          description: User not found
+          schema:
+            $ref: "#/definitions/NotFoundResponse"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ServerErrorResponse"
+```
+- /verify/verifyPhoneToken:
+```
+    post:
+      tags:
+        - Verification
+      summary: Verify phone number
+      parameters:
+      - in: body
+        name: body
+        description: Send verification token
+        required: true
+        schema:
+          type: object
+          properties:
+            phoneToken:
+              type: string
+      responses:
+        200:
+          description: Verification token sent
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        400:
+          description: Bad Request, Invalid user input
+          schema:
+            $ref: "#/definitions/BadRequestResponse"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ServerErrorResponse"
+```
+- /verify/EmailToken:
+```
+  post:
+      tags:
+        - Verification
+      summary: Send email verification token
+      parameters:
+      - in: body
+        name: body
+        description: Send verification token
+        required: true
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+      responses:
+        200:
+          description: Email Verification token sent
+```
+- /verify/verifyEmailToken:
+```
+    post:
+      tags:
+        - Verification
+      summary: Verify email token
+      parameters:
+      - in: body
+        name: body
+        description: Send verification token
+        required: true
+        schema:
+          type: object
+          properties:
+            emailToken:
+              type: string
+      responses:
+        200:
+          description: Verification token sent
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        400:
+          description: Bad Request, Invalid user input
+          schema:
+            $ref: "#/definitions/BadRequestResponse"
+        404:
+          description: User not found
+          schema:
+            $ref: "#/definitions/NotFoundResponse"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ServerErrorResponse"
+```
+definitions:
+-  Signup:
+```
+    type: object
+    properties:
+      firstName:
+        type: string
+      lastName:
+        type: string
+      email:
+        type: string
+        format: email
+      phoneNumber:
+        type: string
+      password:
+        type: string
+      passwordConfirmation:
+        type: string
+    required:
+      - firstName
+      - lastName
+      - email
+      - phoneNumber
+      - password
+      - passwordConfirmation
+    example:
+      firstName: Samuel
+      lastName: Adebayo
+      email: eladebayoor@gmail.com
+      phoneNumber: '08109211864'
+      password: 'myp@$$w0rd'
+      passwordConfirmation: 'myp@$$w0rd'
+```
+-  SignupResponse:
+```
+    type: object
+    properties:
+      status:
+        type: string
+      data:
+        type: object
+        properties:
+          id:
+            type: string
+          firstName:
+            type: string
+          lastName:
+            type: string
+          email:
+            type: string
+          phoneNumber:
+            type: string
+    required:
+      - status
+      - data
+```
+- SignupResponseBadRequest:
+```
+    type: object
+    properties:
+      error:
+        type: object
+        properties:
+          firstName:
+            type: string
+            description: 'firstName should be string'
+          lastName:
+            type: string
+            description: 'lastName should be string'
+          email:
+            type: string
+            description: 'Error message for email validation'
+          phoneNumber:
+            type: string
+            description: 'Error message for phoneNumber validation'
+          password:
+            type: string
+            description: 'Error message for password validation'
+          passwordConfirmation:
+            type: string
+            description: 'Error message for passwordConfirmation validation'
+    required:
+      - error
+```
+- Login:
+```
+    type: object
+    properties:
+      email:
+        type: string
+        format: email
+      password:
+        type: string
+    required:
+      - email
+      - password
+    example:
+      email: eladebayoor@gmail.com
+      password: 'myp@$w0rd'
+```
+- LoginResponse:
+```
+    type: object
+    properties:
+      token:
+        type: string
+      customer:
+        $ref: '#/definitions/Customer'
+    required:
+      - token
+      - customer
+```
+- Customer:
+```
+    type: object
+    properties:
+      id:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      email:
+        type: string
+      phoneNumber:
+        type: string
+    required:
+      - id
+      - firstName
+      - lastName
+      - email
+      - phoneNumber
+```
+- ForgetPassword:
+```
+    type: object
+    required:
+      - email
+    properties:
+      email:
+        type: string
+        format: email
+    example:
+      email: eladebayoor@gmail.com
+```
+- forgetPasswordResponse:
+```
+    type: object
+    properties:
+      status:
+        type: string
+        description: success
+      message:
+        type: string
+        description: password reset link sent successfully
+    required:
+      - status
+      - message
+```
+- confirmResetPasswordResponse:
+```
+    type: object
+    properties:
+      status:
+        type: string
+        description: success
+      id:
+        type: string
+        description: customer id
+      token:
+        type: string
+        description: customer token generated
+      message:
+        type: string
+        description: redirect message to provide new password
+    required:
+      - status
+      - id
+      - token
+      - message
+```
+- resetPassword:
+```
+    type: object
+    properties:
+      newPassword:
+        type: string
+        description: The new password for the user.
+        minLength: 8
+      passwordConfirmation:
+        type: string
+        description: Password confirmation to ensure correctness.
+    required:
+      - newPassword
+      - passwordConfirmation
+    example:
+      newPassword: 'myNe@#$Pass1'
+      passwordConfirmation: 'myNe@#$Pass1'
+```
+- resetPasswordResponse:
+```
+   type: object
+    properties:
+      status:
+        type: string
+        description: success
+      message:
+        type: string
+        description: password reset successfully
+    required:
+      - status
+      - message
+```
+- updatePassword:
+```
+    type: object
+    properties:
+      currentPassword:
+        type: string
+        description: The current password of the user.
+      newPassword:
+        type: string
+        description: The new password for the user.
+        minLength: 8
+      newPasswordConfirmation:
+        type: string
+        description: Password confirmation to ensure correctness.
+    required:
+      - currentPassword
+      - newPassword
+      - newPasswordConfirmation
+    example:
+      currentPassword: 'myNe@#$Pass1'
+      newPassword: 'latestPassword1@#'
+      newPasswordConfirmation: 'latestPassword1@#'
+```
+- updatePasswordResponse:
+```
+    type: object
+    properties:
+      status:
+        type: string
+        description: success
+      message:
+        type: string
+        description: password update successfully
+    required:
+      - status
+      - message
+```
+- UnauthorizedResponse:
+```
+    type: object
+    properties:
+      status:
+        type: string
+        description: fail
+      message:
+        type: string
+        description: Unauthorized error message
+    required:
+      - status
+      - message
+```
+- ForbiddenResponse:
+```
+    type: object
+    properties:
+      status:
+        type: string
+        description: fail
+      message:
+        type: string
+        description: Forbidden error message
+    required:
+      - status
+      - message
+```
+- BadRequestResponse:
+```
+    type: object
+    properties:
+      status:
+        type: string
+        description: fail
+      message:
+        type: string
+        description: Bad request error message
+    required:
+      - status
+      - message
+```
+- NotFoundResponse:
+```
+    type: object
+    properties:
+      status:
+        type: string
+        description: fail
+      message:
+        type: string
+        description: Not Found error message
+    required:
+      - status
+      - message
+```
+- ServerErrorResponse:
+```
+    type: object
+    properties:
+      status:
+        type: string
+        description: error
+      message:
+        type: string
+        description: Something went very wrong!
+    required:
+      - status
+      - message
+```
+components:
+  schemas:
+   * Customer:
+```
+      type: object
+      properties:
+        id:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        userName:
+          type: string
+        email:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+```
+ CustomerCreate:
+```
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        userName:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        passwordConfirmation:
+          type: string
+      example:
+        firstName: abeloa
+        lastName: martins
+        userName: leomartins
+        email: leomart@gmail.com
+        password: '123ert%&PO'
+        passwordConfirmation: '123ert%&PO'
+```
+ CustomerUpdate:
+```
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        userName:
+          type: string
+      example:
+        firstName: frello
+        lastName: richard
+        userName: frechard
+```
+  StatsResponse:
+```
+      type: object
+      properties:
+        customers:
+          type: integer
+      required:
+        - customers
+```
+   Status:
+```
+      type: object
+      properties:
+        db:
+          type: boolean
+        redis:
+          type: boolean
+```
+
