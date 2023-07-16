@@ -1,0 +1,136 @@
+version: "3.8"
+
+services:
+  accounts-api:
+    build: 
+      context: ./accounts-service
+      dockerfile: Dockerfile
+    image: accounts-api:dev
+    container_name: accounts-api
+    volumes:
+      - /home/node/app/node_modules
+      - ./accounts-service:/home/node/app
+    env_file:
+      - ./accounts-service/.env
+    networks:
+      - nairalink-backend
+      - nairalink-accounts
+    ports:
+      - 3100:3000
+
+  auth-api:
+    build: 
+      context: ./auth-service
+      dockerfile: Dockerfile
+    image: auth-api:dev
+    container_name: auth-api
+    volumes: 
+      - /home/node/app/node_modules
+      - ./auth-service:/home/node/app
+    env_file:
+      - ./auth-service/.env
+    networks:
+      - nairalink-backend
+      - nairalink-authentication
+    ports:
+      - 5100:5000
+
+  notifications-api:
+    build:
+      context: ./notification-service
+      dockerfile: Dockerfile
+    image: notifications-api:dev
+    container_name: notifications-api
+    volumes:
+      - /hom/node/app/node_modules
+      - ./notification-service:/home/node/app
+    env_file:
+      - ./notification-service/.env
+    networks:
+      - nairalink-backend
+    ports:
+      - 5600:5500
+
+  redis-db:
+    build:
+      dockerfile: Dockerfile
+      context: ./redis
+    image: redis-db:dev
+    container_name: redis-db
+    volumes:
+      - /nairalink/db/redis:/data
+    ports:
+      - 6479:6379
+    networks:
+      - nairalink-backend
+
+  accounts-db:
+    build:
+      dockerfile: Dockerfile
+      context: ./accounts-db
+    image: accounts-db:dev
+    container_name: accounts-db
+    environment:
+      - "MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}"
+      - "MYSQL_USER=${MYSQL_USER}"
+      - "MYSQL_PASSWORD=${MYSQL_PASSWORD}"
+      - "MYSQL_DATABASE=${MYSQL_DATABASE}"
+    volumes:
+      - /nairalink/db/accounts:/var/lib/mysql
+    ports:
+      - 3406:3306
+    networks:
+      - nairalink-accounts
+
+  cards-db:
+    build:
+      dockerfile: Dockerfile
+      context: ./cards-db
+    image: cards-db:dev
+    container_name: cards-db
+    environment:
+      - "MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}"
+      - "MYSQL_USER=${MYSQL_USER}"
+      - "MYSQL_PASSWORD=${MYSQL_PASSWORD}"
+      - "MYSQL_DATABASE=${MYSQL_DATABASE}"
+    volumes:
+      - /nairalink/db/cards:/var/lib/mysql
+    ports:
+      - 3506:3306
+    networks:
+      - nairalink-cards
+
+  nginx-proxy:
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    image: nginx-proxy:dev
+    container_name: nginx-proxy
+    restart: unless-stopped
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/oauth2.js:/etc/nginx/oauth2.js
+      - /var/cache/nginx/oauth2:/var/cache/nginx/oauth2
+      # - /var/log/nginx/nairalink-access.log:/var/log/nginx/nairalink-access.log
+      # - /var/log/nginx/nairalink-api.log:/var/log/nginx/nairalink-api.log
+    ports:
+      - 80:80
+    networks:
+      - nairalink-backend
+
+networks:
+  nairalink-backend:
+    name: nairalink-backend-network
+    driver: bridge
+  nairalink-accounts:
+    name: nairalink-accounts-network
+    driver: bridge
+  nairalink-authentication:
+    name: nairalink-authentication-network
+    driver: bridge
+  nairalink-cards:
+    name: nairalink-cards-network
+    driver: bridge
+  nairalink-notifications:
+    name: nairalink-notifications-network
+    driver: bridge
