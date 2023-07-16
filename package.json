@@ -1,0 +1,59 @@
+{
+  "name": "nairalink",
+  "version": "1.0.2",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "commit": "cz",
+    "lint": "./node_modules/.bin/eslint",
+    "check-lint": "lint [0-9]*.js",
+    "dev": "nodemon --exec babel-node --presets @babel/preset-env",
+    "prepare": "husky install",
+    "release": "standard-version",
+    "start-server": "nodemon --exec babel-node --presets @babel/preset-env ./src/server.js",
+    "start-worker": "nodemon --exec babel-node --presets @babel/preset-env src/worker/service.js",
+    "worker": "npm run start-worker > log.txt 2>&1 &",
+    "server": "npm run start-server",
+    "start": "npm run worker && npm run server"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "bullmq": "^3.10.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "handlebars": "^4.7.7",
+    "mysql2": "^3.2.0",
+    "sequelize": "^6.29.3",
+    "stripe": "^11.15.0",
+    "swagger-ui-express": "^4.6.2",
+    "uuid": "^9.0.0",
+    "yaml": "^2.2.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.0",
+    "@babel/core": "^7.8.0",
+    "@babel/node": "^7.8.0",
+    "@babel/preset-env": "^7.8.2",
+    "@babel/register": "^7.8.0",
+    "@commitlint/cli": "^17.4.4",
+    "@commitlint/config-conventional": "^17.4.4",
+    "commitizen": "^4.3.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^22.17.0",
+    "husky": "^8.0.3",
+    "nodemon": "^2.0.21",
+    "sequelize-cli": "^6.6.0",
+    "standard-version": "^9.5.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}

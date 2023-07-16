@@ -1,0 +1,6 @@
+.git
+.github
+.husky
+node_modules
+*.md
+.config.env
