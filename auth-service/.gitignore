@@ -1,8 +1,6 @@
 node_modules/**/*
 dump.rdb
 .env
-payload.json
 todo.md
 log.txt
-server.txt
-.config.env
+server.txt/
